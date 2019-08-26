@@ -2,5 +2,63 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="jena/lib/collection-0.7.jar"/>
+	<classpathentry kind="lib" path="jena/lib/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="jena/lib/commons-codec-1.11.jar"/>
+	<classpathentry kind="lib" path="jena/lib/commons-compress-1.18.jar"/>
+	<classpathentry kind="lib" path="jena/lib/commons-csv-1.5.jar"/>
+	<classpathentry kind="lib" path="jena/lib/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="jena/lib/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="jena/lib/httpclient-4.5.5.jar"/>
+	<classpathentry kind="lib" path="jena/lib/httpclient-cache-4.5.5.jar"/>
+	<classpathentry kind="lib" path="jena/lib/httpcore-4.4.9.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jackson-annotations-2.9.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jackson-core-2.9.9.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jackson-databind-2.9.9.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jcl-over-slf4j-1.7.26.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-arq-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-base-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-cmds-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-core-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-dboe-base-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-dboe-index-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-dboe-trans-data-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-dboe-transaction-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-iri-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-rdfconnection-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-shaded-guava-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-tdb-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jena-tdb2-3.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/jsonld-java-0.12.3.jar"/>
+	<classpathentry kind="lib" path="jena/lib/libthrift-0.12.0.jar"/>
+	<classpathentry kind="lib" path="jena/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="jena/lib/slf4j-api-1.7.26.jar"/>
+	<classpathentry kind="lib" path="jena/lib/slf4j-log4j12-1.7.26.jar"/>
+	<classpathentry kind="lib" path="jena/lib-src/jena-arq-3.12.0-sources.jar"/>
+	<classpathentry kind="lib" path="jena/lib-src/jena-cmds-3.12.0-sources.jar"/>
+	<classpathentry kind="lib" path="jena/lib-src/jena-core-3.12.0-sources.jar"/>
+	<classpathentry kind="lib" path="jena/lib-src/jena-rdfconnection-3.12.0-sources.jar"/>
+	<classpathentry kind="lib" path="jena/lib-src/jena-tdb-3.12.0-sources.jar"/>
+	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="lib/postgresql-42.2.6.jar"/>
+	<classpathentry kind="lib" path="poi_lib/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="poi_lib/commons-codec-1.12.jar"/>
+	<classpathentry kind="lib" path="poi_lib/commons-collections4-4.3.jar"/>
+	<classpathentry kind="lib" path="poi_lib/commons-compress-1.18.jar"/>
+	<classpathentry kind="lib" path="poi_lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="poi_lib/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="poi_lib/jaxb-api-2.3.0.jar"/>
+	<classpathentry kind="lib" path="poi_lib/jaxb-core-2.3.0.1.jar"/>
+	<classpathentry kind="lib" path="poi_lib/jaxb-impl-2.3.0.1.jar"/>
+	<classpathentry kind="lib" path="poi_lib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="poi_lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="poi_lib/poi-4.1.0.jar"/>
+	<classpathentry kind="lib" path="poi_lib/poi-examples-4.1.0.jar"/>
+	<classpathentry kind="lib" path="poi_lib/poi-excelant-4.1.0.jar"/>
+	<classpathentry kind="lib" path="poi_lib/poi-ooxml-4.1.0.jar"/>
+	<classpathentry kind="lib" path="poi_lib/poi-ooxml-schemas-4.1.0.jar"/>
+	<classpathentry kind="lib" path="poi_lib/poi-scratchpad-4.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-2.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

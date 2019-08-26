@@ -1172,7 +1172,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 					textFieldSourceProperty.setText("");
 					textAreaSourceExpression.setText("");
 					
-					comboBoxConceptMapper.setSelectedIndex(0);
+					// comboBoxConceptMapper.setSelectedIndex(0);
 				}
 			}
 		});

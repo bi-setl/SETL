@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 import java.awt.EventQueue;
 import java.io.File;

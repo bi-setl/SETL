@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;

@@ -33,6 +33,7 @@ import org.apache.jena.vocabulary.RDF;
 
 import controller.MappingDefinition;
 import helper.FileMethods;
+import helper.Methods;
 
 public class MappingExtraction {
 	private ArrayList<String> datasetList;
@@ -473,11 +474,16 @@ public class MappingExtraction {
 		String recordName = "";
 		int totalSize = getRecordList().size();
 		
+		String sourceKey = Methods.extractKeyWordFromIRI(source);
+		String targetKey = Methods.extractKeyWordFromIRI(target);
+		
 		if (totalSize < 9) {
 			recordName = "map:PropertyMapper_0" + ( totalSize + 1 ); 
 		} else {
 			recordName = "map:PropertyMapper_" + ( totalSize + 1 );
 		}
+		
+		recordName += "_" + sourceKey + "_" + targetKey;
 		
 		Resource newResource = model.createResource(assignIRI(recordName));
 		newResource.addProperty(RDF.type, classResource);

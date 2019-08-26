@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 public class TreeValue {
 	private String name;

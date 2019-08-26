@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 import java.awt.Component;
 import java.awt.Font;

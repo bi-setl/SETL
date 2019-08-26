@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 import javax.swing.JTree;
 

@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;

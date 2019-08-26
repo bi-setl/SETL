@@ -1,4 +1,4 @@
-package demo;
+package practice;
 
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;

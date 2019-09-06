@@ -150,7 +150,7 @@ public class Methods {
 			} 
 		} catch (Exception e) {
 			// TODO: handle exception
-			return node.toString();
+			return null;
 		}
 	}
 	
@@ -723,5 +723,20 @@ public class Methods {
 			String[] parts = urlName.split(":");
 			return parts[1];
 		}
+	}
+
+	public String convertListToString(ArrayList<Object> arrayList) {
+		// TODO Auto-generated method stub
+		String string = "";
+		if (arrayList != null) {
+			for (int i = 0; i < arrayList.size(); i++) {
+				string += arrayList.get(i).toString();
+				
+				if (i < arrayList.size() - 1) {
+					string += ", ";
+				}
+			}
+		}
+		return string;
 	}
 }

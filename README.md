@@ -1,7 +1,7 @@
 # SETL
 SETL is a data integration tool. It provides a unified platform for processing and integrating data semantically by bridging Semantic Web and BI technologies. SETL allows to create a semantic Data Warehouse (SDW), a repository of semantically integrated data by combining different data sources. We divide the whole integration process into three layers: Definition Layers (DL), ETL Layers (ETLL) and OLAP Layers (OL). The output of one layer is the input of the immediate next layer. In DL, user can define 1) the target with MD semantics using OWL, QB and QB4OLAP constructs and 2) the mappings between source and target. constructs. ETLL is composed of a set of operators which are used to create ETL flows to create a SDW. OL provides an interface where user can create their analytical query by selecting different levels of hierarchies and measures.
 ## Usage
-In order to run the project, you need to ***clone the project*** and ***run the SETLFrame.java*** under view package.
+In order to run the project, you need to ***clone the project*** and ***run the SETLFrame.java*** under **view** package.
 ## Package description
 In the Package/Project Explorer tab, you will find 10 packages under the project. A short description of the packages is given below-
 ##### 1. "controller" package

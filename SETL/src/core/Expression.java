@@ -64,7 +64,7 @@ public class Expression {
 					+ "?m map:sourceConcept ?c. \n"
 					+ "?r a map:PropertyMapper. \n"
 					+ "?r map:ConceptMapper ?m. \n"
-					+ "?r map:sourcePropertyType map:Expression. \n"
+					+ "?r map:sourcePropertyType map:SourceExpression. \n"
 					+ "?r map:sourceProperty ?exp. \n"
 					+ "?sub a ?c. \n"
 					+ "?sub ?pred ?obj. }\n";
@@ -73,7 +73,7 @@ public class Expression {
 			ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 			
 			ResultSet set = ResultSetFactory.copyResults(resultSet);
-			ResultSetFormatter.out(set);
+			//ResultSetFormatter.out(set);
 			
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();

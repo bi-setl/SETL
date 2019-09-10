@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -1354,6 +1357,45 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelValueSelection.add(textFieldOperation, "cell 1 2,growx");
 		textFieldOperation.setColumns(10);
 		
+		JPanel panelCommon = new JPanel();
+		panelCommon.setBorder(new TitledBorder(null, "Common Property", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
+		panelCommon.setBackground(Color.WHITE);
+		panelHead.add(panelCommon, "cell 0 3 2 1,grow");
+		panelCommon.setLayout(new MigLayout("", "[][grow]", "[][]"));
+		
+		JLabel lblSourceCommonProperty = new JLabel("Source Common Property:");
+		lblSourceCommonProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCommon.add(lblSourceCommonProperty, "cell 0 0,alignx trailing");
+		
+		ArrayList<String> propertyList = getAllCommonProperties(true);
+		
+		JComboBox comboBoxSourceProperty = new JComboBox(propertyList.toArray());
+		comboBoxSourceProperty.setBackground(Color.WHITE);
+		comboBoxSourceProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCommon.add(comboBoxSourceProperty, "cell 1 0,growx");
+		
+		JLabel lblTargetCommonProperty = new JLabel("Target Common Property:");
+		lblTargetCommonProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCommon.add(lblTargetCommonProperty, "cell 0 2,alignx trailing");
+		
+		ArrayList<String> propertyList2 = getAllCommonProperties(false);
+		
+		JComboBox comboBoxTargetProperty = new JComboBox(propertyList2.toArray());
+		comboBoxTargetProperty.setBackground(Color.WHITE);
+		comboBoxTargetProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCommon.add(comboBoxTargetProperty, "cell 1 2,growx");
+		
+		JCheckBox chckbxBothSame = new JCheckBox("Both Same");
+		chckbxBothSame.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (chckbxBothSame.isSelected()) {
+					comboBoxTargetProperty.setSelectedItem(comboBoxSourceProperty.getSelectedItem());
+				}
+			}
+		});
+		chckbxBothSame.setBackground(Color.WHITE);
+		panelCommon.add(chckbxBothSame, "cell 1 1");
+		
 		JButton btnSaveConcept = new JButton("Save Concept");
 		btnSaveConcept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1363,6 +1405,8 @@ public class PanelMapSource2TargetNew extends JPanel {
 				String relation = comboBoxRelation.getSelectedItem().toString();
 				String instanceToBeMapped = comboBoxMapped.getSelectedItem().toString();
 				String operation = textFieldOperation.getText().toString().trim();
+				String sourceCommonProperty = comboBoxSourceProperty.getSelectedItem().toString();
+				String targetCommonProperty = comboBoxTargetProperty.getSelectedItem().toString();
 				
 				if (instanceToBeMapped.equals("SPARQL Query")) {
 					instanceToBeMapped = textAreaSparql.getText().toString().trim();
@@ -1394,7 +1438,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 						createNewFileIfNotExists();
 					}
 					
-					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType);
+					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty);
 					recordExtraction.reloadAll();
 					refreshMappingDefinition();
 					
@@ -1413,7 +1457,67 @@ public class PanelMapSource2TargetNew extends JPanel {
 			}
 		});
 		btnSaveConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelHead.add(btnSaveConcept, "cell 0 3 2 1,center");
+		panelHead.add(btnSaveConcept, "cell 0 4 2 1,center");
+	}
+
+	private ArrayList<String> getAllCommonProperties(boolean isSource) {
+		// TODO Auto-generated method stub
+		ArrayList<String> arrayList = new ArrayList<String>();
+		
+		if (isSource) {
+			arrayList.add("onto:SourceIRI");
+		} else {
+			arrayList.add("onto:TargetIRI");
+		}
+		
+		ArrayList<String> arrayListOne = getDefinitionCommonProperties(sourceDefinition);
+		ArrayList<String> arrayListTwo = getDefinitionCommonProperties(targetDefinition);
+		
+		for (String string : arrayListOne) {
+			if (!arrayList.contains(string)) {
+				arrayList.add(string);
+			}
+		}
+		
+		for (String string : arrayListTwo) {
+			if (!arrayList.contains(string)) {
+				arrayList.add(string);
+			}
+		}
+		
+		FileMethods fileMethods = new FileMethods();
+		return fileMethods.sortArrayList(arrayList);
+	}
+	
+	private ArrayList<String> getDefinitionCommonProperties(TBoxDefinition definition) {
+		// TODO Auto-generated method stub
+		ArrayList<String> arrayList = new ArrayList<String>();
+		
+		for (String string : definition.getObjectList()) {
+			if (!arrayList.contains(string)) {
+				arrayList.add(string);
+			}
+		}
+		
+		for (String string : definition.getDataList()) {
+			if (!arrayList.contains(string)) {
+				arrayList.add(string);
+			}
+		}
+		
+		for (String string : definition.getAttributeList()) {
+			if (!arrayList.contains(string)) {
+				arrayList.add(string);
+			}
+		}
+		
+		for (String string : definition.getRollupList()) {
+			if (!arrayList.contains(string)) {
+				arrayList.add(string);
+			}
+		}
+		
+		return arrayList;
 	}
 
 	protected void addDatasetButtonHandler() {

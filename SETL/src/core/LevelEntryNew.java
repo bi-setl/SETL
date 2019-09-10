@@ -778,7 +778,6 @@ public class LevelEntryNew {
 	
 	public String generateFactEntryFromCSV(String sourceABoxFile, String mappingFile, String targetTBoxFile,
 			String provGraphFile, String targetABoxFile, String csvDelimiter) {
-		
 		/*
 		 * System.out.println(sourceABoxFile); System.out.println(mappingFile);
 		 * System.out.println(targetTBoxFile); System.out.println(provGraphFile);
@@ -894,10 +893,7 @@ public class LevelEntryNew {
 	                QuerySolution querySolution = (QuerySolution) resultSet.next();
 	                sourceType = querySolution.get("type").toString();
 	                
-	                // System.out.println(sourceType);
-	                
 	                if (getProvValue(sourceType).equals(sourceFileName)) {
-	                	// System.out.println("*** --------- ****");
 	                	concept = querySolution.get("head").toString();
 		                targetType = querySolution.get("target").toString();
 		                keyAttributeType = querySolution.get("keyType").toString();
@@ -908,10 +904,9 @@ public class LevelEntryNew {
 					}
 	            }
 				
-				/*
-				 * for (Map.Entry<String, String> map : propertiesMap.entrySet()) {
-				 * System.out.println(map.getKey() + " = " + map.getValue()); }
-				 */
+				/*for (Map.Entry<String, String> map : propertiesMap.entrySet()) {
+					System.out.println(map.getKey() + " = " + map.getValue());
+				}*/
 				
 				Model targetModel = ModelFactory.createDefaultModel();
 				

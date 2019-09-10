@@ -16,25 +16,25 @@ public class FileAndFolder {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		String basePath = "D:\\Data\\CSV";
+		String basePath = "C:\\Users\\Amrit\\Documents\\Census\\C15";
 		File folder = new File(basePath);
 		File[] listOfFiles = folder.listFiles();
-		String baseName = "Census_C04";
-		String baseFileName = "D:\\Data\\CSV\\" + baseName + ".csv";
+		String baseName = "Census_C15_HousingTenancy";
+		String baseFileName = "C:\\Users\\Amrit\\Documents\\Census\\C15\\Census_C15_HousingTenancy.csv";
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				for (int i = 0; i < listOfFiles.length; i++) {
-					// for (int i = 0; i < 1; i++) {
+				// for (int i = 0; i < 1; i++) {
 					if (listOfFiles[i].isFile()) {
 						File baseFile = new File(baseFileName);
 						if (baseFile.exists()) {
 							String tempString = basePath + "\\" + baseName + "_" + i + ".csv";
 							File tempFile = new File(tempString);
 							baseFile.renameTo(tempFile);
-							// baseFile.deleteOnExit();
+							baseFile.deleteOnExit();
 						}
 
 						System.out.println(listOfFiles[i].getPath());
@@ -42,44 +42,31 @@ public class FileAndFolder {
 						System.out.println(baseFile.getPath());
 
 						LevelEntryNew entryNew = new LevelEntryNew();
-
-						/*
-						 * entryNew.generateFactEntryFromCSV(baseFileName, "D:\\Data\\Files\\map.ttl",
-						 * "D:\\Data\\Files\\bd_tbox.ttl", "D:\\Data\\Files\\prov.ttl",
-						 * "D:\\Data\\Test\\Fact_" + baseName + "_TargetABox.ttl", "Space ( )");
-						 */
-						
-						entryNew.generateFactEntryFromCSV(baseFileName, "D:\\Data\\Files\\map.ttl",
-								"D:\\Data\\Files\\bd_tbox.ttl",
-								"D:\\Data\\Files\\prov.ttl",
-								"D:\\Data\\Test\\Fact_" + baseName + "_TargetABox.ttl", "Space ( )");
-						
-						
-						baseFile.deleteOnExit();
+						entryNew.generateLevelEntryFromCSV(baseFileName,
+								"C:\\Users\\Amrit\\Documents\\map.ttl",
+								"C:\\Users\\Amrit\\Documents\\bd_tbox.ttl",
+								"C:\\Users\\Amrit\\Documents\\Census\\prov.ttl",
+								"C:\\Users\\Amrit\\Documents\\Level_" + baseName + "_TargetABox.ttl", "Space ( )");
 					}
 				}
 
 				System.out.println("Finish");
+				playSound();
 				new Methods().showDialog("Complete");
 			}
 		});
 	}
 
-	public static synchronized void playSound(final String url) {
-		new Thread(new Runnable() {
-			// The wrapper thread is unnecessary, unless it blocks on the
-			// Clip finishing; see comments.
-			public void run() {
-				try {
-					Clip clip = AudioSystem.getClip();
-					AudioInputStream inputStream = AudioSystem
-							.getAudioInputStream(FileAndFolder.class.getResourceAsStream("/path/to/sounds/" + url));
-					clip.open(inputStream);
-					clip.start();
-				} catch (Exception e) {
-					System.err.println(e.getMessage());
-				}
-			}
-		}).start();
+	public static synchronized void playSound() {
+		try {
+			File file = new File("C:\\Users\\Amrit\\Downloads\\tone.wav");
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+			clip.open(inputStream);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			clip.start();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 }

@@ -376,12 +376,14 @@ public class MappingExtraction {
 	}
 
 	public void addNewHead(String sourceType, String dataset, String source, String target, String relation,
-			String key, String operation, String keyType) {
+			String key, String operation, String keyType, String sourceComProperty, String targetComProperty) {
 		// TODO Auto-generated method stub
 		dataset = assignIRI(dataset);
 		source = assignIRI(source);
 		target = assignIRI(target);
 		relation = assignIRI(relation);
+		sourceComProperty = assignIRI(sourceComProperty);
+		targetComProperty = assignIRI(targetComProperty);
 		// sourceType = assignIRI("map:" + sourceType);
 		keyType = assignIRI("map:" + keyType.replace(" ", ""));
 		
@@ -411,6 +413,8 @@ public class MappingExtraction {
 		Property keyProperty = model.createProperty(assignIRI("map:iriValue"));
 		Property keyPropertyType = model.createProperty(assignIRI("map:iriValueType"));
 		Property relationProperty = model.createProperty(assignIRI("map:relation"));
+		Property sourceCommonProperty = model.createProperty(assignIRI("map:sourceCommonProperty"));
+		Property targetCommonProperty = model.createProperty(assignIRI("map:targetCommonProperty"));
 		
 		newResource.addProperty(sourceTypeProperty, model.createLiteral(sourceType));
 		
@@ -419,6 +423,12 @@ public class MappingExtraction {
 		newResource.addProperty(targetProperty, model.createResource(target));
 		newResource.addProperty(relationProperty, model.createResource(relation));
 		newResource.addProperty(keyPropertyType, model.createResource(keyType));
+		
+		Methods methods = new Methods();
+		if (methods.checkString(sourceComProperty) && methods.checkString(targetComProperty)) {
+			newResource.addProperty(sourceCommonProperty, model.createResource(sourceComProperty));
+			newResource.addProperty(targetCommonProperty, model.createResource(targetComProperty));
+		}
 		
 		/*if (keyType.contains("Direct") || keyType.contains("Expression")) {
 			if (key.contains("http") || key.contains("www") || key.contains(":")) {

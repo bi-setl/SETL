@@ -42,6 +42,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.query.ResultSetFormatter;
@@ -150,7 +154,7 @@ public class Methods {
 			} 
 		} catch (Exception e) {
 			// TODO: handle exception
-			return null;
+			return node.toString();
 		}
 	}
 	
@@ -724,19 +728,147 @@ public class Methods {
 			return parts[1];
 		}
 	}
+	
+	public static String getLastNameOfFilePath(String filePath) {
+		String[] parts = filePath.split("\\\\");
+		String name = parts[parts.length - 1];
+		String[] segments = name.split("\\.");
+		return segments[0];
+	}
 
-	public String convertListToString(ArrayList<Object> arrayList) {
+	public static ResultSet executeQuery(Model model, String sparql) {
 		// TODO Auto-generated method stub
-		String string = "";
-		if (arrayList != null) {
-			for (int i = 0; i < arrayList.size(); i++) {
-				string += arrayList.get(i).toString();
+		Query query = QueryFactory.create(sparql);
+		QueryExecution execution = QueryExecutionFactory.create(query, model);
+		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+		
+		return resultSet;
+	}
+	
+	public static String assignPrefix(LinkedHashMap<String, String> prefixMap, String iriValue) {
+		if (iriValue.contains("#")) {
+			String[] parts = iriValue.split("#");
+			if (parts.length == 2) {
+				String firstSegment = parts[0].trim() + "#";
+				String prefix = getMapValue(prefixMap, firstSegment);
 				
-				if (i < arrayList.size() - 1) {
-					string += ", ";
+				if (prefix != null) {
+					return prefix + parts[1].trim();
+				}
+			}
+		} else {
+			String[] parts = iriValue.split("/");
+			String lastSegment = parts[parts.length - 1];
+			String firstSegment = iriValue.replace(lastSegment, "");
+			
+			String prefix = getMapValue(prefixMap, firstSegment);
+			
+			if (prefix != null) {
+				return prefix + lastSegment;
+			}
+		}
+		return iriValue;	
+	}
+	
+	private static String getMapValue(LinkedHashMap<String, String> prefixMap, String secondValue) {
+		// TODO Auto-generated method stub
+		if (prefixMap.containsValue(secondValue)) {
+			for (Map.Entry<String, String> map : prefixMap.entrySet()) {
+				String key = map.getKey();
+				String value = map.getValue();
+
+				if (secondValue.equals(value.trim())) {
+					return key;
 				}
 			}
 		}
-		return string;
+		return null;
+	}
+
+	public static String assignIRI(LinkedHashMap<String, String> prefixMap, String prefixValue) {
+		if (prefixValue.contains("http") || prefixValue.contains("www")) {
+			return prefixValue;
+		} else {
+			String[] segments = prefixValue.split(":");
+			if (segments.length == 2) {
+				String firstSegment = segments[0].trim() + ":";
+				return prefixMap.get(firstSegment) + segments[1];
+			} else {
+				return prefixValue;
+			}
+		}
+	}
+
+	public static String bracketString(String string) {
+		// TODO Auto-generated method stub
+		return "<" + string + ">";
+	}
+	
+	public static void print(Object object) {
+		// TODO Auto-generated method stub
+		if (object instanceof LinkedHashMap) {
+			for (Map.Entry<Object, Object> map : ((LinkedHashMap<Object, Object>) object).entrySet()) {
+				Object key = map.getKey();
+				Object value = map.getValue();
+				
+				print(key);
+				print(value);
+			}
+		} else if (object instanceof String) {
+			System.out.println(object);
+		} else if (object instanceof ResultSet) {
+			ResultSetFormatter.out(ResultSetFactory.copyResults((ResultSet) object));
+		} else if (object instanceof Model) {
+			((Model) object).write(System.out, "TTL");
+		} else if (object instanceof Boolean) {
+			
+		}
+	}
+	
+	public static String getPrefixStrings(LinkedHashMap<String, String> prefixMap) {
+		String tripleString = "";
+		Set<String> prefixes = prefixMap.keySet();
+		Iterator<String> iterator = prefixes.iterator();
+
+		while (iterator.hasNext()) {
+
+			String prefix = (String) iterator.next();
+			String iri = (String) prefixMap.get(prefix);
+
+			tripleString += "@prefix " + prefix + " <" + iri + ">.\n";
+		}
+
+		return tripleString;
+	}
+	
+	public static LinkedHashMap<String, String> extractPrefixes(String filePath) {
+		// TODO Auto-generated method stub
+		LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
+		File file = new File(filePath);
+		BufferedReader bufferedReader = null;
+
+		try {
+			bufferedReader = new BufferedReader(new FileReader(file));
+
+			String text = "", s;
+			while ((s = bufferedReader.readLine()) != null) {
+				text = text + s;
+			}
+
+			String regEx = "(@prefix\\s*)([^\\:]+:)(\\s+)(<)([^\\s+^>]+)";
+			Pattern pattern = Pattern.compile(regEx);
+			Matcher matcher = pattern.matcher(text);
+
+			while (matcher.find()) {
+				String prefix = matcher.group(2).trim();
+				String iri = matcher.group(5).trim();
+
+				hashMap.put(prefix, iri);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		return hashMap;
 	}
 }

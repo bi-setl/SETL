@@ -13,6 +13,7 @@ import etl_model.ETLInstanceEntryGenerator;
 import etl_model.ETLLevelEntryGenerator;
 import etl_model.ETLLoadingOperation;
 import etl_model.ETLMatcher;
+import etl_model.ETLMultipleTransform;
 import etl_model.ETLPWeightGenerator;
 import etl_model.ETLRDFWrapper;
 import etl_model.ETLResourceRetreiver;
@@ -29,7 +30,7 @@ public class ETLOperationToXML {
 
 	
 	public static final String NonSemanticToTBoxDeriver = "NonSemanticToTBoxDeriver";
-
+	public static final String MULTIPLE_TRANSFORM = "MultipleTransform";
 	public static final String FACT_ENTRY_GENERATOR = "FactEntryGenerator";
 	public static final String LEVEL_ENTRY_GENERATOR = "LevelEntryGenerator";
 	public static final String SemanticSourceExtractor = "SemanticSourceExtractor";
@@ -74,6 +75,8 @@ public class ETLOperationToXML {
 				PanelETL.NonSemanticToTBoxDeriver);
 		ArrayList<Operation> abox2TboxOperations = getNamedOperations(operationsList,
 						PanelETL.ABOX2TBOX);
+		ArrayList<Operation> multipleTransformOperations = getNamedOperations(operationsList,
+				PanelETL.MULTIPLE_TRANFORM);
 		ArrayList<Operation> levelEntryGenOperations = getNamedOperations(operationsList,
 						PanelETL.LEVEL_ENTRY_GENERATOR);
 		ArrayList<Operation> instanceEntryGenOperations = getNamedOperations(operationsList,
@@ -431,6 +434,36 @@ public class ETLOperationToXML {
 				xmlString += "\t\t</NextOperations>\n";
 
 			xmlString += "\t</" + ABOX2TBOX + ">\n";
+
+		}
+		
+		for (Operation op : multipleTransformOperations) {
+
+			xmlString += "\t<" + MULTIPLE_TRANSFORM + " id=\"" + op.getXmlOperationKey() + "\">\n";
+			xmlString += "\t\t<OperationName>" + op.getOperationName() + "</OperationName>\n";
+			xmlString += "\t\t<UpperLeftX>" + op.getUpperLeftX() + "</UpperLeftX>\n";
+			xmlString += "\t\t<UpperLeftY>" + op.getUpperLeftY() + "</UpperLeftY>\n";
+			xmlString += "\t\t<InputStatus>" + op.isInputStatus() + "</InputStatus>\n";
+			xmlString += "\t\t<IsExecuted>" + op.isExecuted() + "</IsExecuted>\n";
+
+			ETLMultipleTransform temp = (ETLMultipleTransform) op.getEtlOperation();
+			xmlString += "\t\t<FirstSourcePath>" + temp.getFirstSourcePath() + "</FirstSourcePath>\n";
+			xmlString += "\t\t<SecondSourcePath>" + temp.getSecondSourcePath() + "</SecondSourcePath>\n";
+			xmlString += "\t\t<MapPath>" + temp.getMapPath() + "</MapPath>\n";
+			xmlString += "\t\t<TargetType>" + temp.getTargetType() + "</TargetType>\n";
+			xmlString += "\t\t<TargetFile>" + temp.getTargetPath() + "</TargetFile>\n";
+
+			// next operations, and shape
+			ArrayList<Operation> nextOperations = op.getNextOperations();
+			if (nextOperations.size() > 0)
+				xmlString += "\t\t<NextOperations>\n";
+			for (Operation nxtOp : nextOperations) {
+				xmlString += "\t\t\t<item>" + nxtOp.getXmlOperationKey() + "</item>\n";
+			}
+			if (nextOperations.size() > 0)
+				xmlString += "\t\t</NextOperations>\n";
+
+			xmlString += "\t</" + MULTIPLE_TRANSFORM + ">\n";
 
 		}
 		

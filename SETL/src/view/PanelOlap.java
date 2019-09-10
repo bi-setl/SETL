@@ -90,6 +90,7 @@ public class PanelOlap extends JPanel {
 
     private EnabledListener enabledListener = new EnabledListener();
     private DisabledListener disabledListener = new DisabledListener();
+    private ArrayList<String> bannedLevels = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -192,7 +193,7 @@ public class PanelOlap extends JPanel {
 				lblAbox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(lblAbox, "cell 0 1,alignx trailing");
 
-				JTextField textFieldABox = new JTextField("C:\\Users\\Amrit\\Documents\\Data\\C04\\Census_C04_TargetABox.ttl");
+				JTextField textFieldABox = new JTextField("C:\\Users\\Amrit\\Documents\\Alternate Files\\complete_TargetABox.ttl");
 				textFieldABox.setMargin(new Insets(5, 5, 5, 5));
 				textFieldABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(textFieldABox, "flowx,cell 1 1,growx");
@@ -564,17 +565,14 @@ public class PanelOlap extends JPanel {
 		panelDimension.setLayout(new MigLayout("", "[grow]", "[grow]"));
 
 		treeDimension = new JTree();
-		if (definition.getBannedLevels() == null) {
-			definition.setBannedLevels(new ArrayList<String>());
-		}
-		treeDimension.setCellRenderer(new MyDisabledTreeRenderer(definition.getBannedLevels()));
+		treeDimension.setCellRenderer(new MyDisabledTreeRenderer(bannedLevels));
 		treeDimension.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) treeDimension
 						.getLastSelectedPathComponent();
 				if (selectedNode != null) {
 					if (selectedNode.isLeaf()) {
-						if (definition.getBannedLevels().contains(selectedNode.toString())) {
+						if (bannedLevels.contains(selectedNode.toString())) {
 							JOptionPane.showMessageDialog(null,
 			                        "You can't Select that Level", "ERROR",
 			                        JOptionPane.ERROR_MESSAGE);
@@ -722,8 +720,11 @@ public class PanelOlap extends JPanel {
 					
 					if (definition.getLevelInstanceObjects().size() > 0) {
 						if (definition.getLevelInstanceObjects().get(0) instanceof String) {
+							System.out.println("String");
 							disableItemsInComboBox();
 						} else {
+							System.out.println(definition.getLevelInstanceObjects().get(0));
+							System.out.println("Something else");
 							enableItemsInComboBox();
 						}
 					}
@@ -1245,7 +1246,7 @@ public class PanelOlap extends JPanel {
 
 	protected void refreshDimensionTree() {
 		// TODO Auto-generated method stub
-		definition.setBannedLevels(new ArrayList<>());
+		bannedLevels = new ArrayList<>();
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Dimensions");
 
 		for (String dimensionString : definition.getDimHierMap().keySet()) {
@@ -1256,15 +1257,18 @@ public class PanelOlap extends JPanel {
 				DefaultMutableTreeNode hierarchyNode = new DefaultMutableTreeNode(hierarchyString);
 
 				ArrayList<String> levelList = definition.getHierLevelMap().get(hierarchyString);
-				
+				for (String string : hierList) {
+					System.out.println("Levels: " + string);
+				}
+
 				boolean isBanned = false;
 				for (String levelString : levelList) {
 					DefaultMutableTreeNode levelNode = new DefaultMutableTreeNode(levelString);
 					hierarchyNode.add(levelNode);
 					
 					if (isBanned) {
-						if (!definition.getBannedLevels().contains(levelString)) {
-							definition.getBannedLevels().add(levelString);
+						if (!bannedLevels.contains(levelString)) {
+							bannedLevels.add(levelString);
 						}
 					}
 					
@@ -1279,7 +1283,7 @@ public class PanelOlap extends JPanel {
 			rootNode.add(dimensionNode);
 		}
 		
-		treeDimension.setCellRenderer(new MyDisabledTreeRenderer(definition.getBannedLevels()));
+		treeDimension.setCellRenderer(new MyDisabledTreeRenderer(bannedLevels));
 		treeDimension.setModel(new DefaultTreeModel(rootNode));
 	}
 	

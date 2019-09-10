@@ -56,6 +56,7 @@ import etl_model.ETLLevelEntryGenerator;
 import etl_model.ETLLoadingOperation;
 import etl_model.ETLMappingGenOperation;
 import etl_model.ETLMatcher;
+import etl_model.ETLMultipleTransform;
 import etl_model.ETLPWeightGenerator;
 import etl_model.ETLRDFWrapper;
 import etl_model.ETLResourceRetreiver;
@@ -87,6 +88,7 @@ public class PanelETL extends JPanel {
 	public static final String TransformationOnLiteral = "TransformationOnLiteral";
 	public static final String FACT_ENTRY_GENERATOR = "FactEntryGenerator";
 	public static final String LEVEL_ENTRY_GENERATOR = "LevelEntryGenerator";
+	public static final String MULTIPLE_TRANFORM = "MultipleTransform";
 	public static final String MAPPING_GEN = "Direct Mapping Generator";
 	public static final String ABOX2TBOX = "ABoxToTBoxDeriver";
 	public static final String LOADER = "Loader";
@@ -269,6 +271,17 @@ public class PanelETL extends JPanel {
 		 * btnDirectMappingGenerator.setFont(new Font("Tahoma", Font.BOLD, 12));
 		 * panelTransformation.add(btnDirectMappingGenerator);
 		 */
+		
+		JButton btnMultipleTransform = new JButton(MULTIPLE_TRANFORM);
+		setMargin(btnMultipleTransform);
+		btnMultipleTransform.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paletteButtonHandler(arg0);
+			}
+		});
+		etlButtonGroup.add(btnMultipleTransform);
+		btnMultipleTransform.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelTransformation.add(btnMultipleTransform);
 
 		JButton btnLevelentryGenerator = new JButton(LEVEL_ENTRY_GENERATOR);
 		setMargin(btnLevelentryGenerator);
@@ -485,8 +498,8 @@ public class PanelETL extends JPanel {
 		if (!filePath.endsWith(".xml"))
 			filePath += ".xml";
 		
-		System.out.println(filePath);
-		System.out.println(etlXMLString);
+		//System.out.println(filePath);
+		//System.out.println(etlXMLString);
 		methods.writeText(filePath, etlXMLString);
 	}
 
@@ -582,6 +595,7 @@ public class PanelETL extends JPanel {
 		ArrayList<Operation> extractDBOpertations = getNamedOperations(EXT_DB);
 		ArrayList<Operation> extractSPAQRQLOpertations = getNamedOperations(SemanticSourceExtractor);
 		ArrayList<Operation> expressionHandlerOperations = getNamedOperations(TransformationOnLiteral);
+		ArrayList<Operation> expressionMultipleTransform = getNamedOperations(MULTIPLE_TRANFORM);
 		ArrayList<Operation> levelEntryGenOpertations = getNamedOperations(LEVEL_ENTRY_GENERATOR);
 		ArrayList<Operation> factEntryGenOpertations = getNamedOperations(FACT_ENTRY_GENERATOR);
 		ArrayList<Operation> instanceEntryGenOpertations = getNamedOperations(INSTANCE_ENTRY_GENERATOR);
@@ -617,6 +631,10 @@ public class PanelETL extends JPanel {
 		}
 
 		for (Operation operation : expressionHandlerOperations) {
+			operation.getEtlOperation().execute(textPaneETLStatus);
+		}
+		
+		for (Operation operation : expressionMultipleTransform) {
 			operation.getEtlOperation().execute(textPaneETLStatus);
 		}
 
@@ -905,6 +923,7 @@ public class PanelETL extends JPanel {
 			association.add(EXT_DB);
 			association.add(MAPPING_GEN);
 			association.add(TransformationOnLiteral);
+			association.add(MULTIPLE_TRANFORM);
 			association.add(RDF_WRAPPER);
 			association.add(NonSemanticToTBoxDeriver);
 			association.add(ABOX2TBOX);
@@ -960,6 +979,15 @@ public class PanelETL extends JPanel {
 			association.add(FACT_ENTRY_GENERATOR);
 			association.add(UPDATE_DIMENSION_CONSTRUCT);
 			associations.put(TransformationOnLiteral, association);
+			
+			// Association for MULTIPLE TRANSFORM
+			association = new ArrayList<>();
+			association.add(RDF_WRAPPER);
+			association.add(NonSemanticToTBoxDeriver);
+			association.add(LEVEL_ENTRY_GENERATOR);
+			association.add(FACT_ENTRY_GENERATOR);
+			association.add(UPDATE_DIMENSION_CONSTRUCT);
+			associations.put(MULTIPLE_TRANFORM, association);
 
 			// Association for Mapping generation
 			association = new ArrayList<>();
@@ -1757,6 +1785,11 @@ public class PanelETL extends JPanel {
 
 			case ABOX2TBOX:
 				operation.setEtlOperation(new ETLABox2TBox());
+				isMatched = true;
+				break;
+				
+			case MULTIPLE_TRANFORM:
+				operation.setEtlOperation(new ETLMultipleTransform());
 				isMatched = true;
 				break;
 

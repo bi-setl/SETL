@@ -32,7 +32,6 @@ public class Definition {
 	private LinkedHashMap<String, String> prefixMap;
 	private LinkedHashMap<String, ArrayList<String>> selectedMeasureFunctionMap;
 	private ArrayList<String> allCubeLevels;
-	private ArrayList<String> bannedLevels;
 
 	public Definition() {
 		// TODO Auto-generated constructor stub
@@ -51,7 +50,6 @@ public class Definition {
 		setInstancesMap(new LinkedHashMap<>());
 		setSelectedMeasureFunctionMap(new LinkedHashMap<>());
 		setAllCubeLevels(new ArrayList<>());
-		setBannedLevels(new ArrayList<>());
 
 		if (endPoint != null) {
 			setTotalUniqueGraph(extraction.getTotalUniqueGraph(endPoint));
@@ -215,7 +213,6 @@ public class Definition {
 		// GET ALL LEVEL TAGS
 		String levelTagString = "";
 		for (SelectedLevel selectedLevel : selectedLevelList) {
-			String levelNameSegment = methods.getLastSegment(selectedLevel.getLevelName());
 			String tagString = selectedLevel.getLevelName();
 			String levelPath = selectedLevel.getLevelPath();
 
@@ -231,7 +228,7 @@ public class Definition {
 				
 			} else {
 				for (String propertyString : selectedLevel.getViewProperties()) {
-					String propertyTag = "?" + dimString + "_" + levelNameSegment + "_"
+					String propertyTag = "?" + dimString + "_"
 							+ methods.getLastSegment(propertyString);
 					selectedColumns.add(propertyTag);
 					levelTagString += propertyTag + " ";
@@ -441,9 +438,8 @@ public class Definition {
 			}
 			
 			for (String propertyString : selectedLevel.getViewProperties()) {
-				String levelNameSegment = methods.getLastSegment(selectedLevel.getLevelName());
 				String propertyTag = "?" + methods.getLastSegment(selectedDimensionString) + "_"
-				+ levelNameSegment + "_" + methods.getLastSegment(propertyString);
+						+ methods.getLastSegment(propertyString);
 				String queryText = levelTagKey + " <" + extraction.assignIRI(propertyString) + "> " + propertyTag + " .\n";
 				levelQueryMap.put(queryText, queryText);
 			}
@@ -451,9 +447,7 @@ public class Definition {
 		} else {
 			int position = hierLevels.indexOf(extraction.assignPrefix(selectedLevelString));
 			for (int i = position; i < hierLevels.size(); i++) {
-				if (!getBannedLevels().contains(hierLevels.get(i))) {
-					requiredLevels.add(hierLevels.get(i));
-				}
+				requiredLevels.add(hierLevels.get(i));
 			}
 
 			if (requiredLevels.size() == 1) {
@@ -470,9 +464,8 @@ public class Definition {
 				}
 				
 				for (String propertyString : selectedLevel.getViewProperties()) {
-					String levelNameSegment = methods.getLastSegment(selectedLevel.getLevelName());
 					String propertyTag = "?" + methods.getLastSegment(selectedDimensionString) + "_"
-					+ levelNameSegment + "_" + methods.getLastSegment(propertyString);
+							+ methods.getLastSegment(propertyString);
 					String queryText = levelTagKey + " <" + extraction.assignIRI(propertyString) + "> " + propertyTag + " .\n";
 					levelQueryMap.put(queryText, queryText);
 				}
@@ -560,9 +553,8 @@ public class Definition {
 				}
 				
 				for (String propertyString : selectedLevel.getViewProperties()) {
-					String levelNameSegment = methods.getLastSegment(selectedLevel.getLevelName());
 					String propertyTag = "?" + methods.getLastSegment(selectedDimensionString) + "_"
-					+ levelNameSegment + "_" + methods.getLastSegment(propertyString);
+							+ methods.getLastSegment(propertyString);
 					String queryText = levelTagKey + " <" + extraction.assignIRI(propertyString) + "> " + propertyTag + " .\n";
 					levelQueryMap.put(queryText, queryText);
 				}
@@ -720,13 +712,5 @@ public class Definition {
 
 	public void setAllCubeLevels(ArrayList<String> allCubeLevels) {
 		this.allCubeLevels = allCubeLevels;
-	}
-
-	public ArrayList<String> getBannedLevels() {
-		return bannedLevels;
-	}
-
-	public void setBannedLevels(ArrayList<String> bannedLevels) {
-		this.bannedLevels = bannedLevels;
 	}
 }

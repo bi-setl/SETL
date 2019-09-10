@@ -2,10 +2,7 @@ package queries;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -292,8 +289,8 @@ public class Extraction {
 			}
 		}
 		
-		setAllCubeLevels(new ArrayList<>());
 		for (String string : levels) {
+			allCubeLevels = new ArrayList<>();
 			allCubeLevels.add(assignPrefix(string));
 		}
 		
@@ -793,9 +790,6 @@ public class Extraction {
 
 	public LinkedHashMap<String, String> getHierarchyStepWithChild(String endpointString, List<String> selectedGraphs, String levelString, String selectedHierarchyString) {
 		// TODO Auto-generated method stub
-		// System.out.println(levelString);
-		// System.out.println(selectedHierarchyString);
-		
 		LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
 		
 		selectedHierarchyString = assignIRI(selectedHierarchyString);
@@ -821,9 +815,7 @@ public class Extraction {
 			}
 			
 			String sparql = sparqlOne + graph + sparqlTwo;
-			// System.out.println(sparql);
 			ResultSet resultSet = getEndPointResultSet(endpointString, sparql);
-			// methods.printResultSet(resultSet);
 			
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();
@@ -894,19 +886,11 @@ public class Extraction {
 			
 			ArrayList<Object> arrayList = new ArrayList<>();
 			for (String column : selectedColumns) {
-				// System.out.println(column);
 				RDFNode value = querySolution.get(column);
-				
-				if (methods.getRDFNodeValue(value) != null) {
-					arrayList.add(methods.getRDFNodeValue(value));
-				}
+				arrayList.add(methods.getRDFNodeValue(value));
 			}
 			
-			if (arrayList.size() == selectedColumns.size()) {
-				valueList.add(arrayList.toArray());
-			} else {
-				System.out.println(methods.convertListToString(arrayList));
-			}
+			valueList.add(arrayList.toArray());
 		}
 		
 		Object[][] arrayResult = valueList.toArray(new Object[valueList.size()][selectedColumns.size()]);

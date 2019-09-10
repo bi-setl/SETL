@@ -24,6 +24,7 @@ import etl_model.ETLInstanceEntryGenerator;
 import etl_model.ETLLevelEntryGenerator;
 import etl_model.ETLLoadingOperation;
 import etl_model.ETLMatcher;
+import etl_model.ETLMultipleTransform;
 import etl_model.ETLPWeightGenerator;
 import etl_model.ETLRDFWrapper;
 import etl_model.ETLResourceRetreiver;
@@ -559,6 +560,51 @@ public class ParseXML {
 				}
 
 			} // End of code for Level Entry generation
+			
+			// start of code for MULTIPLE TRANSFORM
+			NodeList multipleTransformList = document.getElementsByTagName(ETLOperationToXML.MULTIPLE_TRANSFORM);
+			length = multipleTransformList.getLength();
+			for (int i = 0; i < length; i++) {
+
+				Node levelEntryGen = multipleTransformList.item(i);
+
+				if (levelEntryGen.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element element = (Element) levelEntryGen;
+
+					String xmlOpKey = element.getAttribute("id");
+					String opName = element.getElementsByTagName("OperationName").item(0).getTextContent();
+					String upLeftX = element.getElementsByTagName("UpperLeftX").item(0).getTextContent();
+					String upLeftY = element.getElementsByTagName("UpperLeftY").item(0).getTextContent();
+					String inputStatus = element.getElementsByTagName("InputStatus").item(0).getTextContent();
+					String isExecuted = element.getElementsByTagName("IsExecuted").item(0).getTextContent();
+
+					String firstSourcePath = element.getElementsByTagName("FirstSourcePath").item(0).getTextContent();
+					String secondSourcePath = element.getElementsByTagName("SecondSourcePath").item(0).getTextContent();
+					String mapPath = element.getElementsByTagName("MapPath").item(0).getTextContent();
+					String targetType = element.getElementsByTagName("TargetType").item(0).getTextContent();
+					String targetFile = element.getElementsByTagName("TargetFile").item(0).getTextContent();
+
+					Operation levelEntryGenOperations = panelETLObj.new Operation(opName, Integer.parseInt(upLeftX),
+							Integer.parseInt(upLeftY));
+					levelEntryGenOperations.setInputStatus(Boolean.parseBoolean(inputStatus));
+					levelEntryGenOperations.setExecuted(Boolean.parseBoolean(isExecuted));
+					levelEntryGenOperations.setXmlOperationKey(xmlOpKey);
+
+					ETLMultipleTransform etllevelEntryGenOperation = new ETLMultipleTransform();
+					etllevelEntryGenOperation.setFirstSourcePath(firstSourcePath);
+					etllevelEntryGenOperation.setSecondSourcePath(secondSourcePath);
+					etllevelEntryGenOperation.setMapPath(mapPath);
+					etllevelEntryGenOperation.setTargetType(targetType);
+					etllevelEntryGenOperation.setTargetPath(targetFile);
+
+					levelEntryGenOperations.setEtlOperation(etllevelEntryGenOperation);
+
+					allGeneratedOperations.add(levelEntryGenOperations);
+
+				}
+
+			} // End of code for MULTIPLE TRANSFORM
 
 			NodeList updateDimensionNodeList = document.getElementsByTagName(ETLOperationToXML.UPDATE_DIMENSION_CONSTRUCT);
 			length = updateDimensionNodeList.getLength();

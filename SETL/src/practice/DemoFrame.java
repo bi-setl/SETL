@@ -93,7 +93,12 @@ public class DemoFrame extends JFrame {
 		/*PanelETL panelETL = new PanelETL();
 		contentPane.add(panelETL, "cell 0 0,grow");*/
 		
-		PanelOlap panelOlap = new PanelOlap();
-		contentPane.add(panelOlap, "cell 0 0,grow");
+		/*
+		 * PanelOlap panelOlap = new PanelOlap(); contentPane.add(panelOlap,
+		 * "cell 0 0,grow");
+		 */
+		
+		PanelHead panelHead = new PanelHead();
+		contentPane.add(panelHead, "cell 0 0,grow");
 	}
 }

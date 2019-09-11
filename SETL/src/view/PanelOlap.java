@@ -170,7 +170,7 @@ public class PanelOlap extends JPanel {
 				lblTbox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(lblTbox, "cell 0 0,alignx trailing");
 
-				JTextField textFieldTBox = new JTextField("C:\\Users\\Amrit\\Documents\\bd_tbox.ttl");
+				JTextField textFieldTBox = new JTextField();
 				textFieldTBox.setMargin(new Insets(5, 5, 5, 5));
 				textFieldTBox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(textFieldTBox, "flowx,cell 1 0,growx");
@@ -193,7 +193,7 @@ public class PanelOlap extends JPanel {
 				lblAbox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(lblAbox, "cell 0 1,alignx trailing");
 
-				JTextField textFieldABox = new JTextField("C:\\Users\\Amrit\\Documents\\Alternate Files\\complete_TargetABox.ttl");
+				JTextField textFieldABox = new JTextField();
 				textFieldABox.setMargin(new Insets(5, 5, 5, 5));
 				textFieldABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(textFieldABox, "flowx,cell 1 1,growx");
@@ -720,11 +720,11 @@ public class PanelOlap extends JPanel {
 					
 					if (definition.getLevelInstanceObjects().size() > 0) {
 						if (definition.getLevelInstanceObjects().get(0) instanceof String) {
-							System.out.println("String");
+							// System.out.println("String");
 							disableItemsInComboBox();
 						} else {
-							System.out.println(definition.getLevelInstanceObjects().get(0));
-							System.out.println("Something else");
+							// System.out.println(definition.getLevelInstanceObjects().get(0));
+							// System.out.println("Something else");
 							enableItemsInComboBox();
 						}
 					}
@@ -1257,9 +1257,6 @@ public class PanelOlap extends JPanel {
 				DefaultMutableTreeNode hierarchyNode = new DefaultMutableTreeNode(hierarchyString);
 
 				ArrayList<String> levelList = definition.getHierLevelMap().get(hierarchyString);
-				for (String string : hierList) {
-					System.out.println("Levels: " + string);
-				}
 
 				boolean isBanned = false;
 				for (String levelString : levelList) {

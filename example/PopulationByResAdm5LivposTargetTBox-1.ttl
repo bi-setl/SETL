@@ -1,0 +1,407 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix qb4o: <http://purl.org/qb4olap/cubes#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix mdStructure: <http://linked-statistics-bd.org/2011/mdStructure#>.
+@prefix mdAttribute: <http://linked-statistics-bd.org/2011/mdAttribute#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix onto: <http://linked-statistics-bd.org/2011/ontology/>.
+@prefix geonames: <http://www.geonames.org/ontology#>.
+@prefix dataset: <http://linked-statistics-bd.org/2011/data#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix schema: <http://linked-statistics-bd.org/2011#>.
+@prefix mdProperty: <http://linked-statistics-bd.org/2011/mdProperty#>.
+
+#CUBES
+
+mdStructure:PopByGeoResLiving a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:livingPositionDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:sum, qb4o:count, qb4o:max, qb4o:min].
+
+
+#CUBOIDS
+
+mdStructure:popByAdm5ResLivpos a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:PopByGeoResLiving;
+	qb:component [ qb4o:level mdProperty:livingPosition; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+
+#DATASETS
+
+dataset:PopByAdm5ResLivpos a qb:DataSet;
+	qb:structure mdStructure:popByAdm5ResLivpos.
+
+
+#DIMENSIONS
+
+mdProperty:admGeographyDim a qb:DimensionProperty;
+	qb4o:hasHierarchy mdStructure:geoCitycorpHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoHierarchy;
+	rdfs:label "This is the dimension covering the administrative geography of Bangladesh "@en.
+
+mdProperty:livingPositionDim a qb:DimensionProperty;
+	qb4o:hasHierarchy mdStructure:livingPositionHierarchy;
+	rdfs:label "It describes the living status of the populaiton whether they live in a residence or outside of a residence (floating)"@en.
+
+mdProperty:residenceDim a qb:DimensionProperty;
+	qb4o:hasHierarchy mdStructure:residenceHierarchy;
+	rdfs:label "This dimension indiates the type of dimension, i.e., rural, urban, other"@en.
+
+
+#HIERARCHIES
+
+mdStructure:geoCitycorpHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:cityCorporation, mdProperty:country, mdProperty:AdmUnitTwo, mdProperty:admUnitFour, mdProperty:admUnitFive, mdProperty:admUnitOne;
+	qb4o:inDimension mdProperty:admGeographyDim;
+	rdfs:label "Geographical hierarchy considering city corporation"@en.
+
+mdStructure:geoHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:country, mdProperty:AdmUnitTwo, mdProperty:admUnitThree, mdProperty:admUnitFour, mdProperty:admUnitFive, mdProperty:admUnitOne;
+	qb4o:inDimension mdProperty:admGeographyDim;
+	rdfs:label "Geographical Hierarchy 01"@en.
+
+mdStructure:geoMunicipalityHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:admUnitFive, mdProperty:admUnitOne, mdProperty:AdmUnitTwo, mdProperty:admUnitFour, mdProperty:country, mdProperty:municipality, mdProperty:admUnitThree;
+	rdfs:label "Hierarchy using Municipality"@en;
+	qb4o:inDimension mdProperty:admGeographyDim.
+
+mdStructure:livingPositionHierarchy a qb4o:Hierarchy;
+	rdfs:label "Living Position Hierarchy"@en;
+	qb4o:inDimension mdProperty:livingPositionDim;
+	qb4o:hasLevel mdProperty:livingPosition, mdProperty:livingPositionAll.
+
+mdStructure:residenceHierarchy a qb4o:Hierarchy;
+	rdfs:label "Residence Hierarchy"@en;
+	qb4o:inDimension mdProperty:residenceDim;
+	qb4o:hasLevel mdProperty:residenceType, mdProperty:residence, mdProperty:residenceTypeAll.
+
+
+#HIERARCHY STEPS
+
+_:hs1 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:AdmUnitTwo;
+	qb4o:parentLevel mdProperty:admUnitOne;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmOne.
+
+_:hs2 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:residenceHierarchy;
+	qb4o:childLevel mdProperty:residence;
+	qb4o:parentLevel mdProperty:residenceType;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inResidenceType.
+
+_:hs3 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:cityCorporation;
+	qb4o:parentLevel mdProperty:AdmUnitTwo;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmTwo.
+
+_:hs4 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:admUnitFive;
+	qb4o:parentLevel mdProperty:admUnitFour;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmFour.
+
+_:hs5 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy;
+	qb4o:childLevel mdProperty:admUnitFour;
+	qb4o:parentLevel mdProperty:admUnitThree;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmThree.
+
+_:hs6 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoMunicipalityHierarchy;
+	qb4o:childLevel mdProperty:admUnitFour;
+	qb4o:parentLevel mdProperty:municipality;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCorporation.
+
+_:hs7 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:admUnitFour;
+	qb4o:parentLevel mdProperty:cityCorporation;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCorporation.
+
+_:hs8 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inResidenceTypeAll;
+	qb4o:inHierarchy mdStructure:residenceHierarchy;
+	qb4o:childLevel mdProperty:residenceType;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:parentLevel mdProperty:residenceTypeAll.
+
+_:hs9 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy;
+	qb4o:childLevel mdProperty:admUnitThree;
+	qb4o:parentLevel mdProperty:AdmUnitTwo;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmTwo.
+
+_:hs10 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoMunicipalityHierarchy;
+	qb4o:childLevel mdProperty:municipality;
+	qb4o:parentLevel mdProperty:admUnitThree;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmThree.
+
+_:hs11 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inLivingPositionAll;
+	qb4o:parentLevel mdProperty:livingPositionAll;
+	qb4o:inHierarchy mdStructure:livingPositionHierarchy;
+	qb4o:childLevel mdProperty:livingPosition;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs12 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:admUnitOne;
+	qb4o:parentLevel mdProperty:country;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCountry.
+
+
+#LEVELS
+
+mdProperty:AdmUnitTwo a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:admUnitTwoId, mdAttribute:inAdmOne, mdAttribute:areaInAcres, mdAttribute:administrativeUnitName;
+	rdfs:label "Administrative unit-Two covers all districts in Bangladesh"@en;
+	rdfs:range onto:ADM2.
+
+mdProperty:admUnitFive a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAdmFour, mdAttribute:admUnitFiveId, mdAttribute:administrativeUnitName;
+	rdfs:label "The administrative unit Five and it includes Mouza and Mahalla of the country. In general, a mouza is under an union where a mahalla is in a ward. "@en;
+	rdfs:range onto:ADM5.
+
+mdProperty:admUnitFour a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAdmThree, mdAttribute:areaInAcres, mdAttribute:admUnitFourId, mdAttribute:administrativeUnitName;
+	rdfs:label "This level includes unions and wards of the country. "@en;
+	rdfs:range onto:ADM4.
+
+mdProperty:admUnitOne a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inCountry, mdAttribute:admUnitOneId, mdAttribute:administrativeUnitName, mdAttribute:areaInAcres;
+	rdfs:label "First order administrative division, It covers all division of the country."@en;
+	rdfs:range onto:ADM1.
+
+mdProperty:admUnitThree a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAdmTwo, mdAttribute:areaInAcres, mdAttribute:admUnitThreeId, mdAttribute:administrativeUnitName;
+	rdfs:label "Administrative Unit Tree covers Upazila and Thana. "@en;
+	rdfs:range onto:ADM3.
+
+mdProperty:all a qb4o:LevelProperty;
+	rdfs:label "Top tier level"@en;
+	rdfs:range onto:All.
+
+mdProperty:cityCorporation a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAdmTwo, mdAttribute:cityCorporationName, mdAttribute:cityCorporationId;
+	rdfs:label "City Corporation of the country"@en;
+	rdfs:range onto:CityCorporation.
+
+mdProperty:country a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:areaInAcres, mdAttribute:administrativeUnitName, mdAttribute:countryId;
+	rdfs:label "The top tier administrative unit"@en;
+	rdfs:range onto:Country.
+
+mdProperty:livingPosition a qb4o:LevelProperty;
+	rdfs:range onto:LivingPos;
+	rdfs:label "Living postion of the population of an administrative unit"@en;
+	qb4o:hasAttribute mdAttribute:livingPosName, mdAttribute:livingPositionId, mdAttribute:inLivingPositionAll.
+
+mdProperty:livingPositionAll a qb4o:LevelProperty;
+	rdfs:label "All Living Position"@en;
+	qb4o:hasAttribute mdAttribute:livingPositionAllId;
+	rdfs:range onto:LivingPositionAll.
+
+mdProperty:municipality a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAdmThree, mdAttribute:municipalityId, mdAttribute:municipalityName;
+	rdfs:label "Municipality of the country"@en;
+	rdfs:range onto:Municipality.
+
+mdProperty:residence a qb4o:LevelProperty;
+	rdfs:label "Residence of an administrative unit"@en;
+	rdfs:range onto:Residence;
+	qb4o:hasAttribute mdAttribute:residenceName, mdAttribute:residenceId, mdAttribute:inResidenceType.
+
+mdProperty:residenceType a qb4o:LevelProperty;
+	rdfs:range onto:ResidenceType;
+	rdfs:label "Type of residence-rural or urban"@en;
+	qb4o:hasAttribute mdAttribute:residenceTypeId, mdAttribute:inResidenceTypeAll.
+
+mdProperty:residenceTypeAll a qb4o:LevelProperty;
+	rdfs:label "All residence Type"@en;
+	qb4o:hasAttribute mdAttribute:residenceTypeAllId;
+	rdfs:range onto:ResidenceTypeAll.
+
+
+#ATTRIBUTES
+
+mdAttribute:ResidenceTypeName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of residence type"@en.
+
+mdAttribute:admUnitFiveId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "The unique identifier of administrative unit 5"@en.
+
+mdAttribute:admUnitFourId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "The unique identifier fo administrative unit tier four."@en.
+
+mdAttribute:admUnitOneId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Unique identifier for administrative tier one"@en.
+
+mdAttribute:admUnitThreeId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Unique Identifier for administrative tier three"@en.
+
+mdAttribute:admUnitTwoId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Unique identifier for administrative unit tier two."@en.
+
+mdAttribute:administrativeUnitName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "The name of the administrative unit"@en.
+
+mdAttribute:all a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "To aggregate for top tier level"@en.
+
+mdAttribute:areaInAcres a qb4o:LevelAttribute;
+	rdfs:range xsd:double;
+	rdfs:label "Total area of the adiministrative unit"@en.
+
+mdAttribute:cityCorporationId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Id of a city corporation"@en.
+
+mdAttribute:cityCorporationName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of a city corporation"@en.
+
+mdAttribute:countryId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Unique Id for country"@en.
+
+mdAttribute:inAdmFour a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM4;
+	rdfs:label "It is a rollup property to roll up from admUnit5 to admUnit4"@en.
+
+mdAttribute:inAdmOne a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM1;
+	rdfs:label "To rollup from admUnitTwo to admUnitOne"@en.
+
+mdAttribute:inAdmThree a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM3;
+	rdfs:label "To rollup admFour to admThree"@en.
+
+mdAttribute:inAdmTwo a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM2;
+	rdfs:label "To rollup from admUnitThree to admUnitFour"@en.
+
+mdAttribute:inCorporation a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:cityCorporation;
+	rdfs:label "To rollup from admUnitFour to either municipality or cityCorporation"@en.
+
+mdAttribute:inCountry a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:Country;
+	rdfs:label "To rollup between admUnit1 to country"@en.
+
+mdAttribute:inResidenceType a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ResidenceType;
+	rdfs:label "to rollup from residence to residence type"@en.
+
+mdAttribute:livingPosName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of the living position"@en.
+
+mdAttribute:livingPositionAllId a qb4o:LevelAttribute;
+	rdfs:label "living position all id"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:livingPositionId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "unique id for a living status"@en.
+
+mdAttribute:municipalityId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Identifier for a municipality"@en.
+
+mdAttribute:municipalityName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of a municipality"@en.
+
+mdAttribute:residenceId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Unique Id of a residence "@en.
+
+mdAttribute:residenceName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of the residence"@en.
+
+mdAttribute:residenceTypeAllId a qb4o:LevelAttribute;
+	rdfs:label "Id for residence type all"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:residenceTypeId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "ID of residence type"@en.
+
+
+#ROLLUP RELATIONSHIPS
+
+mdAttribute:all a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "To aggregate for top tier level"@en.
+
+mdAttribute:inAdmFour a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM4;
+	rdfs:label "It is a rollup property to roll up from admUnit5 to admUnit4"@en.
+
+mdAttribute:inAdmOne a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM1;
+	rdfs:label "To rollup from admUnitTwo to admUnitOne"@en.
+
+mdAttribute:inAdmThree a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM3;
+	rdfs:label "To rollup admFour to admThree"@en.
+
+mdAttribute:inAdmTwo a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ADM2;
+	rdfs:label "To rollup from admUnitThree to admUnitFour"@en.
+
+mdAttribute:inCorporation a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:cityCorporation;
+	rdfs:label "To rollup from admUnitFour to either municipality or cityCorporation"@en.
+
+mdAttribute:inCountry a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:Country;
+	rdfs:label "To rollup between admUnit1 to country"@en.
+
+mdAttribute:inLivingPositionAll a qb4o:RollupProperty.
+
+mdAttribute:inResidenceType a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range onto:ResidenceType;
+	rdfs:label "to rollup from residence to residence type"@en.
+
+mdAttribute:inResidenceTypeAll a qb4o:RollupProperty.
+
+
+#MEASURES
+
+mdProperty:numberOfPopulation a qb:MeasureProperty;
+	rdfs:range xsd:long;
+	rdfs:label "Number of population"@en.
+
+
+

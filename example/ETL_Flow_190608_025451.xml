@@ -1,0 +1,161 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ETL>
+	<Start id="1559993983340">
+		<OperationName>Start</OperationName>
+		<UpperLeftX>69</UpperLeftX>
+		<UpperLeftY>209</UpperLeftY>
+	<InputStatus>true</InputStatus>
+		<NextOperations>
+			<item>1559994042822</item>
+			<item>1559997827441</item>
+			<item>1559998001533</item>
+			<item>1559998132438</item>
+			<item>1559998236600</item>
+			<item>1559998322951</item>
+			<item>1559998410566</item>
+		</NextOperations>
+	</Start>
+	<LevelEntryGenerator id="1559998001533">
+		<OperationName>LevelEntry Generator</OperationName>
+		<UpperLeftX>432</UpperLeftX>
+		<UpperLeftY>121</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\Users\Amrit\Documents\example\ADM1.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<MappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</MappingFile>
+		<SourceABoxFile>null</SourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<TargetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</TargetTBoxFile>
+		<TargetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</TargetABoxFile>
+	</LevelEntryGenerator>
+	<LevelEntryGenerator id="1559998132438">
+		<OperationName>LevelEntry Generator</OperationName>
+		<UpperLeftX>780</UpperLeftX>
+		<UpperLeftY>202</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\Users\Amrit\Documents\example\ADM2.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<MappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</MappingFile>
+		<SourceABoxFile>null</SourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<TargetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</TargetTBoxFile>
+		<TargetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</TargetABoxFile>
+	</LevelEntryGenerator>
+	<LevelEntryGenerator id="1559998236600">
+		<OperationName>LevelEntry Generator</OperationName>
+		<UpperLeftX>430</UpperLeftX>
+		<UpperLeftY>289</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\Users\Amrit\Documents\example\ADM3.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<MappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</MappingFile>
+		<SourceABoxFile>null</SourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<TargetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</TargetTBoxFile>
+		<TargetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</TargetABoxFile>
+	</LevelEntryGenerator>
+	<LevelEntryGenerator id="1559998322951">
+		<OperationName>LevelEntry Generator</OperationName>
+		<UpperLeftX>201</UpperLeftX>
+		<UpperLeftY>358</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\Users\Amrit\Documents\example\ADM4.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<MappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</MappingFile>
+		<SourceABoxFile>null</SourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<TargetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</TargetTBoxFile>
+		<TargetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</TargetABoxFile>
+	</LevelEntryGenerator>
+	<LevelEntryGenerator id="1559998410566">
+		<OperationName>LevelEntry Generator</OperationName>
+		<UpperLeftX>735</UpperLeftX>
+		<UpperLeftY>374</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\Users\Amrit\Documents\example\ADM5.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<MappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</MappingFile>
+		<SourceABoxFile>null</SourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<TargetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</TargetTBoxFile>
+		<TargetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</TargetABoxFile>
+	</LevelEntryGenerator>
+	<FactEntryGenerator id="1559994042822">
+		<OperationName>FactEntry Generator</OperationName>
+		<UpperLeftX>232</UpperLeftX>
+		<UpperLeftY>15</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\DataScienceWitR\Data\files\cubes\Cencus_C01.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<mappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</mappingFile>
+		<sourceABoxFile>null</sourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<targetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</targetTBoxFile>
+		<targetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</targetABoxFile>
+	</FactEntryGenerator>
+	<FactEntryGenerator id="1559997827441">
+		<OperationName>FactEntry Generator</OperationName>
+		<UpperLeftX>516</UpperLeftX>
+		<UpperLeftY>4</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>C:\DataScienceWitR\Data\files\Cencus_C01.csv</SourceCSV>
+		<Delimiter>Comma (,)</Delimiter>
+		<FileType>CSV</FileType>
+		<TargetType>Turtle</TargetType>
+		<mappingFile>C:\Users\Amrit\Documents\example\map_version_1559650768841.ttl</mappingFile>
+		<sourceABoxFile>null</sourceABoxFile>
+		<ProvFile>C:\Users\Amrit\Documents\example\prov.ttl</ProvFile>
+		<targetTBoxFile>C:\Users\Amrit\Documents\example\PopulationByResAdm5LivposTargetTBox.ttl</targetTBoxFile>
+		<targetABoxFile>C:\Users\Amrit\Documents\example\complete_TargetABox.ttl</targetABoxFile>
+	</FactEntryGenerator>
+	<Arrows>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559994042822</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559997827441</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559998001533</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559998132438</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559998236600</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559998322951</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1559993983340</SourceOperation>
+			<TargetOperation>1559998410566</TargetOperation>
+		</Arrow>
+	</Arrows>
+</ETL>
+

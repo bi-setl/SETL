@@ -47,6 +47,8 @@ public class SETLFrame extends JFrame {
 	private JToolBar toolBarETL;
 	private JToolBar toolBarMapping;
 	private boolean firstStart = true;
+	final static String DB_PANEL_KEY = "DBPanel";
+	
 
 	/**
 	 * Launch the application.
@@ -151,6 +153,26 @@ public class SETLFrame extends JFrame {
 			}
 		});
 		mnDefinitionLayer.add(mntmSourcetargetMappingDefiner);
+		
+		JMenuItem mntmRmlDefiner = new JMenuItem("RML Definer");
+		mntmRmlDefiner.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// To add a panel as Tab, you only need to create an object of that panel
+				// and pass it to the following method as parameter -- Amrit
+				int count = 1;
+				
+				for (TabModel tabModel : tabModelList.getTabModels()) {
+					if (tabModel.getTabObject() instanceof PanelMapSource2TargetNew) {
+						count++;
+					}
+				}
+				
+				PanelRML panelRML = new PanelRML();
+				tabModelList.getTabModels().add(new TabModel(tabbedPaneContainer.getTabCount(), panelRML));
+				addPanelToContainer("RML" + count, panelRML);
+			}
+		});
+		mnDefinitionLayer.add(mntmRmlDefiner);
 		
 		JMenuItem mntmEtlLayer = new JMenuItem("ETL Layer");
 		mntmEtlLayer.addActionListener(new ActionListener() {

@@ -26,7 +26,14 @@ import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import java.awt.Insets;
+
 import javax.swing.JComboBox;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 public class DemoFrame extends JFrame {
 
@@ -61,44 +68,69 @@ public class DemoFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		/*ArrayList<String> list2 = new ArrayList<>();
-		list2.add("Rasu");
+		JPanel panelOne = new JPanel();
+		panelOne.setBackground(Color.WHITE);
+		contentPane.add(panelOne, "cell 0 0,grow");
+		panelOne.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		tree = new JTree();
-		tree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent arg0) {
-				if (list2.contains(tree.getLastSelectedPathComponent().toString())) {
-					System.out.println("contains");
-				}
-			}
-		});
-		tree.setCellRenderer(new MyRen(list2));
-		contentPane.add(tree, "cell 0 0,grow");
+		JScrollPane scrollPane = new JScrollPane();
+		panelOne.add(scrollPane, "cell 0 0,grow");
 		
-		ArrayList<String> list = new ArrayList<>();
-		list.add("Rasu");
-		list.add("Ritu");
-		list.add("Rasel");
-		list.add("Abhi");
-		list.add("Rafi");
-		list.add("Sayem");
+		JPanel panelTwo = new JPanel();
+		panelTwo.setBackground(Color.WHITE);
+		scrollPane.setViewportView(panelTwo);
+		panelTwo.setLayout(new MigLayout("", "[][][grow]", "[]"));
 		
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Friends");
-		for (String string : list) {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode(string);
-			rootNode.add(node);
+		JLabel lblDbColumn = new JLabel("DB Column");
+		lblDbColumn.setFont(new Font("Tahoma", Font.BOLD, 20));
+		panelTwo.add(lblDbColumn, "cell 0 0,alignx center");
+		
+		JLabel lblProperty = new JLabel("Property");
+		lblDbColumn.setBorder(new EmptyBorder(0, 40, 0, 40));
+		lblProperty.setFont(new Font("Tahoma", Font.BOLD, 20));
+		panelTwo.add(lblProperty, "cell 1 0,alignx center");
+		
+		JLabel lblIri = new JLabel("IRI");
+		lblDbColumn.setBorder(new EmptyBorder(0, 40, 0, 40));
+		lblIri.setFont(new Font("Tahoma", Font.BOLD, 20));
+		panelTwo.add(lblIri, "cell 2 0,alignx center");
+		
+		
+		
+		for (int i = 1; i < 20; i++) {
+			JPanel panel11 = new JPanel();
+			panel11.setBackground(Color.WHITE);
+			// panel11.setBorder(new EmptyBorder(0, 0, 0, 20));
+			panelTwo.add(panel11, "cell 0 "+ i +",grow");
+			panel11.setLayout(new BorderLayout(0, 0));
+			
+			JLabel lblName = new JLabel("Name");
+			lblName.setHorizontalAlignment(SwingConstants.CENTER);
+			panel11.add(lblName, BorderLayout.CENTER);
+			
+			JPanel panel12 = new JPanel();
+			panel12.setBackground(Color.CYAN);
+			panel12.setBorder(new EmptyBorder(0, 20, 0, 20));
+			panelTwo.add(panel12, "cell 1 "+ i +",grow");
+			
+			JRadioButton rdbtnTv = new JRadioButton("TV");
+			panel12.add(rdbtnTv);
+			
+			JRadioButton rdbtnRadio = new JRadioButton("Radio");
+			panel12.add(rdbtnRadio);
+			
+			JRadioButton rdbtnMobile = new JRadioButton("Mobile");
+			panel12.add(rdbtnMobile);
+			
+			JPanel panel13 = new JPanel();
+			panel13.setBackground(Color.WHITE);
+			panel13.setBorder(new EmptyBorder(0, 20, 0, 0));
+			panelTwo.add(panel13, "cell 2 "+ i +",grow");
+			panel13.setLayout(new BorderLayout(0, 0));
+			
+			JTextField textField = new JTextField();
+			panel13.add(textField, BorderLayout.CENTER);
+			textField.setColumns(10);
 		}
-		tree.setModel(new DefaultTreeModel(rootNode));*/
-		
-		/*PanelETL panelETL = new PanelETL();
-		contentPane.add(panelETL, "cell 0 0,grow");*/
-		
-		/*
-		 * PanelOlap panelOlap = new PanelOlap(); contentPane.add(panelOlap,
-		 * "cell 0 0,grow");
-		 */
-		
-		PanelHead panelHead = new PanelHead();
-		contentPane.add(panelHead, "cell 0 0,grow");
 	}
 }

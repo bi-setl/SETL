@@ -1,0 +1,249 @@
+@prefix schema: <http://linked-statistics-bd.org/2011#> .
+@prefix mdStructure: <http://linked-statistics-bd.org/2011/mdStructure#> .
+@prefix geonames: <http://www.geonames.org/ontology#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix sdw:   <http://example.com/sdw/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix agro:  <http://aims.fao.org/aos/agrovoc/> .
+@prefix mdAttribute: <http://linked-statistics-bd.org/2011/mdAttribute#> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> .
+@prefix dbpcat: <http://dbpedia.org/resource/Category:> .
+@prefix map:   <http://www.map.org/example#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix mdProperty: <http://linked-statistics-bd.org/2011/mdProperty#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix aowl:  <http://bblfish.net/work/atom-owl/2006-06-06/> .
+@prefix onto:  <http://linked-statistics-bd-org/2011/ontology/> .
+@prefix agri:  <http://extbi.lab.aau.dk/ontology/agriculture/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix qb4o:  <http://purl.org/qb4olap/cubes#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix dataset: <http://linked-statistics-bd.org/2011/data#> .
+
+map:PropertyMapper_05
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM2_mdProperty_AdmUnitTwo ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitOneId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmOne .
+
+map:PropertyMapper_14
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM5_mdProperty_admUnitFive ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitFiveId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitFiveId .
+
+map:PropertyMapper_04
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM2_mdProperty_AdmUnitTwo ;
+        map:sourceProperty      <http://www.onto.org/schema#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:onto_ADM5_mdProperty_admUnitFive
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          <http://www.onto.org/schema#admUnitFiveId> ;
+        map:iriValueType      map:SourceAttribute ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#ADM5> ;
+        map:targetConcept     mdProperty:admUnitFive .
+
+map:PropertyMapper_13
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM5_mdProperty_admUnitFive ;
+        map:sourceProperty      <http://www.onto.org/schema#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:PropertyMapper_19
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_Cencus_C01_dataset_PopByAdm5ResLivpos ;
+        map:sourceProperty      <http://www.onto.org/schema#residence> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_03
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM1_mdProperty_admUnitOne ;
+        map:sourceProperty      <http://www.onto.org/schema#CountryId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inCountry .
+
+map:PropertyMapper_09
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM3_mdProperty_admUnitThree ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitTwoId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmTwo .
+
+map:PropertyMapper_12
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM4_mdProperty_admUnitFour ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitThreeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmThree .
+
+map:PropertyMapper_18
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_Cencus_C01_dataset_PopByAdm5ResLivpos ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitFiveId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:onto_ADM3_mdProperty_admUnitThree
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          <http://www.onto.org/schema#admUnitThreeId> ;
+        map:iriValueType      map:SourceAttribute ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#ADM3> ;
+        map:targetConcept     mdProperty:admUnitThree .
+
+map:PropertyMapper_21
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_Country_mdProperty_country ;
+        map:sourceProperty      <http://www.onto.org/schema#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:PropertyMapper_02
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM1_mdProperty_admUnitOne ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitOneId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitOneId .
+
+map:PropertyMapper_08
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM3_mdProperty_admUnitThree ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitThreeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitThreeId .
+
+map:PropertyMapper_11
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM4_mdProperty_admUnitFour ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitFourId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitFourId .
+
+map:PropertyMapper_17
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_Cencus_C01_dataset_PopByAdm5ResLivpos ;
+        map:sourceProperty      <http://www.onto.org/schema#livingPosition> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:livingPosition .
+
+map:PropertyMapper_20
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_Country_mdProperty_country ;
+        map:sourceProperty      <http://www.onto.org/schema#CountryId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:countryId .
+
+map:PropertyMapper_01
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM1_mdProperty_admUnitOne ;
+        map:sourceProperty      <http://www.onto.org/schema#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:PropertyMapper_07
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM3_mdProperty_admUnitThree ;
+        map:sourceProperty      <http://www.onto.org/schema#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:onto_ADM4_mdProperty_admUnitFour
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          <http://www.onto.org/schema#admUnitFourId> ;
+        map:iriValueType      map:SourceAttribute ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#ADM4> ;
+        map:targetConcept     mdProperty:admUnitFour .
+
+map:onto_Country_mdProperty_country
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          <http://www.onto.org/schema#CountryId> ;
+        map:iriValueType      map:SourceAttribute ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#Country> ;
+        map:targetConcept     mdProperty:country .
+
+map:PropertyMapper_10
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM4_mdProperty_admUnitFour ;
+        map:sourceProperty      <http://www.onto.org/schema#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:PropertyMapper_16
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_Cencus_C01_dataset_PopByAdm5ResLivpos ;
+        map:sourceProperty      <http://www.onto.org/schema#numberOfPopulation> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:onto_Cencus_C01_dataset_PopByAdm5ResLivpos
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          "CONCAT(onto:admUnitFiveId,CONCAT(_,CONCAT(onto:residence,CONCAT(_,onto:livingPosition))))" ;
+        map:iriValueType      map:Expression ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#Cencus_C01> ;
+        map:targetConcept     dataset:PopByAdm5ResLivpos .
+
+map:PropertyMapper_06
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM2_mdProperty_AdmUnitTwo ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitTwoId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitTwoId .
+
+map:onto_ADM2_mdProperty_AdmUnitTwo
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          <http://www.onto.org/schema#admUnitTwoId> ;
+        map:iriValueType      map:SourceAttribute ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#ADM2> ;
+        map:targetConcept     mdProperty:AdmUnitTwo .
+
+map:PopSource_PopTargetC01
+        a           map:Dataset ;
+        map:source  <http://www.onto.org/schema#populationSourceTBox_01> ;
+        map:target  <http://www.onto.org/schema#PopulationByResAdm5LivposTargetTBox-1> .
+
+map:PropertyMapper_15
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:onto_ADM5_mdProperty_admUnitFive ;
+        map:sourceProperty      <http://www.onto.org/schema#admUnitFourId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmFour .
+
+map:onto_ADM1_mdProperty_admUnitOne
+        a                     map:ConceptMapper ;
+        map:dataset           map:PopSource_PopTargetC01 ;
+        map:iriValue          <http://www.onto.org/schema#admUnitOneId> ;
+        map:iriValueType      map:SourceAttribute ;
+        map:matchedInstances  "All" ;
+        map:relation          skos:exact ;
+        map:sourceConcept     <http://www.onto.org/schema#ADM1> ;
+        map:targetConcept     mdProperty:admUnitOne .
+

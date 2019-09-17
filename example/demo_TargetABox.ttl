@@ -1,0 +1,271 @@
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60588063710_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60588063710> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60911707519_2_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60911707519> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#2> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60902342570_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60902342570> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60916204610_2_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60916204610> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#2> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60914184670_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60914184670> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60361182485_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60361182485> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#55276477967_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#55276477967> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#55276494654_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#55276494654> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60904702510_2_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60904702510> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#2> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60901877298_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60901877298> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#55276409680_2_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#55276409680> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#2> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60586589207_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60586589207> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60903290715_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60903290715> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60361131439_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60361131439> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60913820149_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60913820149> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60916215729_2_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60916215729> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "7" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#2> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos#60903247246_1_2>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>
+                <http://linked-statistics-bd.org/2011/ontology/ADM5#60903247246> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#livingPosition>
+                <http://linked-statistics-bd.org/2011/ontology/LivingPos#2> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "0" ;
+        <http://linked-statistics-bd.org/2011/mdProperty#residence>
+                <http://linked-statistics-bd.org/2011/ontology/Residence#1> ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos> .
+
+<http://linked-statistics-bd.org/2011/ontology/Residence#1>
+		a		<http://purl.org/qb4olap/cubes#LevelMember> ;
+		<http://linked-statistics-bd.org/2011/mdAttribute#residenceId> 
+				"1" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceName> 
+				"Rural" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inResidenceType> <http://linked-statistics-bd.org/2011/ontology/ResidenceTypp#Rural> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#residence> .
+
+<http://linked-statistics-bd.org/2011/ontology/Residence#2> a <http://purl.org/qb4olap/cubes#LevelMember> ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceId> "2" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceName> "Urban" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inResidenceType> <http://linked-statistics-bd.org/2011/ontology/ResidenceTypp#Urban> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#residence> .	
+
+<http://linked-statistics-bd.org/2011/ontology/Residence#3> a <http://purl.org/qb4olap/cubes#LevelMember> ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceId> "3" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceName> "Other Urban" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inResidenceType> <http://linked-statistics-bd.org/2011/ontology/ResidenceTypp#Urban> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#residence> .
+
+<http://linked-statistics-bd.org/2011/ontology/ResidenceTypp#Urban> a <http://purl.org/qb4olap/cubes#LevelMember> ; 
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceTypeId> "Urban" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inResidenceTypeAll> <http://linked-statistics-bd.org/2011/ontology/ResidenceTyppAll#All_Residence> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#residenceType> .
+
+<http://linked-statistics-bd.org/2011/ontology/ResidenceTypp#Rural> a <http://purl.org/qb4olap/cubes#LevelMember> ; 
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceTypeId> "Rural" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inResidenceTypeAll> <http://linked-statistics-bd.org/2011/ontology/ResidenceTyppAll#All_Residence> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#residenceType> . 
+
+<http://linked-statistics-bd.org/2011/ontology/ResidenceTyppAll#All_Residence> a <http://purl.org/qb4olap/cubes#LevelMember> ; 
+	<http://linked-statistics-bd.org/2011/mdAttribute#residenceTypeAllId> "All_Residence" ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#residenceTypeAll> .
+         
+<http://linked-statistics-bd.org/2011/ontology/LivingPos#2> a <http://purl.org/qb4olap/cubes#LevelMember> ; 
+	<http://linked-statistics-bd.org/2011/mdAttribute#livingPositionId> "2" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#livingPosName> "floating" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inLivingPositionAll> <http://linked-statistics-bd.org/2011/ontology/LivingPositionAll#All_Living_Position> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#livingPosition> .
+
+<http://linked-statistics-bd.org/2011/ontology/LivingPos#1> a <http://purl.org/qb4olap/cubes#LevelMember> ; 
+	<http://linked-statistics-bd.org/2011/mdAttribute#livingPositionId> "1" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#livingPosName> "Household" ;
+	<http://linked-statistics-bd.org/2011/mdAttribute#inLivingPositionAll> <http://linked-statistics-bd.org/2011/ontology/LivingPositionAll#All_Living_Position> ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#livingPosition> .
+
+<http://linked-statistics-bd.org/2011/ontology/LivingPositionAll#All_Living_Position> a <http://purl.org/qb4olap/cubes#LevelMember> ; 
+	<http://linked-statistics-bd.org/2011/mdAttribute#livingPositionAllId> "All_Living_Position" ;
+	<http://purl.org/qb4olap/cubes#memberOf> <http://linked-statistics-bd.org/2011/mdProperty#livingPositionAll> .	

@@ -1,0 +1,74 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix sdw:   <http://example.com/sdw/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix agro:  <http://aims.fao.org/aos/agrovoc/> .
+@prefix aowl:  <http://bblfish.net/work/atom-owl/2006-06-06/> .
+@prefix onto:  <http://linked-statistics-bd-org/2011/ontology/> .
+@prefix agri:  <http://extbi.lab.aau.dk/ontology/agriculture/> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#> .
+@prefix qb4o:  <http://purl.org/qb4olap/cubes#> .
+@prefix dbpcat: <http://dbpedia.org/resource/Category:> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+
+onto:ADM4  a    owl:Class .
+
+onto:livingPosition  a  owl:DatatypeProperty ;
+        rdfs:domain  onto:Cencus_C01 ;
+        rdfs:range   xsd:string .
+
+onto:Country  a  owl:Class .
+
+onto:Cencus_C01  a  owl:Class .
+
+onto:admUnitFiveId  a  owl:DatatypeProperty ;
+        rdfs:domain  onto:Cencus_C01 , onto:ADM5 ;
+        rdfs:range   xsd:string .
+
+onto:ADM2  a    owl:Class .
+
+onto:admUnitOneId  a  owl:DatatypeProperty ;
+        rdfs:domain  onto:ADM1 , onto:ADM2 ;
+        rdfs:range   xsd:string .
+
+onto:ADM5  a    owl:Class .
+
+onto:CountryId  a    owl:DatatypeProperty ;
+        rdfs:domain  onto:ADM1 , onto:Country ;
+        rdfs:range   xsd:string .
+
+onto:name  a         owl:DatatypeProperty ;
+        rdfs:domain  onto:ADM5 , onto:ADM4 , onto:ADM3 , onto:ADM2 , onto:ADM1 , onto:Country ;
+        rdfs:range   xsd:string .
+
+onto:residence  a    owl:DatatypeProperty ;
+        rdfs:domain  onto:Cencus_C01 ;
+        rdfs:range   xsd:string .
+
+onto:ADM3  a    owl:Class .
+
+onto:admUnitThreeId  a  owl:DatatypeProperty ;
+        rdfs:domain  onto:ADM3 , onto:ADM4 ;
+        rdfs:range   xsd:string .
+
+onto:ADM1  a    owl:Class .
+
+onto:numberOfPopulation
+        a            owl:DatatypeProperty ;
+        rdfs:domain  onto:Cencus_C01 ;
+        rdfs:range   xsd:double .
+
+onto:admUnitTwoId  a  owl:DatatypeProperty ;
+        rdfs:domain  onto:ADM2 , onto:ADM3 ;
+        rdfs:range   xsd:string .
+
+onto:admUnitFourId  a  owl:DatatypeProperty ;
+        rdfs:domain  onto:ADM4 , onto:ADM5 ;
+        rdfs:range   xsd:string .

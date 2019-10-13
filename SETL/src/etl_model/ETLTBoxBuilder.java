@@ -188,6 +188,8 @@ public class ETLTBoxBuilder implements ETLOperation {
 			String selection = comboBoxFileType.getSelectedItem().toString();
 			setFileType(selection);
 			
+			System.out.println(selection);
+			
 			if (selection.equals("CSV")) {
 				setCsvSource(comboBoxCSVSourceFile.getSelectedItem().toString());
 				setCsvPrefix(textFieldCSVPrefix.getText().toString().trim());
@@ -197,12 +199,23 @@ public class ETLTBoxBuilder implements ETLOperation {
 				
 				ArrayList<String> inputList = new ArrayList<String>();
 				inputList.add(getCsvSource());
-				inputList.add(getCsvTarget());
 				inputList.add(getCsvPrefix());
 				inputList.add(getCsvDelimiter());
+				inputList.add(getCsvTarget());
+				inputList.add(getCsvTargetType());
 
-				inputParamsMap.get(T_BOX_BUILDER).add(getCsvTarget());
-
+				try {
+					inputParamsMap.get(T_BOX_BUILDER).add(getCsvTarget());
+				} catch (Exception e) {
+					// TODO: handle exception
+					if (T_BOX_BUILDER == null) {
+						System.out.println("T_BOX_BUILDER null");
+					}
+					
+					if (getCsvTarget() == null) {
+						System.out.println("csv file null");
+					} 
+				}
 				if (getCsvSource().length() == 0 || getCsvTarget().length() == 0 || getCsvPrefix().length() == 0) {
 					methods.showDialog("Please select the all data.");
 					return false;

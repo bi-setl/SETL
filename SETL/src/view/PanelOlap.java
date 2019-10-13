@@ -170,7 +170,7 @@ public class PanelOlap extends JPanel {
 				lblTbox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(lblTbox, "cell 0 0,alignx trailing");
 
-				JTextField textFieldTBox = new JTextField();
+				JTextField textFieldTBox = new JTextField("C:\\Users\\Amrit\\Documents\\OnDemandETL\\bd_tbox.ttl");
 				textFieldTBox.setMargin(new Insets(5, 5, 5, 5));
 				textFieldTBox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(textFieldTBox, "flowx,cell 1 0,growx");
@@ -193,7 +193,7 @@ public class PanelOlap extends JPanel {
 				lblAbox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(lblAbox, "cell 0 1,alignx trailing");
 
-				JTextField textFieldABox = new JTextField();
+				JTextField textFieldABox = new JTextField("C:\\Users\\Amrit\\Documents\\OnDemandETL\\Fact_Census_C04_TargetABox.ttl");
 				textFieldABox.setMargin(new Insets(5, 5, 5, 5));
 				textFieldABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 				panelBoth.add(textFieldABox, "flowx,cell 1 1,growx");
@@ -922,7 +922,7 @@ public class PanelOlap extends JPanel {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							String queryString = definition.generateOlapQuery(datasetName);
+							String queryString = definition.generateOlapQuery(datasetName, bannedLevels);
 							textAreaQuery.setText(queryString);
 							// definition.runSparqlQuery(queryString);
 							tabbedPane.setSelectedIndex(1);
@@ -949,7 +949,7 @@ public class PanelOlap extends JPanel {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							String queryString = definition.generateOlapQuery(datasetName);
+							String queryString = definition.generateOlapQuery(datasetName, bannedLevels);
 							textAreaQuery.setText(queryString);
 							// tabbedPane.setSelectedIndex(1);
 
@@ -1268,6 +1268,8 @@ public class PanelOlap extends JPanel {
 							bannedLevels.add(levelString);
 						}
 					}
+					
+	
 					
 					if (definition.getAllCubeLevels().contains(levelString)) {
 						isBanned = true;

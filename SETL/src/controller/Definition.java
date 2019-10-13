@@ -197,8 +197,9 @@ public class Definition {
 				selectedGraphs, selectedInstances));
 	}
 
-	public String generateOlapQuery(String datasetName) {
+	public String generateOlapQuery(String datasetName, ArrayList<String> bannedLevels) {
 		// TODO Auto-generated method stub
+		
 		datasetName = extraction.assignIRI(datasetName);
 
 		setFilterPropertyMap(new LinkedHashMap<>());
@@ -274,7 +275,7 @@ public class Definition {
 		// GET ALL LEVELS STRING
 		LinkedHashMap<String, String> queryMap = new LinkedHashMap<>();
 		for (SelectedLevel selectedLevel : getSelectedLevelList()) {
-			LinkedHashMap<String, String> levelQueryMap = generateLevelOlapQuery(selectedLevel);
+			LinkedHashMap<String, String> levelQueryMap = generateLevelOlapQuery(selectedLevel, bannedLevels);
 
 			for (String levelQuery : levelQueryMap.keySet()) {
 				queryMap.put(levelQuery, levelQuery);
@@ -407,7 +408,7 @@ public class Definition {
 		return filterQuery;
 	}
 
-	private LinkedHashMap<String, String> generateLevelOlapQuery(SelectedLevel selectedLevel) {
+	private LinkedHashMap<String, String> generateLevelOlapQuery(SelectedLevel selectedLevel, ArrayList<String> bannedLevels) {
 		// TODO Auto-generated method stub
 		LinkedHashMap<String, String> levelQueryMap = new LinkedHashMap<>();
 		

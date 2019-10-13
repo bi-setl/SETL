@@ -871,4 +871,20 @@ public class Methods {
 		}
 		return hashMap;
 	}
+	
+	public static boolean isIRI(String keyAttribute) {
+		// TODO Auto-generated method stub
+		if (keyAttribute.contains("http") || keyAttribute.contains("www")) {
+			return true;
+		} else if (keyAttribute.contains(":")) {
+			return true;
+		} else
+			return false;
+	}
+	
+	public static void printTime() {
+		// TODO Auto-generated method stub
+		Calendar calendar = Calendar.getInstance();
+		System.out.println(calendar.getTime());
+	}
 }

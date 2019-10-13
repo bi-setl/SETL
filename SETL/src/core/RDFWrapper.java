@@ -67,7 +67,7 @@ public class RDFWrapper {
 	public String parseCSV(String csvSource, String csvTarget, String csvPrefix, String csvColumn,
 			String csvDelimiter) {
 		// TODO Auto-generated method stub
-		csvColumn = csvColumn.replaceAll("\"", "");
+		csvColumn = csvColumn.replace("\"", "");
 		Model model = ModelFactory.createDefaultModel();
 		String fileExtension = fileMethods.getFileExtension(csvSource);
 
@@ -98,6 +98,7 @@ public class RDFWrapper {
 						while ((string = bufferedReader.readLine()) != null) {
 							String[] parts = string.split(delimiter);
 							for (String part : parts) {
+								part = part.replace("\"", "");
 								keys.add(part);
 							}
 							break;
@@ -129,7 +130,9 @@ public class RDFWrapper {
 										if (parts[i] != null ||  parts[i] != "") {
 											if (parts[i].trim().length() != 0) {
 												Property property = model.createProperty(csvPrefix + "#" + keys.get(i));
-												Literal literal = model.createLiteral(parts[i]);
+												String literalString = parts[i];
+												literalString = literalString.replace("\"", "");
+												Literal literal = model.createLiteral(literalString.trim());
 												resource.addProperty(property, literal);
 											}
 										}
@@ -165,7 +168,9 @@ public class RDFWrapper {
 											if (arrayList.get(i) != null || arrayList.get(i) != "") {
 												if (arrayList.get(i).trim().length() != 0) {
 													Property property = model.createProperty(csvPrefix + "#" + keys.get(i));
-													Literal literal = model.createLiteral(parts[i]);
+													String literalString = parts[i];
+													literalString = literalString.replace("\"", "");
+													Literal literal = model.createLiteral(literalString.trim());
 													resource.addProperty(property, literal);
 												}
 											}
@@ -214,7 +219,9 @@ public class RDFWrapper {
 										if (parts[i] != null ||  parts[i] != "") {
 											if (parts[i].trim().length() != 0) {
 												Property property = model.createProperty(csvPrefix + "#" + keys.get(i));
-												Literal literal = model.createLiteral(parts[i]);
+												String literalString = parts[i];
+												literalString = literalString.replace("\"", "");
+												Literal literal = model.createLiteral(literalString.trim());
 												resource.addProperty(property, literal);
 												if (usedKeys.contains(keys.get(i))) {
 													linkedHashMap.put(keys.get(i), parts[i]);
@@ -253,7 +260,9 @@ public class RDFWrapper {
 											if (arrayList.get(i) != null || arrayList.get(i) != "") {
 												if (arrayList.get(i).trim().length() != 0) {
 													Property property = model.createProperty(csvPrefix + "#" + keys.get(i));
-													Literal literal = model.createLiteral(parts[i]);
+													String literalString = parts[i];
+													literalString = literalString.replace("\"", "");
+													Literal literal = model.createLiteral(literalString.trim());
 													resource.addProperty(property, literal);
 												}
 											}
@@ -305,7 +314,9 @@ public class RDFWrapper {
 										if (parts[i] != null ||  parts[i] != "") {
 											if (parts[i].trim().length() != 0) {
 												Property property = model.createProperty(csvPrefix + "#" + keys.get(i));
-												Literal literal = model.createLiteral(parts[i]);
+												String literalString = parts[i];
+												literalString = literalString.replace("\"", "");
+												Literal literal = model.createLiteral(literalString.trim());
 												resource.addProperty(property, literal);
 											}
 										}
@@ -341,7 +352,9 @@ public class RDFWrapper {
 											if (arrayList.get(i) != null || arrayList.get(i) != "") {
 												if (arrayList.get(i).trim().length() != 0) {
 													Property property = model.createProperty(csvPrefix + "#" + keys.get(i));
-													Literal literal = model.createLiteral(parts[i]);
+													String literalString = parts[i];
+													literalString = literalString.replace("\"", "");
+													Literal literal = model.createLiteral(literalString.trim());
 													resource.addProperty(property, literal);
 												}
 											}

@@ -72,8 +72,7 @@ public class Expression {
 			QueryExecution execution = QueryExecutionFactory.create(query, model);
 			ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 			
-			ResultSet set = ResultSetFactory.copyResults(resultSet);
-			//ResultSetFormatter.out(set);
+			Methods.print(resultSet);
 			
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();

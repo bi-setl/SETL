@@ -34,7 +34,7 @@ public class OnDemandETL {
 	static String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" + 
 			"PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" + 
 			"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + 
-			"SELECT ?admGeographyDim_admUnitFour (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n" + 
+			"SELECT ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n" + 
 			"WHERE {\r\n" + 
 			"?o a qb:Observation .\r\n" + 
 			"?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n" + 
@@ -43,16 +43,46 @@ public class OnDemandETL {
 			"?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .\r\n" + 
 			"?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .\r\n" + 
 			"?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .\r\n" + 
+			"?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .\r\n" + 
+			"?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .\r\n" + 
+			"?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .\r\n" + 
+			"?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .\r\n" + 
+			"?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n" + 
+			"?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n" + 
+			"?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .\r\n" + 
 			"}\r\n" + 
-			"GROUP BY ?admGeographyDim_admUnitFour\r\n" + 
-			"ORDER BY ?admGeographyDim_admUnitFour";
+			"GROUP BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence\r\n" + 
+			"ORDER BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence";
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString, sourceABoxString, mapString, targetABoxString,
-				targetTBoxString);
-		System.out.println(resultString);
+		
+		  String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString,
+		  sourceABoxString, mapString, targetABoxString, targetTBoxString);
+		  System.out.println(resultString);
+		 
+		
+		
+		String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" + 
+				"PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" + 
+				"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + 
+				"SELECT ?ageDim_ageGroup (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n" + 
+				"WHERE {\r\n" + 
+				"?o a qb:Observation .\r\n" + 
+				"?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n" + 
+				"?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n" + 
+				"?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n" + 
+				"?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n" +  
+				"}\r\n" + 
+				"GROUP BY ?ageDim_ageGroup\r\n"; 
+
+		
+		Methods methods = new Methods();
+		Model model = methods.readModelFromPath(demoTargetABoxString);
+		
+		ResultSet resultSet = methods.executeQuery(model, sparqlQueryString);
+		methods.print(resultSet);
 	}
 
 	
@@ -60,44 +90,44 @@ public class OnDemandETL {
 			String targetABoxString, String targetTBoxString) {
 		// TODO Auto-generated method stub
 		methods = new Methods();
-		System.out.println("Extract Levels");
-		Methods.printTime();
+		// System.out.println("Extract Levels");
+		// Methods.printTime();
 		ArrayList<String> queryLevelsArrayList = extractRequiredLevels(sparqlQueryString);
-		Methods.printTime();
-		Methods.print(queryLevelsArrayList);
+		// Methods.printTime();
+		// Methods.print(queryLevelsArrayList);
 
-		System.out.println("Extract Observation");
-		Methods.printTime();
+		// System.out.println("Extract Observation");
+		// Methods.printTime();
 		String observationString = extractObservation(sparqlQueryString);
-		Methods.printTime();
+		// Methods.printTime();
 
 		if (observationString == null) {
 			return "No observation";
 		}
 
-		System.out.println("Extract Facts");
-		Methods.printTime();
+		// System.out.println("Extract Facts");
+		// Methods.printTime();
 		ArrayList<String> queryFactArrayList = extractRequiredFacts(sparqlQueryString, observationString);
-		Methods.printTime();
-		Methods.print(queryFactArrayList);
+		// Methods.printTime();
+		// Methods.print(queryFactArrayList);
 
 		Model targetABoxModel = methods.readModelFromPath(targetABoxString);
 
-		System.out.println("Check levels");
-		Methods.printTime();
+		// System.out.println("Check levels");
+		// Methods.printTime();
 		ArrayList<String> requiredLevelLArrayList = checkRequiredLevels(targetABoxModel, queryLevelsArrayList);
-		Methods.printTime();
+		// Methods.printTime();
 
-		System.out.println("Check facts");
-		Methods.printTime();
+		// System.out.println("Check facts");
+		// Methods.printTime();
 		ArrayList<String> requiredFactArrayList = checkRequiredFacts(targetABoxModel, queryFactArrayList);
-		Methods.printTime();
+		// Methods.printTime();
 
-		System.out.println("\nAll required levels");
-		Methods.print(requiredLevelLArrayList);
+		// System.out.println("\nAll required levels");
+		// Methods.print(requiredLevelLArrayList);
 
-		System.out.println("\nAll required facts");
-		Methods.print(requiredFactArrayList);
+		// System.out.println("\nAll required facts");
+		// Methods.print(requiredFactArrayList);
 
 		Model mapModel = methods.readModelFromPath(mapString);
 		Model sourceABoxModel = methods.readModelFromPath(sourceABoxString);
@@ -119,9 +149,11 @@ public class OnDemandETL {
 					targetModel, prefixMap, null);
 		}
 
-		Methods.print(targetModel);
+		// Methods.print(targetModel);
 
 		targetModel.add(targetABoxModel);
+		
+		methods.saveModel(targetModel, demoTargetABoxString);
 
 		ResultSet finalResultSet = Methods.executeQuery(targetModel, sparqlQueryString);
 		Methods.print(finalResultSet);
@@ -133,6 +165,8 @@ public class OnDemandETL {
 			Model targetTBoxModel, Model targetModel, LinkedHashMap<String, String> prefixMap,
 			ArrayList<String> requiredFactArrayList) {
 		// TODO Auto-generated method stub
+		System.out.println(datasetString);
+		
 		String sparql = "\nPREFIX map: <http://www.map.org/example#>\n" + "SELECT * WHERE {"
 				+ "?concept a map:ConceptMapper."
 				+ "?concept map:targetConcept " + datasetString + "."
@@ -146,7 +180,7 @@ public class OnDemandETL {
 				+ "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
-		Methods.print(resultSet);
+		// Methods.print(resultSet);
 
 		String targetTypeString = datasetString.substring(1, datasetString.length() - 1);
 		
@@ -189,7 +223,7 @@ public class OnDemandETL {
 
 			String sparqlString = "SELECT * WHERE {" + "?s a " + typeString + "." + "?s ?p ?o.}";
 
-			System.out.println(sparqlString);
+			// System.out.println(sparqlString);
 			ResultSet set = Methods.executeQuery(sourceABoxModel, sparqlString);
 			// Methods.print(set);
 
@@ -215,17 +249,25 @@ public class OnDemandETL {
 					} else {
 
 						IRIGenerator generator = new IRIGenerator();
+						
 						String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
-								conceptTransform.getIriValue(), mapModel, valueMap, provModel);
+								methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap, provModel);
 						String provIRI = "";
 
 						String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
 
+						iriValue = iriValue.replaceAll("\\s+", "_").toLowerCase();
 						if (rangeValue == null) {
 							provIRI = targetTypeString + "#" + iriValue;
 						} else {
 							provIRI = rangeValue + "#" + iriValue;
 						}
+						
+						/*
+						 * if (datasetString.equals(
+						 * "<http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>")) {
+						 * System.out.println(provIRI); }
+						 */
 
 						boolean isAdded = false;
 						Resource resource = null;
@@ -267,6 +309,7 @@ public class OnDemandETL {
 									Literal literal = targetModel.createTypedLiteral(valueObject);
 									resource.addLiteral(property, literal);
 								} else {
+									valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
 									String propertyValueIRI = rangeValueTarget + "#" + valueObject;
 									resource.addProperty(property, targetModel.createResource(propertyValueIRI));
 								}
@@ -296,7 +339,7 @@ public class OnDemandETL {
 				+ "?mapper map:sourcePropertyType ?propertytype." + "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
-		Methods.print(resultSet);
+		// Methods.print(resultSet);
 
 		String targetTypeString = datasetString.substring(1, datasetString.length() - 1);
 		LinkedHashMap<String, ConceptTransform> conceptMap = new LinkedHashMap<String, ConceptTransform>();
@@ -338,7 +381,7 @@ public class OnDemandETL {
 
 			String sparqlString = "SELECT * WHERE {" + "?s a " + typeString + "." + "?s ?p ?o.}";
 
-			System.out.println(sparqlString);
+			// System.out.println(sparqlString);
 			ResultSet set = Methods.executeQuery(sourceABoxModel, sparqlString);
 			// Methods.print(set);
 
@@ -364,6 +407,7 @@ public class OnDemandETL {
 					} else {
 
 						IRIGenerator generator = new IRIGenerator();
+						
 						String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
 								conceptTransform.getIriValue(), mapModel, valueMap, provModel);
 						String provIRI = "";
@@ -419,6 +463,7 @@ public class OnDemandETL {
 										Literal literal = targetModel.createTypedLiteral(valueObject);
 										resource.addLiteral(property, literal);
 									} else {
+										valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
 										String propertyValueIRI = rangeValueTarget + "#" + valueObject;
 										resource.addProperty(property, targetModel.createResource(propertyValueIRI));
 									}
@@ -446,8 +491,8 @@ public class OnDemandETL {
 					+ factString + " ?o.} LIMIT 1";
 
 			ResultSet resultSet = Methods.executeQuery(targetABoxModel, sparql);
-
-			Methods.print(resultSet);
+			// Methods.print(resultSet);
+			
 			int count = 0;
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();
@@ -457,7 +502,7 @@ public class OnDemandETL {
 			}
 
 			if (count == 0) {
-				System.out.println(factString);
+				// System.out.println(factString);
 				requiredArrayList.add(factString.substring(1, factString.length() - 1));
 			}
 		}
@@ -475,7 +520,7 @@ public class OnDemandETL {
 					+ ">." + " ?s ?p ?o.}  LIMIT 1";
 
 			ResultSet resultSet = Methods.executeQuery(targetABoxModel, sparql);
-			Methods.print(resultSet);
+			// Methods.print(resultSet);
 
 			int count = 0;
 			while (resultSet.hasNext()) {

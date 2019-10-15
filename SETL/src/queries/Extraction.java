@@ -367,7 +367,7 @@ public class Extraction {
 		QueryExecution execution = QueryExecutionFactory.create(query, model);
 		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 		
-		methods.printResultSet(resultSet);
+		// methods.printResultSet(resultSet);
 		
 		while (resultSet.hasNext()) {
 			QuerySolution querySolution = (QuerySolution) resultSet.next();

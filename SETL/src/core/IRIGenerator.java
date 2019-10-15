@@ -17,6 +17,9 @@ public class IRIGenerator {
 	public String getIRIValue(String keyAttributeType, String keyAttribute, Model mapModel,
 			LinkedHashMap<String, Object> valueMap, Model provModel) {
 		// TODO Auto-generated method stub
+		// System.out.println(keyAttributeType);
+		// System.out.println(keyAttribute);
+		
 		if (keyAttributeType.contains("SourceProperty")) {
 			String objectString = valueMap.get(keyAttribute).toString();
 			

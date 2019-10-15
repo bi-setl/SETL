@@ -491,15 +491,24 @@ public class Definition {
 									+ methods.getLastSegment(parentLevel);
 							String childTag = "?" + methods.getLastSegment(selectedDimensionString) + "_"
 									+ methods.getLastSegment(childLevel);
+							
+							if (bannedLevels.contains(extraction.assignPrefix(childLevel))) {
+								String queryString = "?o <" + parentLevel + "> " + parentTag + " .\n";
+								levelQueryMap.put(queryString, queryString);
+								queryString = parentTag + " qb4o:memberOf <" + parentLevel + "> .\n";
+								levelQueryMap.put(queryString, queryString);
+							} else {
 
-							String queryString = "?o <" + childLevel + "> " + childTag + " .\n";
-							levelQueryMap.put(queryString, queryString);
-							queryString = childTag + " qb4o:memberOf <" + childLevel + "> .\n";
-							levelQueryMap.put(queryString, queryString);
-							queryString = childTag + " <" + rollUp + "> " + parentTag + " .\n";
-							levelQueryMap.put(queryString, queryString);
-							queryString = parentTag + " qb4o:memberOf <" + parentLevel + "> .\n";
-							levelQueryMap.put(queryString, queryString);
+
+								String queryString = "?o <" + childLevel + "> " + childTag + " .\n";
+								levelQueryMap.put(queryString, queryString);
+								queryString = childTag + " qb4o:memberOf <" + childLevel + "> .\n";
+								levelQueryMap.put(queryString, queryString);
+								queryString = childTag + " <" + rollUp + "> " + parentTag + " .\n";
+								levelQueryMap.put(queryString, queryString);
+								queryString = parentTag + " qb4o:memberOf <" + parentLevel + "> .\n";
+								levelQueryMap.put(queryString, queryString);
+							}
 
 							if (instancesMap.containsKey(extraction.assignPrefix(childLevel))) {
 								LinkedHashMap<String, String> filterQueryMap = getFilterPropertyQuery(

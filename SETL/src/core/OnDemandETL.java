@@ -23,69 +23,61 @@ import model.MapperTransform;
 public class OnDemandETL {
 	Methods methods;
 	String datasetString = "";
-	
-	static String targetABoxString = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\target_abox.ttl";
-	static String targetTBoxString = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\bd_tbox.ttl";
-	static String sourceABoxString = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\source_abox.ttl";
-	static String mapString = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\map.ttl";
-	static String demoMapString = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\demo_map.ttl";
-	static String demoTargetABoxString = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\demo_target.ttl";
 
-	static String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" + 
-			"PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" + 
-			"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + 
-			"SELECT ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n" + 
-			"WHERE {\r\n" + 
-			"?o a qb:Observation .\r\n" + 
-			"?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n" + 
-			"?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n" + 
-			"?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .\r\n" + 
-			"?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .\r\n" + 
-			"?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .\r\n" + 
-			"?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .\r\n" + 
-			"?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .\r\n" + 
-			"?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .\r\n" + 
-			"?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .\r\n" + 
-			"?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .\r\n" + 
-			"?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n" + 
-			"?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n" + 
-			"?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .\r\n" + 
-			"}\r\n" + 
-			"GROUP BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence\r\n" + 
-			"ORDER BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence";
+	static String basePath = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\";
+	// static String basePath = "D:\\Amrit\\Java\\OnDemandETL\\";
+	static String targetABoxString = basePath + "target_abox.ttl";
+	static String targetTBoxString = basePath + "bd_tbox.ttl";
+	static String sourceABoxString = basePath + "source_abox.ttl";
+	static String mapString = basePath + "map_version_1571224279370.ttl";
+	static String demoMapString = basePath + "demo_map.ttl";
+	static String demoTargetABoxString = basePath + "demo_target.ttl";
+
+	static String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+			+ "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+			+ "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n"
+			+ "SELECT ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n"
+			+ "WHERE {\r\n" + "?o a qb:Observation .\r\n"
+			+ "?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n"
+			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n"
+			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .\r\n"
+			+ "?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .\r\n"
+			+ "?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .\r\n"
+			+ "?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .\r\n"
+			+ "?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .\r\n"
+			+ "?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .\r\n"
+			+ "?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .\r\n"
+			+ "?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .\r\n"
+			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n"
+			+ "?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n"
+			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .\r\n" + "}\r\n"
+			+ "GROUP BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence\r\n"
+			+ "ORDER BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence";
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
-		
-		  String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString,
-		  sourceABoxString, mapString, targetABoxString, targetTBoxString);
-		  System.out.println(resultString);
-		 
-		
-		
-		String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" + 
-				"PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" + 
-				"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + 
-				"SELECT ?ageDim_ageGroup (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n" + 
-				"WHERE {\r\n" + 
-				"?o a qb:Observation .\r\n" + 
-				"?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n" + 
-				"?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n" + 
-				"?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n" + 
-				"?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n" +  
-				"}\r\n" + 
-				"GROUP BY ?ageDim_ageGroup\r\n"; 
 
-		
-		Methods methods = new Methods();
-		Model model = methods.readModelFromPath(demoTargetABoxString);
-		
-		ResultSet resultSet = methods.executeQuery(model, sparqlQueryString);
-		methods.print(resultSet);
+		/*
+		 * String sparqlQueryString =
+		 * "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" +
+		 * "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" +
+		 * "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + "SELECT * \r\n" +
+		 * "WHERE {\r\n" + "?o a qb:Observation .\r\n" +
+		 * "?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n"
+		 * +
+		 * "?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n"
+		 * +
+		 * "?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n"
+		 * +
+		 * "?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n"
+		 * + "}";
+		 */
+
+		String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString, sourceABoxString, mapString,
+				targetABoxString, targetTBoxString);
+		System.out.println(resultString);
 	}
 
-	
 	private String performOnDemandETL(String sparqlQueryString, String sourceABoxString, String mapString,
 			String targetABoxString, String targetTBoxString) {
 		// TODO Auto-generated method stub
@@ -152,7 +144,7 @@ public class OnDemandETL {
 		// Methods.print(targetModel);
 
 		targetModel.add(targetABoxModel);
-		
+
 		methods.saveModel(targetModel, demoTargetABoxString);
 
 		ResultSet finalResultSet = Methods.executeQuery(targetModel, sparqlQueryString);
@@ -165,25 +157,19 @@ public class OnDemandETL {
 			Model targetTBoxModel, Model targetModel, LinkedHashMap<String, String> prefixMap,
 			ArrayList<String> requiredFactArrayList) {
 		// TODO Auto-generated method stub
-		System.out.println(datasetString);
-		
+
 		String sparql = "\nPREFIX map: <http://www.map.org/example#>\n" + "SELECT * WHERE {"
-				+ "?concept a map:ConceptMapper."
-				+ "?concept map:targetConcept " + datasetString + "."
-				+ "?concept map:sourceConcept ?sourcetype."
-				+ "?concept map:iriValue ?iri."
-				+ "?concept map:iriValueType ?iritype."
-				+ "?mapper a map:PropertyMapper."
-				+ "?mapper map:ConceptMapper ?concept."
-				+ "?mapper map:sourceProperty ?source."
-				+ "?mapper map:sourcePropertyType ?propertytype."
-				+ "?mapper map:targetProperty ?target." + "}";
+				+ "?concept a map:ConceptMapper." + "?concept map:targetConcept " + datasetString + "."
+				+ "?concept map:sourceConcept ?sourcetype." + "?concept map:iriValue ?iri."
+				+ "?concept map:iriValueType ?iritype." + "?mapper a map:PropertyMapper."
+				+ "?mapper map:ConceptMapper ?concept." + "?mapper map:sourceProperty ?source."
+				+ "?mapper map:sourcePropertyType ?propertytype." + "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
 		// Methods.print(resultSet);
 
 		String targetTypeString = datasetString.substring(1, datasetString.length() - 1);
-		
+
 		LinkedHashMap<String, ConceptTransform> conceptMap = new LinkedHashMap<String, ConceptTransform>();
 
 		while (resultSet.hasNext()) {
@@ -237,6 +223,8 @@ public class OnDemandETL {
 				String resourceString = querySolution.get("s").toString();
 				String predicateString = querySolution.get("p").toString();
 				RDFNode object = querySolution.get("o");
+				
+				// System.out.println(predicateString);
 
 				predicateString = Methods.assignPrefix(prefixMap, predicateString);
 
@@ -249,9 +237,10 @@ public class OnDemandETL {
 					} else {
 
 						IRIGenerator generator = new IRIGenerator();
-						
+
 						String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
-								methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap, provModel);
+								methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap,
+								provModel);
 						String provIRI = "";
 
 						String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
@@ -262,7 +251,7 @@ public class OnDemandETL {
 						} else {
 							provIRI = rangeValue + "#" + iriValue;
 						}
-						
+
 						/*
 						 * if (datasetString.equals(
 						 * "<http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>")) {
@@ -272,6 +261,7 @@ public class OnDemandETL {
 						boolean isAdded = false;
 						Resource resource = null;
 						for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
+							
 							MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
 									.get(mapperString);
 
@@ -292,16 +282,19 @@ public class OnDemandETL {
 
 							String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
 									targetTBoxModel);
+							
 
 							if (valueObject != null) {
 								if (!isAdded) {
 									resource = targetModel.createResource(provIRI);
 
-									Property property2 = targetModel.createProperty("http://purl.org/qb4olap/cubes#memberOf");
+									Property property2 = targetModel
+											.createProperty("http://purl.org/qb4olap/cubes#memberOf");
 									resource.addProperty(property2, targetModel.createResource(targetTypeString));
 
-									resource.addProperty(RDF.type, ResourceFactory.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
-									
+									resource.addProperty(RDF.type, ResourceFactory
+											.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
+
 									isAdded = true;
 								}
 
@@ -321,6 +314,73 @@ public class OnDemandETL {
 						currentSubjectString = resourceString;
 						valueMap = new LinkedHashMap<String, Object>();
 						valueMap.put(predicateString, methods.getRDFNodeValue(object));
+					}
+				}
+			}
+			
+			if (!currentSubjectString.equals("")) {
+				
+				IRIGenerator generator = new IRIGenerator();
+
+				String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
+						methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap,
+						provModel);
+				String provIRI = "";
+
+				String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
+
+				iriValue = iriValue.replaceAll("\\s+", "_").toLowerCase();
+				if (rangeValue == null) {
+					provIRI = targetTypeString + "#" + iriValue;
+				} else {
+					provIRI = rangeValue + "#" + iriValue;
+				}
+				
+				for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
+					
+					MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
+							.get(mapperString);
+
+					Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
+
+					String propertyType = mapperTransform.getSourcePropertyType();
+
+					Object valueObject = null;
+
+					if (propertyType.contains("Expression")) {
+						EquationHandler equationHandler = new EquationHandler();
+						valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
+								valueMap);
+					} else {
+						valueObject = valueMap
+								.get(Methods.assignPrefix(prefixMap, mapperTransform.getSourceProperty()));
+					}
+
+					String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
+							targetTBoxModel);
+					
+					
+
+					if (valueObject != null) {
+						Resource resource = targetModel.createResource(provIRI);
+
+						Property property2 = targetModel
+								.createProperty("http://purl.org/qb4olap/cubes#memberOf");
+						resource.addProperty(property2, targetModel.createResource(targetTypeString));
+
+						resource.addProperty(RDF.type, ResourceFactory
+								.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
+
+						if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
+							Literal literal = targetModel.createTypedLiteral(valueObject);
+							resource.addLiteral(property, literal);
+						} else {
+							valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
+							String propertyValueIRI = rangeValueTarget + "#" + valueObject;
+							resource.addProperty(property, targetModel.createResource(propertyValueIRI));
+						}
+					} else {
+						System.out.println("Value Object null");
 					}
 				}
 			}
@@ -407,7 +467,7 @@ public class OnDemandETL {
 					} else {
 
 						IRIGenerator generator = new IRIGenerator();
-						
+
 						String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
 								conceptTransform.getIriValue(), mapModel, valueMap, provModel);
 						String provIRI = "";
@@ -479,6 +539,70 @@ public class OnDemandETL {
 					}
 				}
 			}
+			
+			if (!currentSubjectString.equals("")) {
+				IRIGenerator generator = new IRIGenerator();
+
+				String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
+						conceptTransform.getIriValue(), mapModel, valueMap, provModel);
+				String provIRI = "";
+
+				String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
+
+				if (rangeValue == null) {
+					provIRI = targetTypeString + "#" + iriValue;
+				} else {
+					provIRI = rangeValue + "#" + iriValue;
+				}
+
+				for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
+					MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
+							.get(mapperString);
+
+					if (requiredFactArrayList.contains(mapperTransform.getTargetProperty())) {
+						Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
+
+						String propertyType = mapperTransform.getSourcePropertyType();
+
+						Object valueObject = null;
+
+						if (propertyType.contains("Expression")) {
+							EquationHandler equationHandler = new EquationHandler();
+							valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
+									valueMap);
+						} else {
+							valueObject = valueMap
+									.get(Methods.assignPrefix(prefixMap, mapperTransform.getSourceProperty()));
+						}
+
+						String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
+								targetTBoxModel);
+
+						if (valueObject != null) {
+							Resource resource = targetModel.createResource(provIRI);
+
+							Property property2 = targetModel
+									.createProperty("http://purl.org/linked-data/cube#dataSet");
+							resource.addProperty(property2, targetModel.createResource(targetTypeString));
+
+							resource.addProperty(RDF.type, ResourceFactory
+									.createResource("http://purl.org/linked-data/cube#Observation"));
+
+
+							if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
+								Literal literal = targetModel.createTypedLiteral(valueObject);
+								resource.addLiteral(property, literal);
+							} else {
+								valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
+								String propertyValueIRI = rangeValueTarget + "#" + valueObject;
+								resource.addProperty(property, targetModel.createResource(propertyValueIRI));
+							}
+						} else {
+							System.out.println("Value Object null");
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -492,7 +616,7 @@ public class OnDemandETL {
 
 			ResultSet resultSet = Methods.executeQuery(targetABoxModel, sparql);
 			// Methods.print(resultSet);
-			
+
 			int count = 0;
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();
@@ -510,8 +634,7 @@ public class OnDemandETL {
 		return requiredArrayList;
 	}
 
-	private ArrayList<String> checkRequiredLevels(Model targetABoxModel,
-			ArrayList<String> queryLevelsArrayList) {
+	private ArrayList<String> checkRequiredLevels(Model targetABoxModel, ArrayList<String> queryLevelsArrayList) {
 		// TODO Auto-generated method stub
 		ArrayList<String> requiredArrayList = new ArrayList<String>();
 

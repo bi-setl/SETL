@@ -19,8 +19,8 @@ public class IRIGenerator {
 		// TODO Auto-generated method stub
 		// System.out.println(keyAttributeType);
 		// System.out.println(keyAttribute);
-		
-		if (keyAttributeType.contains("SourceProperty")) {
+		if (keyAttributeType.contains("SourceProperty") || keyAttributeType.contains("SourceAttribute")) {
+			
 			String objectString = valueMap.get(keyAttribute).toString();
 			
 			if (Methods.isIRI(objectString)) {

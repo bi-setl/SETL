@@ -27,11 +27,9 @@ public class OnDemandETL {
 	static String basePath = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\";
 	// static String basePath = "D:\\Amrit\\Java\\OnDemandETL\\";
 	static String targetABoxString = basePath + "target_abox.ttl";
-	static String targetTBoxString = basePath + "bd_tbox.ttl";
+	static String targetTBoxString = basePath + "target_tbox.ttl";
 	static String sourceABoxString = basePath + "source_abox.ttl";
-	static String mapString = basePath + "map_version_1571224279370.ttl";
-	static String demoMapString = basePath + "demo_map.ttl";
-	static String demoTargetABoxString = basePath + "demo_target.ttl";
+	static String mapString = basePath + "map.ttl";
 
 	static String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
 			+ "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
@@ -144,8 +142,6 @@ public class OnDemandETL {
 		// Methods.print(targetModel);
 
 		targetModel.add(targetABoxModel);
-
-		methods.saveModel(targetModel, demoTargetABoxString);
 
 		ResultSet finalResultSet = Methods.executeQuery(targetModel, sparqlQueryString);
 		Methods.print(finalResultSet);

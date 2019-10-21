@@ -45,6 +45,7 @@ import javax.swing.tree.TreePath;
 import controller.MappingDefinition;
 import controller.TBoxDefinition;
 import helper.FileMethods;
+import helper.Methods;
 import net.miginfocom.swing.MigLayout;
 import queries.MappingExtraction;
 import queries.TBoxExtraction;
@@ -1202,7 +1203,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.setBorder(new TitledBorder(null, "Concept Mapping", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
 		panelConceptMapping.setBackground(Color.WHITE);
 		panelHead.add(panelConceptMapping, "cell 0 1 2 1,grow");
-		panelConceptMapping.setLayout(new MigLayout("", "[][grow]", "[][][]"));
+		panelConceptMapping.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
 		
 		JLabel lblSourceConcept = new JLabel("Source Concept:");
 		lblSourceConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -1210,7 +1211,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		
 		// textFieldSourceConcept = new JTextField();
 		textFieldSourceConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelConceptMapping.add(textFieldSourceConcept, "cell 1 1,growx");
+		panelConceptMapping.add(textFieldSourceConcept, "cell 1 1 2 1,growx");
 		textFieldSourceConcept.setColumns(10);
 		
 		JLabel lblTargetConcept = new JLabel("Target Concept:");
@@ -1219,17 +1220,40 @@ public class PanelMapSource2TargetNew extends JPanel {
 		
 		// textFieldTargetConcept = new JTextField();
 		textFieldTargetConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelConceptMapping.add(textFieldTargetConcept, "cell 1 0,growx");
+		panelConceptMapping.add(textFieldTargetConcept, "cell 1 0 2 1,growx");
 		textFieldTargetConcept.setColumns(10);
 		
 		JLabel lblRelation = new JLabel("Relation:");
 		lblRelation.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblRelation, "cell 0 2,alignx trailing");
 		
+		JTextField textFieldSourceABoxPath = new JTextField();
+		textFieldSourceABoxPath.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(textFieldSourceABoxPath, "cell 1 3,growx");
+		textFieldSourceABoxPath.setColumns(10);
+		
+		JButton btnSourceABox = new JButton("Open");
+		btnSourceABox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Methods methods = new Methods();
+				String sourceABoxLocationString = methods.chooseFile("Select Source ABox File");
+				
+				if (methods.checkString(sourceABoxLocationString)) {
+					textFieldSourceABoxPath.setText(sourceABoxLocationString);
+				}
+			}
+		});
+		btnSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(btnSourceABox, "cell 2 3");
+		
 		comboBoxRelation = new JComboBox(recordDefinition.getRelations());
 		comboBoxRelation.setBackground(Color.WHITE);
 		comboBoxRelation.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelConceptMapping.add(comboBoxRelation, "cell 1 2,growx");
+		panelConceptMapping.add(comboBoxRelation, "cell 1 2 2 1,growx");
+		
+		JLabel lblSourceABox = new JLabel("Source ABox Location:");
+		lblSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(lblSourceABox, "cell 0 3,alignx trailing");
 		
 		JPanel panelInstanceMatching = new JPanel();
 		panelInstanceMatching.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Instance Mapping", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -1407,6 +1431,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 				String operation = textFieldOperation.getText().toString().trim();
 				String sourceCommonProperty = comboBoxSourceProperty.getSelectedItem().toString();
 				String targetCommonProperty = comboBoxTargetProperty.getSelectedItem().toString();
+				String sourceABoxPathString = textFieldSourceABoxPath.getText().toString().trim();
 				
 				if (instanceToBeMapped.equals("SPARQL Query")) {
 					instanceToBeMapped = textAreaSparql.getText().toString().trim();
@@ -1438,7 +1463,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 						createNewFileIfNotExists();
 					}
 					
-					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty);
+					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty, sourceABoxPathString);
 					recordExtraction.reloadAll();
 					refreshMappingDefinition();
 					
@@ -1448,6 +1473,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 					textAreaSparql.setText("");
 					textFieldValue.setText("");
 					textAreaKeyAttribute.setText("");
+					textFieldSourceABoxPath.setText("");
 					
 					comboBoxDataset.setSelectedIndex(0);
 					comboBoxRelation.setSelectedIndex(0);

@@ -11,6 +11,7 @@ public class ConceptTransform {
 	private String iriValueType;
 	private String sourceCommonProperty;
 	private String targetCommonProperty;
+	private String sourceABoxLocationString;
 	private LinkedHashMap<String, MapperTransform> mapperTransformMap;
 
 	public ConceptTransform() {
@@ -23,11 +24,12 @@ public class ConceptTransform {
 		this.iriValueType = "";
 		this.sourceCommonProperty = "";
 		this.targetCommonProperty = "";
+		this.sourceABoxLocationString = "";
 		this.mapperTransformMap = new LinkedHashMap<String, MapperTransform>();
 	}
 
 	public ConceptTransform(String concept, String sourceType, String targetType, String iriValue, String iriValueType,
-			String sourceCommonProperty, String targetCommonProperty,
+			String sourceCommonProperty, String targetCommonProperty, String sourceABoxLocationString,
 			LinkedHashMap<String, MapperTransform> mapperTransformMap) {
 		super();
 		this.concept = concept;
@@ -37,7 +39,16 @@ public class ConceptTransform {
 		this.iriValueType = iriValueType;
 		this.sourceCommonProperty = sourceCommonProperty;
 		this.targetCommonProperty = targetCommonProperty;
+		this.sourceABoxLocationString = sourceABoxLocationString;
 		this.mapperTransformMap = mapperTransformMap;
+	}
+
+	public String getSourceABoxLocationString() {
+		return sourceABoxLocationString;
+	}
+
+	public void setSourceABoxLocationString(String sourceABoxLocationString) {
+		this.sourceABoxLocationString = sourceABoxLocationString;
 	}
 
 	public String getIriValue() {

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.jena.base.Sys;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Literal;
@@ -22,36 +23,16 @@ import model.MapperTransform;
 
 public class OnDemandETL {
 	Methods methods;
-	String datasetString = "";
+	public String datasetString = "";
 
 	static String basePath = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\";
 	// static String basePath = "D:\\Amrit\\Java\\OnDemandETL\\";
 	static String targetABoxString = basePath + "target_abox.ttl";
-	static String targetTBoxString = basePath + "target_tbox.ttl";
-	static String sourceABoxString = basePath + "source_abox.ttl";
-	static String mapString = basePath + "map.ttl";
+	static String targetTBoxString = basePath + "bd_tbox.ttl";
+	static String mapString = basePath + "map_version_1571224279370.ttl";
 
-	static String sparqlQueryString = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
-			+ "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
-			+ "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n"
-			+ "SELECT ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n"
-			+ "WHERE {\r\n" + "?o a qb:Observation .\r\n"
-			+ "?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n"
-			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n"
-			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .\r\n"
-			+ "?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .\r\n"
-			+ "?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .\r\n"
-			+ "?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .\r\n"
-			+ "?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .\r\n"
-			+ "?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .\r\n"
-			+ "?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .\r\n"
-			+ "?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .\r\n"
-			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n"
-			+ "?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n"
-			+ "?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .\r\n" + "}\r\n"
-			+ "GROUP BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence\r\n"
-			+ "ORDER BY ?admGeographyDim_AdmUnitTwo ?ageDim_ageGroup ?residenceDim_residence";
-
+	static String demoString = basePath + "demo.ttl";
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -71,77 +52,60 @@ public class OnDemandETL {
 		 * + "}";
 		 */
 
-		String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString, sourceABoxString, mapString,
-				targetABoxString, targetTBoxString);
-		System.out.println(resultString);
+		/*
+		 * String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString,
+		 * mapString, targetABoxString, targetTBoxString);
+		 * System.out.println(resultString);
+		 * 
+		 *
+		 */
+		
 	}
 
-	private String performOnDemandETL(String sparqlQueryString, String sourceABoxString, String mapString,
-			String targetABoxString, String targetTBoxString) {
+	private String performOnDemandETL(String sparqlQueryString, String mapString, String targetABoxString,
+			String targetTBoxString) {
 		// TODO Auto-generated method stub
 		methods = new Methods();
-		// System.out.println("Extract Levels");
-		// Methods.printTime();
-		ArrayList<String> queryLevelsArrayList = extractRequiredLevels(sparqlQueryString);
-		// Methods.printTime();
+		Methods.printTime();
+		LinkedHashMap<String, ArrayList<String>> queryLevelsArrayList = extractRequiredLevels(sparqlQueryString);
+
 		// Methods.print(queryLevelsArrayList);
 
-		// System.out.println("Extract Observation");
-		// Methods.printTime();
 		String observationString = extractObservation(sparqlQueryString);
-		// Methods.printTime();
 
 		if (observationString == null) {
 			return "No observation";
 		}
 
-		// System.out.println("Extract Facts");
-		// Methods.printTime();
 		ArrayList<String> queryFactArrayList = extractRequiredFacts(sparqlQueryString, observationString);
-		// Methods.printTime();
-		// Methods.print(queryFactArrayList);
 
 		Model targetABoxModel = methods.readModelFromPath(targetABoxString);
 
-		// System.out.println("Check levels");
-		// Methods.printTime();
-		ArrayList<String> requiredLevelLArrayList = checkRequiredLevels(targetABoxModel, queryLevelsArrayList);
-		// Methods.printTime();
+		LinkedHashMap<String, ArrayList<String>> requiredLevelArrayList = checkRequiredLevels(targetABoxModel,
+				queryLevelsArrayList);
 
-		// System.out.println("Check facts");
-		// Methods.printTime();
 		ArrayList<String> requiredFactArrayList = checkRequiredFacts(targetABoxModel, queryFactArrayList);
-		// Methods.printTime();
-
-		// System.out.println("\nAll required levels");
-		// Methods.print(requiredLevelLArrayList);
-
-		// System.out.println("\nAll required facts");
-		// Methods.print(requiredFactArrayList);
 
 		Model mapModel = methods.readModelFromPath(mapString);
-		Model sourceABoxModel = methods.readModelFromPath(sourceABoxString);
 		Model targetTBoxModel = methods.readModelFromPath(targetTBoxString);
 		Model targetModel = ModelFactory.createDefaultModel();
-
-		Model model = ModelFactory.createDefaultModel();
-		model.add(sourceABoxModel);
-		model.add(mapModel);
 
 		LinkedHashMap<String, String> prefixMap = Methods.extractPrefixes(mapString);
 		// prefixMap.putAll(Methods.extractPrefixes(mapString));
 
-		generateFactData(datasetString, model, mapModel, sourceABoxModel, targetTBoxModel, targetModel, prefixMap,
-				requiredFactArrayList);
+		generateFactData(datasetString, mapModel, targetTBoxModel, targetModel, prefixMap, requiredFactArrayList);
 
-		for (String levelString : requiredLevelLArrayList) {
-			generateLevelData(Methods.bracketString(levelString), model, mapModel, sourceABoxModel, targetTBoxModel,
-					targetModel, prefixMap, null);
+		for (String levelString : requiredLevelArrayList.keySet()) {
+			ArrayList<String> propertyList = requiredLevelArrayList.get(levelString);
+			generateLevelData(Methods.bracketString(levelString), mapModel, targetTBoxModel, targetModel, prefixMap,
+					propertyList);
 		}
 
 		// Methods.print(targetModel);
 
 		targetModel.add(targetABoxModel);
+
+		methods.saveModel(targetModel, demoString);
 
 		ResultSet finalResultSet = Methods.executeQuery(targetModel, sparqlQueryString);
 		Methods.print(finalResultSet);
@@ -149,23 +113,23 @@ public class OnDemandETL {
 		return "Done";
 	}
 
-	private void generateLevelData(String datasetString, Model model, Model mapModel, Model sourceABoxModel,
-			Model targetTBoxModel, Model targetModel, LinkedHashMap<String, String> prefixMap,
-			ArrayList<String> requiredFactArrayList) {
+	public void generateLevelData(String datasetString, Model mapModel, Model targetTBoxModel, Model targetModel,
+			LinkedHashMap<String, String> prefixMap, ArrayList<String> requiredPropertyArrayList) {
 		// TODO Auto-generated method stub
+		Methods methods = new Methods();
 
 		String sparql = "\nPREFIX map: <http://www.map.org/example#>\n" + "SELECT * WHERE {"
 				+ "?concept a map:ConceptMapper." + "?concept map:targetConcept " + datasetString + "."
 				+ "?concept map:sourceConcept ?sourcetype." + "?concept map:iriValue ?iri."
-				+ "?concept map:iriValueType ?iritype." + "?mapper a map:PropertyMapper."
-				+ "?mapper map:ConceptMapper ?concept." + "?mapper map:sourceProperty ?source."
-				+ "?mapper map:sourcePropertyType ?propertytype." + "?mapper map:targetProperty ?target." + "}";
+				+ "?concept map:iriValueType ?iritype." + "?concept map:sourceABoxLocation ?location."
+				+ "?mapper a map:PropertyMapper." + "?mapper map:ConceptMapper ?concept."
+				+ "?mapper map:sourceProperty ?source." + "?mapper map:sourcePropertyType ?propertytype."
+				+ "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
 		// Methods.print(resultSet);
 
 		String targetTypeString = datasetString.substring(1, datasetString.length() - 1);
-
 		LinkedHashMap<String, ConceptTransform> conceptMap = new LinkedHashMap<String, ConceptTransform>();
 
 		while (resultSet.hasNext()) {
@@ -174,6 +138,7 @@ public class OnDemandETL {
 			String sourceTypeString = querySolution.get("sourcetype").toString();
 			String iriValueString = querySolution.get("iri").toString();
 			String iriValueTypeString = querySolution.get("iritype").toString();
+			String locationString = querySolution.get("location").toString();
 
 			String mapperString = querySolution.get("mapper").toString();
 			String targetPropertyString = querySolution.get("target").toString();
@@ -194,6 +159,7 @@ public class OnDemandETL {
 				conceptTransform.setSourceType(sourceTypeString);
 				conceptTransform.setIriValue(iriValueString);
 				conceptTransform.setIriValueType(iriValueTypeString);
+				conceptTransform.setSourceABoxLocationString(locationString);
 				conceptTransform.getMapperTransformMap().put(mapperString, mapperTransform);
 				conceptMap.put(conceptString, conceptTransform);
 			}
@@ -205,8 +171,9 @@ public class OnDemandETL {
 
 			String sparqlString = "SELECT * WHERE {" + "?s a " + typeString + "." + "?s ?p ?o.}";
 
-			// System.out.println(sparqlString);
+			Model sourceABoxModel = methods.readModelFromPath(conceptTransform.getSourceABoxLocationString());
 			ResultSet set = Methods.executeQuery(sourceABoxModel, sparqlString);
+
 			// Methods.print(set);
 
 			String currentSubjectString = "";
@@ -219,7 +186,7 @@ public class OnDemandETL {
 				String resourceString = querySolution.get("s").toString();
 				String predicateString = querySolution.get("p").toString();
 				RDFNode object = querySolution.get("o");
-				
+
 				// System.out.println(predicateString);
 
 				predicateString = Methods.assignPrefix(prefixMap, predicateString);
@@ -248,62 +215,49 @@ public class OnDemandETL {
 							provIRI = rangeValue + "#" + iriValue;
 						}
 
-						/*
-						 * if (datasetString.equals(
-						 * "<http://linked-statistics-bd.org/2011/mdProperty#admUnitFive>")) {
-						 * System.out.println(provIRI); }
-						 */
+						Resource resource = targetModel.createResource(provIRI);
+						resource.addProperty(targetModel.createProperty("http://purl.org/qb4olap/cubes#memberOf"),
+								targetModel.createResource(targetTypeString));
 
-						boolean isAdded = false;
-						Resource resource = null;
+						resource.addProperty(RDF.type,
+								ResourceFactory.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
+
 						for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
-							
 							MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
 									.get(mapperString);
 
-							Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
+							if (requiredPropertyArrayList
+									.contains(Methods.bracketString(mapperTransform.getTargetProperty()))) {
+								Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
 
-							String propertyType = mapperTransform.getSourcePropertyType();
+								String propertyType = mapperTransform.getSourcePropertyType();
 
-							Object valueObject = null;
+								Object valueObject = null;
 
-							if (propertyType.contains("Expression")) {
-								EquationHandler equationHandler = new EquationHandler();
-								valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
-										valueMap);
-							} else {
-								valueObject = valueMap
-										.get(Methods.assignPrefix(prefixMap, mapperTransform.getSourceProperty()));
-							}
-
-							String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
-									targetTBoxModel);
-							
-
-							if (valueObject != null) {
-								if (!isAdded) {
-									resource = targetModel.createResource(provIRI);
-
-									Property property2 = targetModel
-											.createProperty("http://purl.org/qb4olap/cubes#memberOf");
-									resource.addProperty(property2, targetModel.createResource(targetTypeString));
-
-									resource.addProperty(RDF.type, ResourceFactory
-											.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
-
-									isAdded = true;
-								}
-
-								if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
-									Literal literal = targetModel.createTypedLiteral(valueObject);
-									resource.addLiteral(property, literal);
+								if (propertyType.contains("Expression")) {
+									EquationHandler equationHandler = new EquationHandler();
+									valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
+											valueMap);
 								} else {
-									valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
-									String propertyValueIRI = rangeValueTarget + "#" + valueObject;
-									resource.addProperty(property, targetModel.createResource(propertyValueIRI));
+									valueObject = valueMap
+											.get(Methods.assignPrefix(prefixMap, mapperTransform.getSourceProperty()));
 								}
-							} else {
-								System.out.println("Value Object null");
+
+								String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
+										targetTBoxModel);
+
+								if (valueObject != null) {
+									if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
+										Literal literal = targetModel.createTypedLiteral(valueObject);
+										resource.addLiteral(property, literal);
+									} else {
+										valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
+										String propertyValueIRI = rangeValueTarget + "#" + valueObject;
+										resource.addProperty(property, targetModel.createResource(propertyValueIRI));
+									}
+								} else {
+									System.out.println("Value Object null");
+								}
 							}
 						}
 
@@ -313,14 +267,12 @@ public class OnDemandETL {
 					}
 				}
 			}
-			
+
 			if (!currentSubjectString.equals("")) {
-				
 				IRIGenerator generator = new IRIGenerator();
 
 				String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
-						methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap,
-						provModel);
+						methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap, provModel);
 				String provIRI = "";
 
 				String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
@@ -331,68 +283,67 @@ public class OnDemandETL {
 				} else {
 					provIRI = rangeValue + "#" + iriValue;
 				}
-				
+
+				Resource resource = targetModel.createResource(provIRI);
+				Property property2 = targetModel.createProperty("http://purl.org/qb4olap/cubes#memberOf");
+				resource.addProperty(property2, targetModel.createResource(targetTypeString));
+
+				resource.addProperty(RDF.type,
+						ResourceFactory.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
+
 				for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
-					
-					MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
-							.get(mapperString);
+					MapperTransform mapperTransform = conceptTransform.getMapperTransformMap().get(mapperString);
 
-					Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
+					if (requiredPropertyArrayList
+							.contains(Methods.bracketString(mapperTransform.getTargetProperty()))) {
+						Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
 
-					String propertyType = mapperTransform.getSourcePropertyType();
+						String propertyType = mapperTransform.getSourcePropertyType();
 
-					Object valueObject = null;
+						Object valueObject = null;
 
-					if (propertyType.contains("Expression")) {
-						EquationHandler equationHandler = new EquationHandler();
-						valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
-								valueMap);
-					} else {
-						valueObject = valueMap
-								.get(Methods.assignPrefix(prefixMap, mapperTransform.getSourceProperty()));
-					}
-
-					String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
-							targetTBoxModel);
-					
-					
-
-					if (valueObject != null) {
-						Resource resource = targetModel.createResource(provIRI);
-
-						Property property2 = targetModel
-								.createProperty("http://purl.org/qb4olap/cubes#memberOf");
-						resource.addProperty(property2, targetModel.createResource(targetTypeString));
-
-						resource.addProperty(RDF.type, ResourceFactory
-								.createResource("http://purl.org/qb4olap/cubes#LevelMember"));
-
-						if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
-							Literal literal = targetModel.createTypedLiteral(valueObject);
-							resource.addLiteral(property, literal);
+						if (propertyType.contains("Expression")) {
+							EquationHandler equationHandler = new EquationHandler();
+							valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
+									valueMap);
 						} else {
-							valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
-							String propertyValueIRI = rangeValueTarget + "#" + valueObject;
-							resource.addProperty(property, targetModel.createResource(propertyValueIRI));
+							valueObject = valueMap
+									.get(Methods.assignPrefix(prefixMap, mapperTransform.getSourceProperty()));
 						}
-					} else {
-						System.out.println("Value Object null");
+
+						String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
+								targetTBoxModel);
+
+						if (valueObject != null) {
+							if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
+								Literal literal = targetModel.createTypedLiteral(valueObject);
+								resource.addLiteral(property, literal);
+							} else {
+								valueObject = valueObject.toString().replaceAll("\\s+", "_").toLowerCase();
+								String propertyValueIRI = rangeValueTarget + "#" + valueObject;
+								resource.addProperty(property, targetModel.createResource(propertyValueIRI));
+							}
+						} else {
+							System.out.println("Value Object null");
+						}
 					}
 				}
 			}
 		}
 	}
 
-	private void generateFactData(String datasetString, Model model, Model mapModel, Model sourceABoxModel,
-			Model targetTBoxModel, Model targetModel, LinkedHashMap<String, String> prefixMap,
-			ArrayList<String> requiredFactArrayList) {
+	public void generateFactData(String datasetString, Model mapModel, Model targetTBoxModel, Model targetModel,
+			LinkedHashMap<String, String> prefixMap, ArrayList<String> requiredFactArrayList) {
 		// TODO Auto-generated method stub
+		Methods methods = new Methods();
+
 		String sparql = "\nPREFIX map: <http://www.map.org/example#>\n" + "SELECT * WHERE {"
 				+ "?concept a map:ConceptMapper." + "?concept map:targetConcept " + datasetString + "."
 				+ "?concept map:sourceConcept ?sourcetype." + "?concept map:iriValue ?iri."
-				+ "?concept map:iriValueType ?iritype." + "?mapper a map:PropertyMapper."
-				+ "?mapper map:ConceptMapper ?concept." + "?mapper map:sourceProperty ?source."
-				+ "?mapper map:sourcePropertyType ?propertytype." + "?mapper map:targetProperty ?target." + "}";
+				+ "?concept map:iriValueType ?iritype." + "?concept map:sourceABoxLocation ?location."
+				+ "?mapper a map:PropertyMapper." + "?mapper map:ConceptMapper ?concept."
+				+ "?mapper map:sourceProperty ?source." + "?mapper map:sourcePropertyType ?propertytype."
+				+ "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
 		// Methods.print(resultSet);
@@ -406,6 +357,7 @@ public class OnDemandETL {
 			String sourceTypeString = querySolution.get("sourcetype").toString();
 			String iriValueString = querySolution.get("iri").toString();
 			String iriValueTypeString = querySolution.get("iritype").toString();
+			String locationString = querySolution.get("location").toString();
 
 			String mapperString = querySolution.get("mapper").toString();
 			String targetPropertyString = querySolution.get("target").toString();
@@ -426,6 +378,7 @@ public class OnDemandETL {
 				conceptTransform.setSourceType(sourceTypeString);
 				conceptTransform.setIriValue(iriValueString);
 				conceptTransform.setIriValueType(iriValueTypeString);
+				conceptTransform.setSourceABoxLocationString(locationString);
 				conceptTransform.getMapperTransformMap().put(mapperString, mapperTransform);
 				conceptMap.put(conceptString, conceptTransform);
 			}
@@ -437,7 +390,7 @@ public class OnDemandETL {
 
 			String sparqlString = "SELECT * WHERE {" + "?s a " + typeString + "." + "?s ?p ?o.}";
 
-			// System.out.println(sparqlString);
+			Model sourceABoxModel = methods.readModelFromPath(conceptTransform.getSourceABoxLocationString());
 			ResultSet set = Methods.executeQuery(sourceABoxModel, sparqlString);
 			// Methods.print(set);
 
@@ -535,7 +488,7 @@ public class OnDemandETL {
 					}
 				}
 			}
-			
+
 			if (!currentSubjectString.equals("")) {
 				IRIGenerator generator = new IRIGenerator();
 
@@ -552,8 +505,7 @@ public class OnDemandETL {
 				}
 
 				for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
-					MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
-							.get(mapperString);
+					MapperTransform mapperTransform = conceptTransform.getMapperTransformMap().get(mapperString);
 
 					if (requiredFactArrayList.contains(mapperTransform.getTargetProperty())) {
 						Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
@@ -577,13 +529,11 @@ public class OnDemandETL {
 						if (valueObject != null) {
 							Resource resource = targetModel.createResource(provIRI);
 
-							Property property2 = targetModel
-									.createProperty("http://purl.org/linked-data/cube#dataSet");
+							Property property2 = targetModel.createProperty("http://purl.org/linked-data/cube#dataSet");
 							resource.addProperty(property2, targetModel.createResource(targetTypeString));
 
-							resource.addProperty(RDF.type, ResourceFactory
-									.createResource("http://purl.org/linked-data/cube#Observation"));
-
+							resource.addProperty(RDF.type,
+									ResourceFactory.createResource("http://purl.org/linked-data/cube#Observation"));
 
 							if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
 								Literal literal = targetModel.createTypedLiteral(valueObject);
@@ -602,7 +552,7 @@ public class OnDemandETL {
 		}
 	}
 
-	private ArrayList<String> checkRequiredFacts(Model targetABoxModel, ArrayList<String> queryFactArrayList) {
+	public ArrayList<String> checkRequiredFacts(Model targetABoxModel, ArrayList<String> queryFactArrayList) {
 		// TODO Auto-generated method stub
 		ArrayList<String> requiredArrayList = new ArrayList<String>();
 
@@ -616,7 +566,7 @@ public class OnDemandETL {
 			int count = 0;
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();
-				String subjectString = querySolution.get("?s").toString();
+				String subjectString = querySolution.get("s").toString();
 
 				count++;
 			}
@@ -630,11 +580,12 @@ public class OnDemandETL {
 		return requiredArrayList;
 	}
 
-	private ArrayList<String> checkRequiredLevels(Model targetABoxModel, ArrayList<String> queryLevelsArrayList) {
+	public LinkedHashMap<String, ArrayList<String>> checkRequiredLevels(Model targetABoxModel,
+			LinkedHashMap<String, ArrayList<String>> queryLevelsArrayList) {
 		// TODO Auto-generated method stub
-		ArrayList<String> requiredArrayList = new ArrayList<String>();
+		LinkedHashMap<String, ArrayList<String>> requiredArrayList = new LinkedHashMap();
 
-		for (String levelString : queryLevelsArrayList) {
+		for (String levelString : queryLevelsArrayList.keySet()) {
 			String sparql = "SELECT DISTINCT ?s WHERE {" + "?s <http://purl.org/qb4olap/cubes#memberOf> <" + levelString
 					+ ">." + " ?s ?p ?o.}  LIMIT 1";
 
@@ -644,20 +595,43 @@ public class OnDemandETL {
 			int count = 0;
 			while (resultSet.hasNext()) {
 				QuerySolution querySolution = (QuerySolution) resultSet.next();
-				String subjectString = querySolution.get("?s").toString();
+				String subjectString = querySolution.get("s").toString();
 
 				count++;
 			}
 
 			if (count == 0) {
-				requiredArrayList.add(levelString);
+				ArrayList<String> arrayList = queryLevelsArrayList.get(levelString);
+				requiredArrayList.put(levelString, arrayList);
+			} else {
+				ArrayList<String> propertyList = queryLevelsArrayList.get(levelString);
+				
+				String sparqlSecond = "SELECT DISTINCT ?p WHERE {"
+						+ "?s <http://purl.org/qb4olap/cubes#memberOf> <" + levelString+ ">."
+						+ " ?s ?p ?o.}";
+
+				ResultSet resultSetSecond = Methods.executeQuery(targetABoxModel, sparqlSecond);
+				// Methods.print(resultSet);
+
+				while (resultSetSecond.hasNext()) {
+					QuerySolution querySolution = (QuerySolution) resultSetSecond.next();
+					String predicateString = querySolution.get("p").toString();
+
+					if (propertyList.contains(Methods.bracketString(predicateString))) {
+						propertyList.remove(Methods.bracketString(predicateString));
+					}
+				}
+				
+				if (propertyList.size() > 0) {
+					requiredArrayList.put(levelString, propertyList);
+				}
 			}
 		}
 
 		return requiredArrayList;
 	}
 
-	private ArrayList<String> extractRequiredFacts(String sparqlQueryString, String observationString) {
+	public ArrayList<String> extractRequiredFacts(String sparqlQueryString, String observationString) {
 		// TODO Auto-generated method stub
 		ArrayList<String> propertyList = new ArrayList<String>();
 
@@ -682,23 +656,44 @@ public class OnDemandETL {
 		return propertyList;
 	}
 
-	private ArrayList<String> extractRequiredLevels(String sparqlQueryString) {
+	public LinkedHashMap<String, ArrayList<String>> extractRequiredLevels(String sparqlQueryString) {
 		// TODO Auto-generated method stub
-		ArrayList<String> requiredLevelsArrayList = new ArrayList<String>();
+		LinkedHashMap<String, ArrayList<String>> requiredLevelsArrayList = new LinkedHashMap();
 
 		String regEx = "(\\?\\S+)(\\s+)(qb4o:memberOf)(\\s+)(<)([^>]+)(>)";
 		Pattern pattern = Pattern.compile(regEx);
 		Matcher matcher = pattern.matcher(sparqlQueryString);
 
 		while (matcher.find()) {
+			String firstMatchString = matcher.group(1).trim();
 			String observationString = matcher.group(6).trim();
-			requiredLevelsArrayList.add(observationString);
+			ArrayList<String> queryRequiredProperties = extractRequiredProperties(firstMatchString, sparqlQueryString);
+			requiredLevelsArrayList.put(observationString, queryRequiredProperties);
 		}
 
 		return requiredLevelsArrayList;
 	}
 
-	private String extractObservation(String sparqlQueryString) {
+	public ArrayList<String> extractRequiredProperties(String firstMatchString, String sparqlQueryString) {
+		// TODO Auto-generated method stub
+		String matchString = firstMatchString.substring(1, firstMatchString.length());
+		ArrayList<String> requiredLevelsArrayList = new ArrayList<String>();
+
+		String regEx = "(\\?" + matchString + ")(\\s+)([^.]\\S+)(\\s+)(\\S+)";
+		Pattern pattern = Pattern.compile(regEx);
+		Matcher matcher = pattern.matcher(sparqlQueryString);
+
+		while (matcher.find()) {
+			String observationString = matcher.group(3).trim();
+			if (!observationString.equals("qb4o:memberOf")) {
+				requiredLevelsArrayList.add(observationString);
+			}
+		}
+
+		return requiredLevelsArrayList;
+	}
+
+	public String extractObservation(String sparqlQueryString) {
 		// TODO Auto-generated method stub
 		// System.out.println(sparqlQueryString);
 		String regEx = "(\\{)(\\s*)(\\S+)(\\s+)(a)(\\s+)(qb:Observation)";
@@ -710,5 +705,48 @@ public class OnDemandETL {
 			return observationString;
 		}
 		return null;
+	}
+
+	public ArrayList<String> extractKeywords(String sparqlQueryString) {
+		ArrayList<String> keywordList = new ArrayList<String>();
+
+		String parts[] = sparqlQueryString.split("SELECT");
+		String sparqlString = parts[1];
+
+		String segments[] = sparqlString.split("WHERE");
+		sparqlString = segments[0];
+
+		String regEx = "(\\?[^\\)\\s]+)";
+		Pattern pattern = Pattern.compile(regEx);
+		Matcher matcher = pattern.matcher(sparqlString);
+
+		while (matcher.find()) {
+			String observationString = matcher.group(0).trim();
+			keywordList.add(observationString);
+		}
+
+		ArrayList<String> arrayList = new ArrayList<String>();
+
+		String partsOne[] = sparqlString.split("as");
+		for (int i = partsOne.length - 1; i > 0; i--) {
+			String lastKeyString = keywordList.get(keywordList.size() - 1);
+			keywordList.remove(keywordList.size() - 1);
+			keywordList.remove(keywordList.size() - 1);
+			arrayList.add(lastKeyString);
+		}
+
+		for (int i = keywordList.size() - 1; i >= 0; i--) {
+			String lastKeyString = keywordList.get(i);
+			arrayList.add(lastKeyString);
+		}
+
+		keywordList = new ArrayList<String>();
+
+		for (int i = arrayList.size() - 1; i >= 0; i--) {
+			String lastKeyString = arrayList.get(i);
+			keywordList.add(lastKeyString);
+		}
+		
+		return keywordList;
 	}
 }

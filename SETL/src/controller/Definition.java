@@ -326,6 +326,10 @@ public class Definition {
 				SelectedLevel selectedLevel = selectedLevelList.get(i);
 				LinkedHashMap<String, SelectedLevelInstance> linkedHashMap = instancesMap
 						.get(selectedLevel.getLevelName());
+				
+				if (linkedHashMap == null) {
+					linkedHashMap = new LinkedHashMap<String, SelectedLevelInstance>();
+				}
 
 				for (String propertyString : linkedHashMap.keySet()) {
 					SelectedLevelInstance selectedLevelInstance = linkedHashMap.get(propertyString);
@@ -438,6 +442,11 @@ public class Definition {
 				}
 			}
 			
+			if (selectedLevel.getViewProperties().size() > 0) {
+				queryString = levelTagKey + " qb4o:memberOf <" + selectedLevelString + "> .\n";
+				levelQueryMap.put(queryString, queryString);
+			}
+			
 			for (String propertyString : selectedLevel.getViewProperties()) {
 				String propertyTag = "?" + methods.getLastSegment(selectedDimensionString) + "_"
 						+ methods.getLastSegment(propertyString);
@@ -462,6 +471,11 @@ public class Definition {
 					for (String filterString : filterQueryMap.keySet()) {
 						levelQueryMap.put(filterString, filterString);
 					}
+				}
+				
+				if (selectedLevel.getViewProperties().size() > 0) {
+					queryString = levelTagKey + " qb4o:memberOf <" + selectedLevelString + "> .\n";
+					levelQueryMap.put(queryString, queryString);
 				}
 				
 				for (String propertyString : selectedLevel.getViewProperties()) {

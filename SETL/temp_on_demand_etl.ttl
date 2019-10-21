@@ -1,0 +1,89 @@
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20120732726_20120732726>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20199435094_20199435094>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#10092105990_10092105990>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20132202300_20132202300>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20153759604_20153759604>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20153723585_20153723585>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20137923069_20137923069>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20120743589_20120743589>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+
+<http://linked-statistics-bd.org/2011/ontology/AgeGroup#1>
+        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
+        <http://linked-statistics-bd.org/2011/mdAttribute#ageGroupId>
+                "1" ;
+        <http://linked-statistics-bd.org/2011/mdAttribute#ageGroupName>
+                "Y5-9" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .
+
+<http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup#20132209763_20132209763>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#ageGroup>
+                <http://linked-statistics-bd.org/2011/ontology/AgeGroup#1> ;
+        <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation>
+                "10" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .

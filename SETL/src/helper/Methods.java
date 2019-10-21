@@ -46,6 +46,7 @@ import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFactory;
 import org.apache.jena.query.ResultSetFormatter;
@@ -822,6 +823,11 @@ public class Methods {
 			((Model) object).write(System.out, "TTL");
 		} else if (object instanceof Boolean) {
 			
+		} else if (object instanceof ArrayList) {
+			for (int i = 0; i < ((ArrayList<String>) object).size(); i++) {
+				String string = ((ArrayList<String>) object).get(i);
+				System.out.println(string);
+			}
 		}
 	}
 	
@@ -886,5 +892,43 @@ public class Methods {
 		// TODO Auto-generated method stub
 		Calendar calendar = Calendar.getInstance();
 		System.out.println(calendar.getTime());
+	}
+
+	public Long getTime() {
+		// TODO Auto-generated method stub
+		return Calendar.getInstance().getTimeInMillis();
+	}
+	
+	public String getTimeInSeconds(Long milliseconds) {
+		long minutes = (milliseconds / 1000) / 60;
+        long seconds = (milliseconds / 1000) % 60;
+        return minutes + " minutes and " + seconds + " seconds.";
+	}
+	
+	public Object[][] runSparqlQuery(Model model, String sparql, ArrayList<String> selectedColumns) {
+		// TODO Auto-generated method stub
+		ArrayList<Object> valueList = new ArrayList<>();
+		
+		ResultSet resultSet = executeQuery(model, sparql);
+		
+		while (resultSet.hasNext()) {
+			QuerySolution querySolution = (QuerySolution) resultSet.next();
+			
+			ArrayList<Object> arrayList = new ArrayList<>();
+			for (String keyString : selectedColumns) {
+				if (querySolution.get(keyString.substring(1)) == null) {
+					arrayList.add("");
+				} else {
+					RDFNode node = querySolution.get(keyString.substring(1));
+					arrayList.add(getRDFNodeValue(node));
+				}
+			}
+			
+			valueList.add(arrayList.toArray());
+		}
+		
+		Object[][] arrayResult = valueList.toArray(new Object[valueList.size()][selectedColumns.size()]);
+		
+		return arrayResult;
 	}
 }

@@ -67,6 +67,12 @@ public class RDFWrapper {
 	public String parseCSV(String csvSource, String csvTarget, String csvPrefix, String csvColumn,
 			String csvDelimiter) {
 		// TODO Auto-generated method stub
+		
+		  System.out.println(csvSource); System.out.println(csvTarget);
+		  System.out.println(csvPrefix); System.out.println(csvColumn);
+		  System.out.println(csvDelimiter);
+		 
+		
 		csvColumn = csvColumn.replace("\"", "");
 		Model model = ModelFactory.createDefaultModel();
 		String fileExtension = fileMethods.getFileExtension(csvSource);
@@ -191,6 +197,7 @@ public class RDFWrapper {
 								if (count % 10000 == 0) {
 									String tempPath = BASE_PATH + numOfFiles + ".ttl";
 									System.out.println(tempPath);
+									createResourceModel(model, csvPrefix, csvColumn, type, tempPath);
 									fileMethods.saveModel(model, tempPath);
 									model = ModelFactory.createDefaultModel();
 									numOfFiles++;
@@ -200,6 +207,7 @@ public class RDFWrapper {
 							if (model.size() != 0) {
 								String tempPath = BASE_PATH + numOfFiles + ".ttl";
 								System.out.println(tempPath);
+								createResourceModel(model, csvPrefix, csvColumn, type, tempPath);
 								fileMethods.saveModel(model, tempPath);
 								numOfFiles++;
 							}
@@ -207,6 +215,7 @@ public class RDFWrapper {
 							bufferedReader.close();
 							return mergeAllTempFiles(BASE_PATH, numOfFiles, csvTarget);
 						} else if (csvColumn.contains("CONCAT")) {
+							System.out.println("Expression");
 							ArrayList<String> usedKeys = getUsedColumnNames(csvColumn);
 							while ((string = bufferedReader.readLine()) != null) {
 								count++;
@@ -288,6 +297,8 @@ public class RDFWrapper {
 								
 								if (count % 10000 == 0) {
 									String tempPath = BASE_PATH + numOfFiles + ".ttl";
+									System.out.println(tempPath);
+									createResourceModel(model, csvPrefix, csvColumn, type, tempPath);
 									fileMethods.saveModel(model, tempPath);
 									model = ModelFactory.createDefaultModel();
 									numOfFiles++;
@@ -297,6 +308,7 @@ public class RDFWrapper {
 							if (model.size() != 0) {
 								String tempPath = BASE_PATH + numOfFiles + ".ttl";
 								System.out.println(tempPath);
+								createResourceModel(model, csvPrefix, csvColumn, type, tempPath);
 								fileMethods.saveModel(model, tempPath);
 								numOfFiles++;
 							}
@@ -371,6 +383,7 @@ public class RDFWrapper {
 									String tempPath = BASE_PATH + numOfFiles + ".ttl";
 									System.out.println(tempPath);
 									createResourceModel(model, csvPrefix, csvColumn, type, tempPath);
+									fileMethods.saveModel(model, tempPath);
 									model = ModelFactory.createDefaultModel();
 									numOfFiles++;
 								}
@@ -746,7 +759,7 @@ public class RDFWrapper {
 						if (model.size() != 0) {
 							String tempPath = BASE_PATH + numOfFiles + ".ttl";
 							System.out.println(tempPath);
-							createResourceModel(model, excelPrefix, excelColumn, type, tempPath);
+							fileMethods.saveModel(model, tempPath);
 							model = ModelFactory.createDefaultModel();
 							numOfFiles++;
 						}
@@ -864,5 +877,66 @@ public class RDFWrapper {
 			String type = segments[0].toLowerCase();
 			return type;
 		}
+	}
+	
+	private String parseCSVNew(String csvSource, String csvTarget, String csvPrefix, String csvColumn,
+			String csvDelimiter, String iriType) {
+		csvColumn = csvColumn.replace("\"", "");
+		Model model = ModelFactory.createDefaultModel();
+		
+		String fileExtension = fileMethods.getFileExtension(csvSource);
+		if (fileExtension != null && fileExtension.equals("csv")) {
+			String inputStream = fileMethods.getEncodedString(csvSource);
+			
+			if (inputStream != null) {
+				if (!csvPrefix.startsWith("<")) {
+					ArrayList<String> keys = new ArrayList<>();
+					
+					BufferedReader bufferedReader = null;
+					
+					try {
+						String delimiter = ",";
+						if (csvDelimiter.contains("Space") || csvDelimiter.contains("Tab")) {
+							delimiter = "\\s";
+						} else if (csvDelimiter.contains("Semicolon")) {
+							delimiter = ";";
+						} else if (csvDelimiter.contains("Pipe")) {
+							delimiter = "|";
+						} else {
+							delimiter = ",";
+						}
+						
+						Reader inputString = new StringReader(inputStream);
+						bufferedReader = new BufferedReader(inputString);
+						String string = "";
+						
+						while ((string = bufferedReader.readLine()) != null) {
+							String[] parts = string.split(delimiter);
+							for (String part : parts) {
+								part = part.replace("\"", "");
+								keys.add(part);
+							}
+							break;
+						}
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+
+						return FILE_NOT_FOUND;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return FILE_ENCODING_ERROR_IT_MAY_CONTAIN_SOME_SPECIAL_CHARACTERS;
+					}
+				} else {
+					return INVALID_PREFIX;
+				}
+			} else {
+				return FILE_ENCODING_ERROR_IT_MAY_CONTAIN_SOME_SPECIAL_CHARACTERS;
+			}
+		} else {
+			return INVALID_FILE_CHECK_FILE_TYPE_OR_FILE_NAME;
+		}
+		return null;
 	}
 }

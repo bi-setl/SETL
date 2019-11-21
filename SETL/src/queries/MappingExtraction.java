@@ -398,8 +398,8 @@ public class MappingExtraction {
 			recordName = "map:ConceptMapper_" + ( totalSize + 1 );
 		}*/
 		
-		String sourceSegment = assignPrefix(source).replaceAll(":", "_");
-		String targetSegment = assignPrefix(target).replaceAll(":", "_");
+		String sourceSegment = getProvValue(source);
+		String targetSegment = getProvValue(target);
 		recordName = "map:" + sourceSegment + "_" + targetSegment;
 		
 		Resource classResource = ResourceFactory.createResource("http://www.map.org/example#ConceptMapper");
@@ -662,5 +662,26 @@ public class MappingExtraction {
 			}
 		}
 		return arrayList;
+	}
+	
+	private String getProvValue(String subject) {
+		// TODO Auto-generated method stub
+		// System.out.println(subject);
+		if (subject.contains("#")) {
+			String[] parts = subject.split("#");
+			if (parts.length == 2) {
+				return parts[1].trim();
+			} else {
+				return subject.trim();
+			}
+		} else {
+			if (subject.contains("http")) {
+				String[] parts = subject.split("/");
+				return parts[parts.length - 1].trim();
+			} else {
+				String[] parts = subject.split(":");
+				return parts[parts.length - 1].trim();
+			}
+		}
 	}
 }

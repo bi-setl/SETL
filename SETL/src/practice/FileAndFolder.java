@@ -9,6 +9,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import core.LevelEntryNew;
+import core.RDFWrapper;
 import helper.Methods;
 
 public class FileAndFolder {
@@ -16,11 +17,11 @@ public class FileAndFolder {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		String basePath = "C:\\Users\\Amrit\\Documents\\Census\\C15";
+		String basePath = "C:\\Users\\Amrit\\Documents\\Census";
 		File folder = new File(basePath);
 		File[] listOfFiles = folder.listFiles();
-		String baseName = "Census_C15_HousingTenancy";
-		String baseFileName = "C:\\Users\\Amrit\\Documents\\Census\\C15\\Census_C15_HousingTenancy.csv";
+		String baseName = "Census02_sex";
+		String baseFileName = basePath + "\\" + baseName + ".csv";
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -41,12 +42,32 @@ public class FileAndFolder {
 						listOfFiles[i].renameTo(baseFile);
 						System.out.println(baseFile.getPath());
 
-						LevelEntryNew entryNew = new LevelEntryNew();
-						entryNew.generateLevelEntryFromCSV(baseFileName,
-								"C:\\Users\\Amrit\\Documents\\map.ttl",
-								"C:\\Users\\Amrit\\Documents\\bd_tbox.ttl",
-								"C:\\Users\\Amrit\\Documents\\Census\\prov.ttl",
-								"C:\\Users\\Amrit\\Documents\\Level_" + baseName + "_TargetABox.ttl", "Space ( )");
+						/*
+						 * LevelEntryNew entryNew = new LevelEntryNew();
+						 * entryNew.generateLevelEntryFromCSV(baseFileName,
+						 * "C:\\Users\\Amrit\\Documents\\map.ttl",
+						 * "C:\\Users\\Amrit\\Documents\\bd_tbox.ttl",
+						 * "C:\\Users\\Amrit\\Documents\\Census\\prov.ttl",
+						 * "C:\\Users\\Amrit\\Documents\\Level_" + baseName + "_TargetABox.ttl",
+						 * "Space ( )");
+						 */
+						
+						/*
+						 * RDFWrapper rdfWrapper = new RDFWrapper(); rdfWrapper.parseCSV(baseFileName,
+						 * "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\191022_102457_TargetABox.ttl",
+						 * "http://linked-statistics-bd.org/2011/data",
+						 * "CONCAT(admUnitFiveId,residence,ageGroup)", "Space ( )");
+						 */
+						
+						CSVABox csvaBox = new CSVABox();
+						String resultString = csvaBox.parseCSV(baseFileName,
+								"http://linked-statistics-bd.org/2011/data",
+								"Space ( )",
+								"Expression",
+								"CONCAT(admUnitFiveId,residence,sex)",
+								"TTL",
+								"C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\" + baseName + ".ttl");
+						System.out.println(resultString);
 					}
 				}
 

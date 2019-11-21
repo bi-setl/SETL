@@ -203,7 +203,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 						textFieldSourceConcept.setText(selectedResource);
 						setSourceConstruct(selectedResource);
 					} else if (type.contains("LevelAttribute") || type.contains("ObjectProperty")
-							|| type.contains("DatatypeProperty") || type.contains("FunctionalProperty")) {
+							|| type.contains("DatatypeProperty") || type.contains("FunctionalProperty") || type.contains("RollupProperty")) {
 						setSourceConstruct(selectedResource);
 						textFieldKey.setText(selectedResource);
 						textFieldValue.setText(selectedResource);
@@ -379,7 +379,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 						textFieldTargetExpression.setText(selectedResource);
 						textFieldTargetConcept.setText(selectedResource);
 					} else if (type.contains("LevelAttribute") || type.contains("ObjectProperty")
-							|| type.contains("DatatypeProperty") || type.contains("FunctionalProperty")) {
+							|| type.contains("DatatypeProperty") || type.contains("FunctionalProperty") || type.contains("RollupProperty")) {
 						textFieldTargetProperty.setText(selectedResource);
 						textFieldTargetSparql.setText(selectedResource);
 						textFieldTargetExpression.setText(selectedResource);

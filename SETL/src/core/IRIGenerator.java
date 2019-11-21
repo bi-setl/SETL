@@ -15,13 +15,28 @@ import helper.Methods;
 
 public class IRIGenerator {
 	public String getIRIValue(String keyAttributeType, String keyAttribute, Model mapModel,
-			LinkedHashMap<String, Object> valueMap, Model provModel) {
+			LinkedHashMap<String, Object> valueMap, Model provModel, LinkedHashMap<String, String> prefixMap) {
 		// TODO Auto-generated method stub
-		// System.out.println(keyAttributeType);
-		// System.out.println(keyAttribute);
+		
 		if (keyAttributeType.contains("SourceProperty") || keyAttributeType.contains("SourceAttribute")) {
 			
-			String objectString = valueMap.get(keyAttribute).toString();
+			String objectString = "";
+			try {
+				if (valueMap.containsKey(keyAttribute)) {
+					objectString = valueMap.get(keyAttribute).toString();
+				} else {
+					objectString = valueMap.get(Methods.assignPrefix(prefixMap, keyAttribute)).toString();
+				}
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				System.out.println(keyAttributeType);
+				System.out.println(keyAttribute);
+				
+				Methods.print(valueMap);
+			}
 			
 			if (Methods.isIRI(objectString)) {
 				return getProvValue(objectString);

@@ -343,7 +343,7 @@ public class ETLLevelConstuct {
 
 		for (String string : arrayList) {
 			String sparql = "PREFIX map: <http://www.map.org/example#>"
-					+ "SELECT ?P ?O WHERE {?R a map:record. ?R map:sourceProperty ?P. ?R map:targetProperty ?O. FILTER regex(str(?P), '"
+					+ "SELECT ?P ?O WHERE {?R a map:PropertyMapper. ?R map:sourceProperty ?P. ?R map:targetProperty ?O. FILTER regex(str(?P), '"
 					+ string + "').}";
 			Query query = QueryFactory.create(sparql);
 			QueryExecution execution = QueryExecutionFactory.create(query, model);

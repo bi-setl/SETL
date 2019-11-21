@@ -146,16 +146,19 @@ public class Methods {
 
 	public Object getRDFNodeValue(RDFNode node) {
 		// TODO Auto-generated method stub
-		
-		try {
-			if (node.isLiteral()) {
-				return node.asLiteral().getValue();
-			} else {
-				return node.asResource().toString();
-			} 
-		} catch (Exception e) {
-			// TODO: handle exception
-			return node.toString();
+		if (node != null) {
+			try {
+				if (node.isLiteral()) {
+					return node.asLiteral().getValue();
+				} else {
+					return node.asResource().toString();
+				} 
+			} catch (Exception e) {
+				// TODO: handle exception
+				return node.toString();
+			}
+		} else {
+			return "";
 		}
 	}
 	
@@ -550,6 +553,7 @@ public class Methods {
 		// TODO Auto-generated method stub
 		File file = new File(fileName);
 		try {
+			file.delete();
 			file.createNewFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

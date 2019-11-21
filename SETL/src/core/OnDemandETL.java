@@ -1,5 +1,6 @@
 package core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
@@ -25,51 +26,55 @@ public class OnDemandETL {
 	Methods methods;
 	public String datasetString = "";
 
-	static String basePath = "C:\\Users\\Amrit\\Documents\\OnDemandETL\\";
+	static String basePath = "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\";
 	// static String basePath = "D:\\Amrit\\Java\\OnDemandETL\\";
-	static String targetABoxString = basePath + "target_abox.ttl";
-	static String targetTBoxString = basePath + "bd_tbox.ttl";
-	static String mapString = basePath + "map_version_1571224279370.ttl";
-
-	static String demoString = basePath + "demo.ttl";
+	
+	  static String targetABoxString = basePath + "target_abox.ttl"; static String
+	  targetTBoxString = basePath + "bd_tbox.ttl"; static String mapString =
+	  basePath + "map.ttl";
+	  
+	  static String demoString = basePath + "demo.ttl";
+	 
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-		/*
-		 * String sparqlQueryString =
-		 * "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" +
-		 * "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" +
-		 * "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + "SELECT * \r\n" +
-		 * "WHERE {\r\n" + "?o a qb:Observation .\r\n" +
-		 * "?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .\r\n"
-		 * +
-		 * "?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n"
-		 * +
-		 * "?o <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> ?ageDim_ageGroup .\r\n"
-		 * +
-		 * "?ageDim_ageGroup qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#ageGroup> .\r\n"
-		 * + "}";
-		 */
-
-		/*
-		 * String resultString = new OnDemandETL().performOnDemandETL(sparqlQueryString,
-		 * mapString, targetABoxString, targetTBoxString);
-		 * System.out.println(resultString);
-		 * 
-		 *
-		 */
 		
+		  String sparqlQueryString =
+		  "drinkingWaterSource#151PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" + 
+		  "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" + 
+		  "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + 
+		  "SELECT ?admGeographyDim_administrativeUnitName ?residenceDim_residenceType ?housingTenancyDim_housingTenancyAll (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_sum) \r\n" + 
+		  "WHERE {\r\n" + 
+		  "?o a qb:Observation .\r\n" + 
+		  "?o qb:dataSet <http://linked-statistics-bd.org/2011/data#HouseholdByAdm5ResHousingTenancy> .\r\n" + 
+		  "?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .\r\n" + 
+		  "?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .\r\n" + 
+		  "?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .\r\n" + 
+		  "?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .\r\n" + 
+		  "?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .\r\n" + 
+		  "?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .\r\n" + 
+		  "?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .\r\n" + 
+		  "?residenceDim_residence qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#residence> .\r\n" + 
+		  "?residenceDim_residence <http://linked-statistics-bd.org/2011/mdAttribute#inResidenceType> ?residenceDim_residenceType .\r\n" + 
+		  "?residenceDim_residenceType qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#residenceType> .\r\n" + 
+		  "?o <http://linked-statistics-bd.org/2011/mdProperty#housingTenancy> ?housingTenancyDim_housingTenancy .\r\n" + 
+		  "?housingTenancyDim_housingTenancy qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#housingTenancy> .\r\n" + 
+		  "?housingTenancyDim_housingTenancy <http://linked-statistics-bd.org/2011/mdAttribute#inHousingTenancyAll> ?housingTenancyDim_housingTenancyAll .\r\n" + 
+		  "?housingTenancyDim_housingTenancyAll qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#housingTenancyAll> .\r\n" + 
+		  "}\r\n" + 
+		  "GROUP BY ?admGeographyDim_administrativeUnitName ?residenceDim_residenceType ?housingTenancyDim_housingTenancyAll\r\n" + 
+		  "ORDER BY ?admGeographyDim_administrativeUnitName ?residenceDim_residenceType ?housingTenancyDim_housingTenancyAll";
+		  
+		  new OnDemandETL().performOnDemandETL(sparqlQueryString, mapString,
+		  targetABoxString, targetTBoxString);
+		 
 	}
 
 	private String performOnDemandETL(String sparqlQueryString, String mapString, String targetABoxString,
 			String targetTBoxString) {
 		// TODO Auto-generated method stub
 		methods = new Methods();
-		Methods.printTime();
 		LinkedHashMap<String, ArrayList<String>> queryLevelsArrayList = extractRequiredLevels(sparqlQueryString);
-
-		// Methods.print(queryLevelsArrayList);
 
 		String observationString = extractObservation(sparqlQueryString);
 
@@ -88,22 +93,29 @@ public class OnDemandETL {
 
 		Model mapModel = methods.readModelFromPath(mapString);
 		Model targetTBoxModel = methods.readModelFromPath(targetTBoxString);
-		Model targetModel = ModelFactory.createDefaultModel();
+		// Model targetModel = ModelFactory.createDefaultModel();
 
 		LinkedHashMap<String, String> prefixMap = Methods.extractPrefixes(mapString);
 		// prefixMap.putAll(Methods.extractPrefixes(mapString));
 
-		generateFactData(datasetString, mapModel, targetTBoxModel, targetModel, prefixMap, requiredFactArrayList);
+		generateFactData(datasetString, mapModel, targetTBoxModel, prefixMap, requiredFactArrayList);
 
+		int numOfLevelFiles = 1;
 		for (String levelString : requiredLevelArrayList.keySet()) {
 			ArrayList<String> propertyList = requiredLevelArrayList.get(levelString);
-			generateLevelData(Methods.bracketString(levelString), mapModel, targetTBoxModel, targetModel, prefixMap,
-					propertyList);
+			generateLevelData(Methods.bracketString(levelString), mapModel, targetTBoxModel, prefixMap,
+					propertyList, numOfLevelFiles);
+			numOfLevelFiles++;
 		}
+		
+		mergeAllFiles(basePath + "level.ttl", numOfLevelFiles, true);
 
-		// Methods.print(targetModel);
-
-		targetModel.add(targetABoxModel);
+		Model factModel = methods.readModelFromPath(basePath + "fact.ttl");
+		Model levelModel = methods.readModelFromPath(basePath + "level.ttl");
+		
+		Model targetModel = ModelFactory.createDefaultModel();
+		targetModel.add(factModel);
+		targetModel.add(levelModel);
 
 		methods.saveModel(targetModel, demoString);
 
@@ -113,10 +125,36 @@ public class OnDemandETL {
 		return "Done";
 	}
 
-	public void generateLevelData(String datasetString, Model mapModel, Model targetTBoxModel, Model targetModel,
-			LinkedHashMap<String, String> prefixMap, ArrayList<String> requiredPropertyArrayList) {
+	public void mergeAllFiles(String filePath, int numOfLevelFiles, boolean b) {
 		// TODO Auto-generated method stub
 		Methods methods = new Methods();
+		methods.createNewFile(filePath);
+		
+		for (int i = 1; i < numOfLevelFiles; i++) {
+			String fileNameString = "level" + i + ".ttl";
+			
+			Model model = methods.readModelFromPath(fileNameString);
+			String textString = methods.modelToString(model, "ttl");
+			
+			methods.appendToFile(textString, filePath);
+			
+			new File(fileNameString).delete();
+		}
+	}
+
+	public void generateLevelData(String datasetString, Model mapModel, Model targetTBoxModel,
+			LinkedHashMap<String, String> prefixMap, ArrayList<String> requiredPropertyArrayList, int numOfLevelFiles) {
+		// TODO Auto-generated method stub
+		Model targetModel = ModelFactory.createDefaultModel();
+		Methods methods = new Methods();
+		
+		/*
+		 * System.out.println("Level: " + datasetString);
+		 * 
+		 * System.out.println("Required Properties:");
+		 * methods.print(requiredPropertyArrayList);
+		 */
+		
 
 		String sparql = "\nPREFIX map: <http://www.map.org/example#>\n" + "SELECT * WHERE {"
 				+ "?concept a map:ConceptMapper." + "?concept map:targetConcept " + datasetString + "."
@@ -132,7 +170,9 @@ public class OnDemandETL {
 		String targetTypeString = datasetString.substring(1, datasetString.length() - 1);
 		LinkedHashMap<String, ConceptTransform> conceptMap = new LinkedHashMap<String, ConceptTransform>();
 
+		int resultCount = 0;
 		while (resultSet.hasNext()) {
+			resultCount++;
 			QuerySolution querySolution = (QuerySolution) resultSet.next();
 			String conceptString = querySolution.get("concept").toString();
 			String sourceTypeString = querySolution.get("sourcetype").toString();
@@ -164,7 +204,12 @@ public class OnDemandETL {
 				conceptMap.put(conceptString, conceptTransform);
 			}
 		}
+		
+		if (resultCount == 0) {
+			System.out.println("No map data for: " + datasetString);
+		}
 
+		int count = 0, numOfFiles = 1;
 		for (String conceptString : conceptMap.keySet()) {
 			ConceptTransform conceptTransform = conceptMap.get(conceptString);
 			String typeString = Methods.bracketString(conceptTransform.getSourceType());
@@ -174,14 +219,14 @@ public class OnDemandETL {
 			Model sourceABoxModel = methods.readModelFromPath(conceptTransform.getSourceABoxLocationString());
 			ResultSet set = Methods.executeQuery(sourceABoxModel, sparqlString);
 
-			// Methods.print(set);
-
 			String currentSubjectString = "";
 			LinkedHashMap<String, Object> valueMap = new LinkedHashMap<String, Object>();
 
 			Model provModel = ModelFactory.createDefaultModel();
 
 			while (set.hasNext()) {
+				count++;
+				
 				QuerySolution querySolution = (QuerySolution) set.next();
 				String resourceString = querySolution.get("s").toString();
 				String predicateString = querySolution.get("p").toString();
@@ -203,7 +248,7 @@ public class OnDemandETL {
 
 						String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
 								methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap,
-								provModel);
+								provModel, prefixMap);
 						String provIRI = "";
 
 						String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
@@ -225,10 +270,15 @@ public class OnDemandETL {
 						for (String mapperString : conceptTransform.getMapperTransformMap().keySet()) {
 							MapperTransform mapperTransform = conceptTransform.getMapperTransformMap()
 									.get(mapperString);
-
+							
+							String bracketPropertyString = Methods.bracketString(mapperTransform.getTargetProperty()); 
+							// System.out.println("Bracket: " + bracketPropertyString);
+							
 							if (requiredPropertyArrayList
-									.contains(Methods.bracketString(mapperTransform.getTargetProperty()))) {
+									.contains(bracketPropertyString)) {
 								Property property = targetModel.createProperty(mapperTransform.getTargetProperty());
+								
+								// System.out.println("Found: " + mapperTransform.getTargetProperty());
 
 								String propertyType = mapperTransform.getSourcePropertyType();
 
@@ -245,6 +295,11 @@ public class OnDemandETL {
 
 								String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
 										targetTBoxModel);
+								
+								/*
+								 * System.out.println("Target Prop: " + mapperTransform.getTargetProperty());
+								 * System.out.println("Range: " + rangeValueTarget);
+								 */
 
 								if (valueObject != null) {
 									if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
@@ -266,13 +321,25 @@ public class OnDemandETL {
 						valueMap.put(predicateString, methods.getRDFNodeValue(object));
 					}
 				}
+				
+				if (count % 100000 == 0) {
+					String tempPath = numOfFiles + ".ttl";
+					methods.saveModel(targetModel, tempPath);
+					
+					targetModel = ModelFactory.createDefaultModel();
+					numOfFiles++;
+				}
+			}
+			
+			if (count == 0) {
+				System.out.println("No abox data for: " + datasetString);
 			}
 
 			if (!currentSubjectString.equals("")) {
 				IRIGenerator generator = new IRIGenerator();
 
 				String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
-						methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap, provModel);
+						methods.assignPrefix(prefixMap, conceptTransform.getIriValue()), mapModel, valueMap, provModel, prefixMap);
 				String provIRI = "";
 
 				String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
@@ -313,6 +380,9 @@ public class OnDemandETL {
 
 						String rangeValueTarget = generator.getRangeValue(mapperTransform.getTargetProperty(),
 								targetTBoxModel);
+						
+						// System.out.println("Target Property: " + mapperTransform.getTargetProperty());
+						// System.out.println("Range: " + rangeValueTarget);
 
 						if (valueObject != null) {
 							if (rangeValueTarget.contains("http://www.w3.org/2001/XMLSchema#")) {
@@ -329,12 +399,24 @@ public class OnDemandETL {
 					}
 				}
 			}
+			
+			if (targetModel.size() > 0) {
+				String tempPath = numOfFiles + ".ttl";
+				methods.saveModel(targetModel, tempPath);
+				
+				targetModel = ModelFactory.createDefaultModel();
+				numOfFiles++;
+			}
 		}
+		
+		mergeAllFiles("level" + numOfLevelFiles + ".ttl", numOfFiles);
 	}
 
-	public void generateFactData(String datasetString, Model mapModel, Model targetTBoxModel, Model targetModel,
+	public void generateFactData(String datasetString, Model mapModel, Model targetTBoxModel,
 			LinkedHashMap<String, String> prefixMap, ArrayList<String> requiredFactArrayList) {
 		// TODO Auto-generated method stub
+		
+		Model targetModel = ModelFactory.createDefaultModel();
 		Methods methods = new Methods();
 
 		String sparql = "\nPREFIX map: <http://www.map.org/example#>\n" + "SELECT * WHERE {"
@@ -384,6 +466,7 @@ public class OnDemandETL {
 			}
 		}
 
+		int count = 0, numOfFiles = 1;
 		for (String conceptString : conceptMap.keySet()) {
 			ConceptTransform conceptTransform = conceptMap.get(conceptString);
 			String typeString = Methods.bracketString(conceptTransform.getSourceType());
@@ -400,6 +483,8 @@ public class OnDemandETL {
 			Model provModel = ModelFactory.createDefaultModel();
 
 			while (set.hasNext()) {
+				count++;
+				
 				QuerySolution querySolution = (QuerySolution) set.next();
 				String resourceString = querySolution.get("s").toString();
 				String predicateString = querySolution.get("p").toString();
@@ -414,11 +499,10 @@ public class OnDemandETL {
 						currentSubjectString = resourceString;
 						valueMap.put(predicateString, methods.getRDFNodeValue(object));
 					} else {
-
 						IRIGenerator generator = new IRIGenerator();
 
 						String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
-								conceptTransform.getIriValue(), mapModel, valueMap, provModel);
+								conceptTransform.getIriValue(), mapModel, valueMap, provModel, prefixMap);
 						String provIRI = "";
 
 						String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
@@ -487,13 +571,21 @@ public class OnDemandETL {
 						valueMap.put(predicateString, methods.getRDFNodeValue(object));
 					}
 				}
+				
+				if (count % 100000 == 0) {
+					String tempPath = numOfFiles + ".ttl";
+					methods.saveModel(targetModel, tempPath);
+					
+					targetModel = ModelFactory.createDefaultModel();
+					numOfFiles++;
+				}
 			}
 
 			if (!currentSubjectString.equals("")) {
 				IRIGenerator generator = new IRIGenerator();
 
 				String iriValue = generator.getIRIValue(conceptTransform.getIriValueType(),
-						conceptTransform.getIriValue(), mapModel, valueMap, provModel);
+						conceptTransform.getIriValue(), mapModel, valueMap, provModel, prefixMap);
 				String provIRI = "";
 
 				String rangeValue = generator.getRangeValue(targetTypeString, targetTBoxModel);
@@ -549,6 +641,35 @@ public class OnDemandETL {
 					}
 				}
 			}
+			
+			if (targetModel.size() > 0) {
+				String tempPath = numOfFiles + ".ttl";
+				methods.saveModel(targetModel, tempPath);
+				
+				targetModel = ModelFactory.createDefaultModel();
+				numOfFiles++;
+			}
+		}
+		
+		methods.createNewFile("fact.ttl");
+		
+		mergeAllFiles("fact.ttl", numOfFiles);
+	}
+
+	private void mergeAllFiles(String filePath, int numOfFiles) {
+		// TODO Auto-generated method stub
+		Methods methods = new Methods();
+		methods.createNewFile(filePath);
+		
+		for (int i = 1; i < numOfFiles; i++) {
+			String fileNameString = i + ".ttl";
+			
+			Model model = methods.readModelFromPath(fileNameString);
+			String textString = methods.modelToString(model, "ttl");
+			
+			methods.appendToFile(textString, filePath);
+			
+			new File(fileNameString).delete();
 		}
 	}
 
@@ -684,6 +805,7 @@ public class OnDemandETL {
 		Matcher matcher = pattern.matcher(sparqlQueryString);
 
 		while (matcher.find()) {
+			
 			String observationString = matcher.group(3).trim();
 			if (!observationString.equals("qb4o:memberOf")) {
 				requiredLevelsArrayList.add(observationString);

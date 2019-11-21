@@ -60,5 +60,6 @@
 	<classpathentry kind="lib" path="poi_lib/poi-scratchpad-4.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-2.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

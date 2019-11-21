@@ -215,6 +215,25 @@ public class FileMethods {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public void createFileInDirectory(String filepath) {
+		// TODO Auto-generated method stub
+		File file = new File(filepath);
+		try {
+			file.createNewFile();
+			String data = new TBoxDefinition().getPrefixStrings();
+			try (PrintWriter out = new PrintWriter(filePath)) {
+				out.println(data);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
 
 	public void createNewFile(String fileName) {
 		// TODO Auto-generated method stub

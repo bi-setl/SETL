@@ -110,6 +110,27 @@ public class SETLFrame extends JFrame {
 		});
 		mnNew.add(mntmEtl);*/
 		
+		JMenuItem mntmQetl = new JMenuItem("QETL");
+		mntmQetl.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// To add a panel as Tab, you only need to create an object of that panel
+				// and pass it to the following method as parameter -- Amrit
+				
+				int count = 1;
+				
+				for (TabModel tabModel : tabModelList.getTabModels()) {
+					if (tabModel.getTabObject() instanceof PanelOnDemandETL) {
+						count++;
+					}
+				}
+				
+				PanelOnDemandETL panelTBoxEnrichment = new PanelOnDemandETL();
+				tabModelList.getTabModels().add(new TabModel(tabbedPaneContainer.getTabCount(), panelTBoxEnrichment));
+				addPanelToContainer("QETL" + count,panelTBoxEnrichment);
+			}
+		});
+		mnNew.add(mntmQetl);
+		
 		JMenu mnDefinitionLayer = new JMenu("Definition Layer");
 		mnNew.add(mnDefinitionLayer);
 		

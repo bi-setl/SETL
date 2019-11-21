@@ -14,28 +14,39 @@ public class RunQuery {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String filepath = "C:\\Users\\Amrit\\Documents\\Census_11_TargetABox_01.ttl";
+		String filepath = "level.ttl";
 		Methods methods = new Methods();
-		
+
 		Model model = methods.readModelFromPath(filepath);
-		
+		model.add(methods.readModelFromPath("fact.ttl"));
+
+		// Methods.print(model);
+
 		String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n" + 
 				"PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n" + 
 				"PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\r\n" + 
-				"SELECT ?fieldOfActivityDim_fieldOfActivity (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) \r\n" + 
+				"SELECT * \r\n" + 
 				"WHERE {\r\n" + 
 				"?o a qb:Observation .\r\n" + 
-				"?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceSexFieldActivity> .\r\n" + 
-				"?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .\r\n" + 
-				"?o <http://linked-statistics-bd.org/2011/mdProperty#fieldOfActivity> ?fieldOfActivityDim_fieldOfActivity .\r\n" + 
-				"}\r\n" + 
-				"GROUP BY ?fieldOfActivityDim_fieldOfActivity\r\n" + 
-				"ORDER BY ?fieldOfActivityDim_fieldOfActivity";
-		
+				"?o qb:dataSet <http://linked-statistics-bd.org/2011/data#HouseholdByAdm5ResHousingTenancy> .\r\n" + 
+				"?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .\r\n" + 
+				"?o <http://linked-statistics-bd.org/2011/mdProperty#housingTenancy> ?housingTenancyDim_housingTenancy .\r\n" + 
+				"?housingTenancyDim_housingTenancy qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#housingTenancy> .\r\n" + 
+				"?housingTenancyDim_housingTenancy <http://linked-statistics-bd.org/2011/mdAttribute#inHousingTenancy> ?housingTenancyDim_housingTenancyAll .\r\n" +
+				"}\r\n";
+
 		Query query = QueryFactory.create(sparql);
 		QueryExecution execution = QueryExecutionFactory.create(query, model);
 		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
-		
+
 		methods.printResultSet(resultSet);
+		/*
+		 * 
+		 * "?housingTenancyDim_housingTenancy <http://linked-statistics-bd.org/2011/mdAttribute#inHousingTenancy> ?housingTenancyDim_housingTenancyAll .\r\n"
+		 * +
+		 * "?housingTenancyDim_housingTenancyAll qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#housingTenancyAll> .\r\n"
+		 * +
+		 */
+
 	}
 }

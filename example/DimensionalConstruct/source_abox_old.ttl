@@ -1,0 +1,71 @@
+<http://linked-statistics-bd-org/2011/ontology/householdSize#1>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "1 person" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "1" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#2>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "2 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "2" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#3>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "3 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "3" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#4>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "4 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "4" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#5>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "5 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "5" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#6>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "6 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "6" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#7>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "7 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "7" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .
+
+<http://linked-statistics-bd-org/2011/ontology/householdSize#8>
+        a       <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeName>
+                "8 persons" ;
+        <http://linked-statistics-bd-org/2011/ontology#householdSizeId>
+                "8" ;
+        <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll>
+                "1" .

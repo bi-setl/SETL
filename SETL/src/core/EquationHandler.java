@@ -7,7 +7,7 @@ public class EquationHandler {
 	
 	public Object handleExpression(String expressionString, LinkedHashMap<String, Object> valueHashMap) {
 		// TODO Auto-generated method stub
-		// System.out.println("Ex: " + expressionString);
+		
 		boolean containsKey = checkKey(expressionString);
 		if (containsKey) {
 			int keyWordPosition = expressionString.indexOf("(");
@@ -72,9 +72,9 @@ public class EquationHandler {
 				}
 			} else {
 				double value = 0.0;
-				// System.out.println(expressionString);
+				
 				if (valueHashMap.containsKey(expressionString.trim())) {
-					// System.out.println("IT EXISTS");
+					
 					try {
 						value = Double.parseDouble(valueHashMap.get(expressionString).toString().trim());
 						// System.out.println(value);

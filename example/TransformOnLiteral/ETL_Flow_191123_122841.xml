@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ETL>
+	<Start id="1574448876027">
+		<OperationName>Start</OperationName>
+		<UpperLeftX>62</UpperLeftX>
+		<UpperLeftY>198</UpperLeftY>
+	<InputStatus>true</InputStatus>
+		<NextOperations>
+			<item>1574448893583</item>
+		</NextOperations>
+	</Start>
+	<ExpressionHandler id="1574448893583">
+		<OperationName>TransformationOnLiteral</OperationName>
+		<UpperLeftX>517</UpperLeftX>
+		<UpperLeftY>30</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<MappingFile>C:\example\TransformOnLiteral\map.ttl</MappingFile>
+		<SourceABoxFile>C:\example\TransformOnLiteral\source_abox.ttl</SourceABoxFile>
+		<OutputFile>C:\example\TransformOnLiteral\191123_125548_Output.ttl</OutputFile>
+	</ExpressionHandler>
+	<Arrows>
+		<Arrow>
+			<SourceOperation>1574448876027</SourceOperation>
+			<TargetOperation>1574448893583</TargetOperation>
+		</Arrow>
+	</Arrows>
+</ETL>
+

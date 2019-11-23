@@ -289,6 +289,7 @@ public class ETLLevelEntryGenerator implements ETLOperation {
 		panelCSV.add(comboBoxTargetABox, "cell 1 6 2 1,growx");
 		
 		LinkedHashSet hashSet = inputParamsMap.get(LEVEL_FILE);
+		
 		ArrayList<String> aboxList;
 		if (hashSet != null) {
 			aboxList = new ArrayList<>(hashSet);

@@ -184,6 +184,9 @@ public class LevelEntryNew {
 					Property property = targetModel.createProperty(targetProperty);
 					rangeValue = getRangeValue(targetProperty, targetTBoxModel);
 					
+					// System.out.println("Target Property: " + targetProperty);
+					// System.out.println("Range: " + rangeValue);
+					
 					if (rangeValue.contains("http://www.w3.org/2001/XMLSchema#")) {
 						Literal literal = targetModel.createTypedLiteral(object);
 						resource.addLiteral(property, literal);

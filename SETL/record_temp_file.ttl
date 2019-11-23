@@ -1,0 +1,24 @@
+@prefix sdw: <http://example.com/sdw/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix qb4o: <http://purl.org/qb4olap/cubes#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix bus: <http://extbi.lab.aau.dk/ontology/business/>.
+@prefix xml: <http://www.w3.org/XML/1998/namespace>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dbpcat: <http://dbpedia.org/resource/Category:>.
+@prefix dbpedia: <http://dbpedia.org/resource/>.
+@prefix business: <http://extbi.lab.aau.dk/ontology/sdw/>.
+@prefix mdStructure: <http://linked-statistics-bd.org/2011/mdStructure#>.
+@prefix mdAttribute: <http://linked-statistics-bd.org/2011/mdAttribute#>.
+@prefix onto: <http://linked-statistics-bd.org/2011/ontology/>.
+@prefix geonames: <http://www.geonames.org/ontology#>.
+@prefix dataset: <http://linked-statistics-bd.org/2011/data#>.
+@prefix schema: <http://linked-statistics-bd.org/2011#>.
+@prefix mdProperty: <http://linked-statistics-bd.org/2011/mdProperty#>.
+@prefix map: <http://www.map.org/example#>.
+

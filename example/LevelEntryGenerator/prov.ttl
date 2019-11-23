@@ -1,0 +1,73 @@
+<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#1_23/11/2019>
+        <http://www.prov.com/prov/wasRevisionOf>
+                <http://linked-statistics-bd.org/2011/ontology/HouseholdSize#1> .
+
+<C:null_22/11/2019>  <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  .
+
+<C:null_23/11/2019>  <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  ;
+        <http://www.prov.com/prov/wasRevisionOf>
+                []  .
+
+<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#2_23/11/2019>
+        <http://www.prov.com/prov/wasRevisionOf>
+                <http://linked-statistics-bd.org/2011/ontology/HouseholdSize#2> .

@@ -1,0 +1,52 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ETL>
+	<Start id="1574492390471">
+		<OperationName>Start</OperationName>
+		<UpperLeftX>50</UpperLeftX>
+		<UpperLeftY>150</UpperLeftY>
+	<InputStatus>true</InputStatus>
+		<NextOperations>
+			<item>1574492395950</item>
+		</NextOperations>
+	</Start>
+	<ExpressionHandler id="1574492395950">
+		<OperationName>TransformationOnLiteral</OperationName>
+		<UpperLeftX>285</UpperLeftX>
+		<UpperLeftY>48</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<MappingFile>C:\example\TransformOnLiteral\map.ttl</MappingFile>
+		<SourceABoxFile>C:\example\TransformOnLiteral\source_abox.ttl</SourceABoxFile>
+		<OutputFile>C:\example\TransformOnLiteral\191123_044843_Output.ttl</OutputFile>
+		<NextOperations>
+			<item>1574492399001</item>
+		</NextOperations>
+	</ExpressionHandler>
+	<LevelEntryGenerator id="1574492399001">
+		<OperationName>LevelEntryGenerator</OperationName>
+		<UpperLeftX>434</UpperLeftX>
+		<UpperLeftY>218</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<SourceCSV>null</SourceCSV>
+		<Delimiter>null</Delimiter>
+		<FileType>RDF</FileType>
+		<TargetType>Turtle</TargetType>
+		<MappingFile>C:\example\LevelEntryGenerator\map.ttl</MappingFile>
+		<SourceABoxFile>C:\example\TransformOnLiteral\191123_044843_Output.ttl</SourceABoxFile>
+		<ProvFile>C:\example\LevelEntryGenerator\prov.ttl</ProvFile>
+		<TargetTBoxFile>C:\example\LevelEntryGenerator\bd_tbox.ttl</TargetTBoxFile>
+		<TargetABoxFile>C:\example\LevelEntryGenerator\191123_044953_TargetABox.ttl</TargetABoxFile>
+	</LevelEntryGenerator>
+	<Arrows>
+		<Arrow>
+			<SourceOperation>1574492390471</SourceOperation>
+			<TargetOperation>1574492395950</TargetOperation>
+		</Arrow>
+		<Arrow>
+			<SourceOperation>1574492395950</SourceOperation>
+			<TargetOperation>1574492399001</TargetOperation>
+		</Arrow>
+	</Arrows>
+</ETL>
+

@@ -1,9 +1,11 @@
 package etl_model;
 
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
@@ -11,12 +13,15 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
 
 import core.Expression;
+import core.MultipleTransformation;
 import helper.Methods;
 import model.ETLOperation;
 import net.miginfocom.swing.MigLayout;
@@ -32,21 +37,51 @@ public class ETLExpressionHandler implements ETLOperation {
 		super();
 		methods = new Methods();
 	}
-
+	
 	@Override
 	public boolean execute(JTextPane textPane) {
 		// TODO Auto-generated method stub
-		Expression expressionHandler = new Expression();
-		boolean status = expressionHandler.handleExpression(getMappingFile(), getSourceABoxFile(), getResultFile());
+		final JDialog dialog = new JDialog();
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					String result = "";
+					result += Calendar.getInstance().getTime().toString() + "\n";
+					
+					Expression expressionHandler = new Expression();
+					result += expressionHandler.transformOnliteral(getMappingFile(), getSourceABoxFile(), getResultFile());
+					result += "\n" + Calendar.getInstance().getTime();
 
-		if (status) {
-			textPane.setText(
-					textPane.getText().toString() + "\nExpression File Generated. Saved as: " + getResultFile());
-		} else {
-			textPane.setText(textPane.getText().toString() + "\nExpression File Generation Failed");
-		}
+					textPane.setText(textPane.getText().toString() + "\n" + result);
+					dialog.dispose();
+					dialog.setVisible(false);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new MigLayout("", "[grow]", "[]"));
 
-		return status;
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setIndeterminate(true);
+		panel.add(progressBar, "cell 0 0,grow");
+
+		final JOptionPane optionPane = new JOptionPane(panel, JOptionPane.INFORMATION_MESSAGE,
+				JOptionPane.DEFAULT_OPTION, null, new Object[] {}, null);
+		dialog.setTitle("Progress");
+		dialog.setModal(true);
+
+		dialog.setContentPane(optionPane);
+
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.pack();
+		dialog.setVisible(true);
+		
+		return true;
 	}
 
 	@Override

@@ -1,0 +1,1470 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix qb4o: <http://purl.org/qb4olap/cubes#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix mdStructure: <http://linked-statistics-bd.org/2011/mdStructure#>.
+@prefix mdAttribute: <http://linked-statistics-bd.org/2011/mdAttribute#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix onto: <http://linked-statistics-bd.org/2011/ontology/>.
+@prefix geonames: <http://www.geonames.org/ontology#>.
+@prefix dataset: <http://linked-statistics-bd.org/2011/data#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix schema: <http://linked-statistics-bd.org/2011#>.
+@prefix mdProperty: <http://linked-statistics-bd.org/2011/mdProperty#>.
+
+#CLASSES
+
+onto:Age a owl:Class;
+	rdfs:label "Age of the people"@en.
+
+onto:AgeGroup a owl:Class;
+	rdfs:label "Age group of the people"@en.
+
+onto:SchoolAgeGroup a owl:Class;
+	rdfs:label "Age group of the people"@en.
+
+onto:AgeGroupAll a owl:Class;
+	rdfs:label "All age group of the people"@en.
+
+onto:AttendingSchool a owl:Class;
+	rdfs:label "People attending school"@en.
+
+onto:AttendingSchoolAll a owl:Class;
+	rdfs:label "All who attends school"@en.
+
+onto:DisabilityType a owl:Class;
+	rdfs:label "All types of disability"@en.
+
+onto:DisabilityTypeAll a owl:Class;
+	rdfs:label "All types of disability among the people"@en.
+
+onto:DrinkingWaterSource a owl:Class;
+	rdfs:label "Source of drinking water"@en.
+
+onto:DrinkingWaterSourceAll a owl:Class;
+	rdfs:label "All drinking water source"@en.
+
+onto:ElectricityConnection a owl:Class;
+	rdfs:label "Ethnic Group of the country"@en.
+
+onto:EthnicGroup a owl:Class;
+	rdfs:label "Ethnic Group of the country"@en.
+
+onto:EthnicGroupAll a owl:Class;
+	rdfs:label "All ethnic groups of the country"@en.
+
+onto:FieldOfActivity a owl:Class;
+	rdfs:label "Field of activity of the people of the country"@en.
+
+onto:FieldOfActivityAll a owl:Class;
+	rdfs:label "All Field of activity of the people of the country"@en.
+
+onto:HouseholdSize a owl:Class;
+	rdfs:label "Household sizes in the country"@en.
+
+onto:HouseholdSizeAll a owl:Class;
+	rdfs:label "All Household sizes in the country"@en.
+
+onto:HouseholdStructureType a owl:Class;
+	rdfs:label "Household Structure Type for general household"@en.
+
+onto:HouseholdStructureTypeAll a owl:Class;
+	rdfs:label "All Household Structure Type for general household"@en.
+
+onto:HouseholdType a owl:Class;
+	rdfs:label "All household types"@en.
+
+onto:HouseholdTypeAll a owl:Class;
+	rdfs:label "All household types"@en.
+
+onto:HousingTenancy a owl:Class;
+	rdfs:label "Housing Tenancy for General Household"@en.
+
+onto:HousingTenancyAll a owl:Class;
+	rdfs:label "All housing tenancy for all general household"@en.
+
+onto:LiteracyStatus a owl:Class;
+	rdfs:label "Literacy status of the people"@en.
+
+onto:MaritalStatus a owl:Class;
+	rdfs:label "Marital Status of the people"@en.
+
+onto:MaritalStatusAll a owl:Class;
+	rdfs:label "All Marital Status of the people"@en.
+
+onto:Religion a owl:Class;
+	rdfs:label "Religion of the people of the country"@en.
+
+onto:ReligionAll a owl:Class;
+	rdfs:label "All religions of the country"@en.
+
+onto:Sex a owl:Class;
+	rdfs:label "Sex of the people"@en.
+
+onto:SexAll a owl:Class;
+	rdfs:label "All categories of sex of the people"@en.
+
+onto:ToiletFacility a owl:Class;
+	rdfs:label "Toilet facility for general household"@en.
+
+onto:ToiletFacilityAll a owl:Class;
+	rdfs:label "All Toilet facility for general household"@en.
+
+
+#CUBES
+
+mdStructure:householdByCommunityResidenceHousingTenancy a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:min, qb4o:count, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:housingTenancyDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceHouseholdSize a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:householdSizeDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:PopByGeoResLiving a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:sum, qb4o:count, qb4o:max, qb4o:min];
+	qb:component [ qb4o:dimension mdProperty:livingPositionDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSexLiteracyStatus a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:sexDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:literatePopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResidenceDisabilityType a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:disabilityTypeDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSexMaritalStatus a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:maritalStatusDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:sexDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResidenceSexAge a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:ageDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:sexDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceToiletType a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:toiletTypeDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceElectricConnection a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:eletricityConnectionDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceReligion a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:religionDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSex a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:sexDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceDrinkingWaterSource a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:drinkingWaterSourceDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceHouseholdStructure a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:householdStructureDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSexAttendSchoolAgeGroup a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:sexDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:attendingSchoolDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:ageDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceEthnicGroup a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:ethnicGroupDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSexFieldOfActivity a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:sexDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:fieldOfActivityDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidence a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceAge a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:dimension mdProperty:ageDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne].
+
+
+mdStructure:householdByCommunityResidenceHouseholdType a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:residenceDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:admGeographyDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:householdTypeDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum] .
+
+
+#CUBOIDS
+
+mdStructure:populationByCommunityResidenceAgeGroup a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceAge;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:ageGroup; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:popByAdm5ResLivpos a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:PopByGeoResLiving;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:level mdProperty:admUnitOne; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:livingPosition; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSexStatus a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceSex;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:sex; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceDrinkingWaterSrc a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceDrinkingWaterSource;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:drinkingWaterSource; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResidenceSexLiteracy a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceSexLiteracyStatus;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:sex; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb:measure mdProperty:literatePopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResSexAttendSchoolAgeGroup a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceSexAttendSchoolAgeGroup;
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:sex; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:schoolAgeGroup; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:level mdProperty:attendingSchool; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:populationByCommunityResidenceSexSchoolAgeGroup a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceAge;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:schoolAgeGroup; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceEthnicGrp a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceEthnicGroup;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:ethnicGroup; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceHouseholdCapacity a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceHouseholdSize;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:householdSize; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceToiletFacility a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceToiletType;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:toiletFacility; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResidenceDisabilityStatus a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceDisabilityType;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:disabilityType; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceHouseholdStruct a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceHouseholdStructure;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:householdStructureType; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceElectricity a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceElectricConnection;
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:electricityConnection; qb4o:cardinality qb4o:ManyToOne].
+
+mdStructure:householdByCommunityResidenceHouseType a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceHouseholdType;
+	qb:component [ qb4o:level mdProperty:householdType; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum] .
+
+mdStructure:populationByCommunityResidenceSexFieldActivity a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceSexFieldOfActivity;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:fieldOfActivity; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:sex; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResidenceSexMaritalPos a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceSexMaritalStatus;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:sex; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:maritalStatus; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceReligionStatus a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceReligion;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:religion; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:householdByCommunityResidenceHousingTen a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:householdByCommunityResidenceHousingTenancy;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:housingTenancy; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:numberOfHousehold; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+mdStructure:populationByCommunityResidenceSexAgeGroup a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb4o:isCuboidOf mdStructure:populationByCommunityResidenceSexAge;
+	qb:component [ qb:measure mdProperty:numberOfPopulation; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum];
+	qb:component [ qb4o:level mdProperty:residence; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:admUnitFive; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:ageGroup; qb4o:cardinality qb4o:ManyToOne].
+
+
+#DATASETS
+
+dataset:HouseholdByAdm5ResHousingTenancy a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceHousingTen.
+
+dataset:HouseholdByAdm5ResidenceHouseholdSize a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceHouseholdCapacity.
+
+dataset:PopByAdm5ResLivpos a qb:DataSet;
+	qb:structure mdStructure:popByAdm5ResLivpos.
+
+dataset:householdByAdm5DrinkingWaterSrc a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceDrinkingWaterSrc.
+
+dataset:householdByAdm5ResidenceElectricity a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceElectricity.
+
+dataset:householdByAdm5ResidenceEthnicGrp a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceEthnicGrp.
+
+dataset:householdByAdm5ResidenceHouseholdStruct a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceHouseholdStruct.
+
+dataset:householdByAdm5ResidenceHouseholdType a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceHouseType.
+
+dataset:householdByAdm5ResidenceReligionStatus a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceReligionStatus.
+
+dataset:householdByAdm5ResidenceToiletFacility a qb:DataSet;
+	qb:structure mdStructure:householdByCommunityResidenceToiletFacility.
+
+dataset:populationByAdm5ResidenceAgeGroup a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceAgeGroup.
+
+dataset:populationByAdm5ResidenceDisabilityType a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceDisabilityStatus.
+
+dataset:populationByAdm5ResidenceSex a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceSexStatus.
+
+dataset:populationByAdm5ResidenceSexAgeGroup a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceSexAgeGroup.
+
+dataset:populationByAdm5ResidenceSexAttendSchoolAgeGroup a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResSexAttendSchoolAgeGroup.
+
+dataset:populationByAdm5ResidenceSexFieldActivity a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceSexFieldActivity.
+
+dataset:populationByAdm5ResidenceSexLiterate a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceSexLiteracy.
+
+dataset:populationByAdm5ResidenceSexMaritalStatus a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceSexMaritalPos.
+
+dataset:populationByAdm5ResidenceSexSchoolAgeGroup a qb:DataSet;
+	qb:structure mdStructure:populationByCommunityResidenceSexSchoolAgeGroup.
+
+
+#DIMENSIONS
+
+mdProperty:admGeographyDim a qb:DimensionProperty;
+	rdfs:label "This is the dimension covering the administrative geography of Bangladesh "@en;
+	qb4o:hasHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy.
+
+mdProperty:ageDim a qb:DimensionProperty;
+	rdfs:label "Age dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:attendingSchoolDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "People who attends School"@en.
+
+mdProperty:disabilityTypeDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Type of disability"@en.
+
+mdProperty:drinkingWaterSourceDim a qb:DimensionProperty;
+	rdfs:label "Source of drinking water dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:eletricityConnectionDim a qb:DimensionProperty;
+	rdfs:label "Number of electricity connection in the household"@en;
+	rdfs:range xsd:string.
+
+mdProperty:ethnicGroupDim a qb:DimensionProperty;
+	rdfs:label "Ethnic group dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:fieldOfActivityDim a qb:DimensionProperty;
+	rdfs:label "Field of Activity Dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:householdSizeDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Size of Household"@en.
+
+mdProperty:householdStructureDim a qb:DimensionProperty;
+	rdfs:label "Household Structure dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:householdTypeDim a qb:DimensionProperty;
+	rdfs:label "Distribution of Household"@en;
+	rdfs:range xsd:long.
+
+mdProperty:housingTenancyDim a qb:DimensionProperty;
+	rdfs:label "Dimension of housing tenancy"@en;
+	rdfs:range xsd:string.
+
+mdProperty:literacyStatusDim a qb:DimensionProperty;
+	rdfs:label "Literacy Dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:livingPositionDim a qb:DimensionProperty;
+	rdfs:label "It describes the living status of the populaiton whether they live in a residence or outside of a residence (floating)"@en;
+	qb4o:hasHierarchy mdStructure:livingPositionHierarchy.
+
+mdProperty:maritalStatusDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Marital Status"@en.
+
+mdProperty:religionDim a qb:DimensionProperty;
+	rdfs:label "Religion of Dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:residenceDim a qb:DimensionProperty;
+	rdfs:label "This dimension indicates the type of dimension, i.e., rural, urban, other"@en;
+	qb4o:hasHierarchy mdStructure:residenceHierarchy.
+
+mdProperty:sexDim a qb:DimensionProperty;
+	rdfs:label "Sex Dimension"@en;
+	rdfs:range xsd:string.
+
+mdProperty:toiletTypeDim a qb:DimensionProperty;
+	rdfs:label "Toilet type dimension"@en;
+	rdfs:range xsd:string.
+
+
+#HIERARCHIES
+
+mdStructure:ageHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:ageGroupAll, mdProperty:ageGroup, mdProperty:age;
+	rdfs:label "Age Hierarchy"@en;
+	qb4o:inDimension mdProperty:ageDim.
+
+mdStructure:attendingSchoolHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:attendingSchoolAll, mdProperty:attendingSchool;
+	qb4o:inDimension mdProperty:attendingSchoolDim;
+	rdfs:label "school attending hierarchy"@en.
+
+mdStructure:disabilityHierarchy a qb4o:Hierarchy;
+	rdfs:label "Disability Hierarchy"@en;
+	qb4o:inDimension mdProperty:disabilityTypeDim;
+	qb4o:hasLevel mdProperty:disabilityType, mdProperty:disabilityTypeAll.
+
+mdStructure:drinkingWaterSourceHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of drinking water source"@en;
+	qb4o:inDimension mdProperty:drinkingWaterSourceDim;
+	qb4o:hasLevel mdProperty:drinkingWaterSource, mdProperty:drinkingWaterSourceAll.
+
+mdStructure:electricityConnectionHierarchy a qb4o:Hierarchy;
+	rdfs:label "Electricity Connection Hierarchy"@en;
+	qb4o:inDimension mdProperty:eletricityConnectionDim;
+	qb4o:hasLevel mdProperty:electricityConnection.
+
+mdStructure:ethnicGroupHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of ethnic group"@en;
+	qb4o:inDimension mdProperty:ethnicGroupDim;
+	qb4o:hasLevel mdProperty:ethnicGroup, mdProperty:ethnicGroupAll.
+
+mdStructure:fieldOfActivityHierarchy a qb4o:Hierarchy;
+	rdfs:label "Field of Activity Hierarchy"@en;
+	qb4o:inDimension mdProperty:fieldOfActivityDim;
+	qb4o:hasLevel mdProperty:fieldOfActivity, mdProperty:fieldOfActivityAll.
+
+mdStructure:geoCitycorpHierarchy a qb4o:Hierarchy;
+	rdfs:label "Geographical hierarchy considering city corporation"@en;
+	qb4o:inDimension mdProperty:admGeographyDim;
+	qb4o:hasLevel mdProperty:admUnitOne, mdProperty:admUnitFive, mdProperty:admUnitFour, mdProperty:AdmUnitTwo, mdProperty:country, mdProperty:cityCorporation.
+
+mdStructure:geoHierarchy a qb4o:Hierarchy;
+	rdfs:label "Geographical Hierarchy 01"@en;
+	qb4o:inDimension mdProperty:admGeographyDim;
+	qb4o:hasLevel mdProperty:admUnitOne, mdProperty:admUnitFive, mdProperty:admUnitFour, mdProperty:admUnitThree, mdProperty:AdmUnitTwo, mdProperty:country.
+
+mdStructure:geoMunicipalityHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:admUnitFive, mdProperty:admUnitOne, mdProperty:AdmUnitTwo, mdProperty:admUnitFour, mdProperty:country, mdProperty:municipality, mdProperty:admUnitThree;
+	rdfs:label "Hierarchy using Municipality"@en;
+	qb4o:inDimension mdProperty:admGeographyDim.
+
+mdStructure:householdSizeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of Household Size"@en;
+	qb4o:hasLevel mdProperty:householdSizeAll, mdProperty:householdSize;
+	qb4o:inDimension mdProperty:householdSizeDim.
+
+mdStructure:householdStructureTypeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of Household Structure type"@en;
+	qb4o:inDimension mdProperty:householdStructureDim;
+	qb4o:hasLevel mdProperty:householdStructureType, mdProperty:householdStructureTypeAll.
+
+mdStructure:householdTypeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of household Type"@en;
+	qb4o:inDimension mdProperty:householdTypeDim;
+	qb4o:hasLevel mdProperty:householdType, mdProperty:householdTypeAll.
+
+mdStructure:housingTenancyHierarchy a qb4o:Hierarchy;
+	rdfs:label "Housing Tenancy Hierarchy"@en;
+	qb4o:inDimension mdProperty:housingTenancyDim;
+	qb4o:hasLevel mdProperty:housingTenancy, mdProperty:housingTenancyAll.
+
+mdStructure:literacyStatusHierarchy a qb4o:Hierarchy;
+	rdfs:label "Literacy Status Hierarchy"@en;
+	qb4o:inDimension mdProperty:literacyStatusDim;
+	qb4o:hasLevel mdProperty:literacyStatus.
+
+mdStructure:livingPositionHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:livingPositionAll, mdProperty:livingPosition;
+	qb4o:inDimension mdProperty:livingPositionDim;
+	rdfs:label "Living Position Hierarchy"@en.
+
+mdStructure:maritalStatusHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of Marital Status"@en;
+	qb4o:inDimension mdProperty:maritalStatusDim;
+	qb4o:hasLevel mdProperty:maritalStatus, mdProperty:maritalStatusAll.
+
+mdStructure:religionHierarchy a qb4o:Hierarchy;
+	rdfs:label "Religion Hierarchy"@en;
+	qb4o:inDimension mdProperty:religionDim;
+	qb4o:hasLevel mdProperty:religion, mdProperty:religionAll.
+
+mdStructure:residenceHierarchy a qb4o:Hierarchy;
+	qb4o:hasLevel mdProperty:residenceTypeAll, mdProperty:residence, mdProperty:residenceType;
+	qb4o:inDimension mdProperty:residenceDim;
+	rdfs:label "Residence Hierarchy"@en.
+
+mdStructure:schoolAgeHierarchy a qb4o:Hierarchy;
+	rdfs:label "School Age Hierarchy"@en;
+	qb4o:inDimension mdProperty:ageDim;
+	qb4o:hasLevel mdProperty:age, mdProperty:ageGroupAll, mdProperty:schoolAgeGroup.
+
+mdStructure:sexHierarchy a qb4o:Hierarchy;
+	rdfs:label "Sex Hierarchy"@en;
+	qb4o:inDimension mdProperty:sexDim;
+	qb4o:hasLevel mdProperty:sex, mdProperty:sexAll.
+
+mdStructure:toiletFacilityHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy of Toilet Hierarchy"@en;
+	qb4o:inDimension mdProperty:toiletTypeDim;
+	qb4o:hasLevel mdProperty:toiletFacility, mdProperty:toiletFacilityAll.
+
+
+#HIERARCHY STEPS
+
+_:hs1 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inHouseholdStructureTypeAll;
+	qb4o:parentLevel mdProperty:householdStructureTypeAll;
+	qb4o:inHierarchy mdStructure:householdStructureTypeHierarchy;
+	qb4o:childLevel mdProperty:householdStructureType;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs2 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inSexAll;
+	qb4o:parentLevel mdProperty:sexAll;
+	qb4o:inHierarchy mdStructure:sexHierarchy;
+	qb4o:childLevel mdProperty:sex;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs3 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:admUnitFour;
+	qb4o:parentLevel mdProperty:cityCorporation;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCorporation.
+
+_:hs4 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy;
+	qb4o:childLevel mdProperty:admUnitFour;
+	qb4o:parentLevel mdProperty:admUnitThree;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmThree.
+
+_:hs5 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inAttendingSchoolAll;
+	qb4o:parentLevel mdProperty:attendingSchoolAll;
+	qb4o:inHierarchy mdStructure:attendingSchoolHierarchy;
+	qb4o:childLevel mdProperty:attendingSchool;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs6 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inLivingPositionAll;
+	qb4o:parentLevel mdProperty:livingPositionAll;
+	qb4o:inHierarchy mdStructure:livingPositionHierarchy;
+	qb4o:childLevel mdProperty:livingPosition;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs7 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:admUnitFive;
+	qb4o:parentLevel mdProperty:admUnitFour;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmFour.
+
+_:hs8 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inAgeGroupAll;
+	qb4o:parentLevel mdProperty:ageGroupAll;
+	qb4o:inHierarchy mdStructure:ageHierarchy;
+	qb4o:childLevel mdProperty:ageGroup;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs9 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:AdmUnitTwo;
+	qb4o:parentLevel mdProperty:admUnitOne;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmOne.
+
+_:hs10 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inDrinkingWaterSourceAll;
+	qb4o:parentLevel mdProperty:drinkingWaterSourceAll;
+	qb4o:inHierarchy mdStructure:drinkingWaterSourceHierarchy;
+	qb4o:childLevel mdProperty:drinkingWaterSource;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs11 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:residenceHierarchy;
+	qb4o:childLevel mdProperty:residence;
+	qb4o:parentLevel mdProperty:residenceType;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inResidenceType.
+
+_:hs12 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inFieldOfActivityAll;
+	qb4o:parentLevel mdProperty:fieldOfActivityAll;
+	qb4o:inHierarchy mdStructure:fieldOfActivityHierarchy;
+	qb4o:childLevel mdProperty:fieldOfActivity;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs13 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inHouseholdSizeAll;
+	qb4o:parentLevel mdProperty:householdSizeAll;
+	qb4o:inHierarchy mdStructure:householdSizeHierarchy;
+	qb4o:childLevel mdProperty:householdSize;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs14 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inMaritalStatusAll;
+	qb4o:parentLevel mdProperty:maritalStatusAll;
+	qb4o:inHierarchy mdStructure:maritalStatusHierarchy;
+	qb4o:childLevel mdProperty:maritalStatus;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs15 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoMunicipalityHierarchy;
+	qb4o:childLevel mdProperty:municipality;
+	qb4o:parentLevel mdProperty:admUnitThree;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmThree.
+
+_:hs16 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy, mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:admUnitOne;
+	qb4o:parentLevel mdProperty:country;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCountry.
+
+_:hs17 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inReligionAll;
+	qb4o:parentLevel mdProperty:religionAll;
+	qb4o:inHierarchy mdStructure:religionHierarchy;
+	qb4o:childLevel mdProperty:religion;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs18 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoHierarchy, mdStructure:geoMunicipalityHierarchy;
+	qb4o:childLevel mdProperty:admUnitThree;
+	qb4o:parentLevel mdProperty:AdmUnitTwo;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmTwo.
+
+_:hs19 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoCitycorpHierarchy;
+	qb4o:childLevel mdProperty:cityCorporation;
+	qb4o:parentLevel mdProperty:AdmUnitTwo;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inAdmTwo.
+
+_:hs20 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inToiletFacilityAll;
+	qb4o:parentLevel mdProperty:toiletFacilityAll;
+	qb4o:inHierarchy mdStructure:toiletFacilityHierarchy;
+	qb4o:childLevel mdProperty:toiletFacility;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs21 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:geoMunicipalityHierarchy;
+	qb4o:childLevel mdProperty:admUnitFour;
+	qb4o:parentLevel mdProperty:municipality;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCorporation.
+
+_:hs22 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inResidenceTypeAll;
+	qb4o:inHierarchy mdStructure:residenceHierarchy;
+	qb4o:childLevel mdProperty:residenceType;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:parentLevel mdProperty:residenceTypeAll.
+
+_:hs23 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inHousingTenancyAll;
+	qb4o:parentLevel mdProperty:housingTenancyAll;
+	qb4o:inHierarchy mdStructure:housingTenancyHierarchy;
+	qb4o:childLevel mdProperty:housingTenancy;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs24 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inHouseholdTypeAll;
+	qb4o:parentLevel mdProperty:householdTypeAll;
+	qb4o:inHierarchy mdStructure:householdTypeHierarchy;
+	qb4o:childLevel mdProperty:householdType;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+_:hs25 a qb4o:HierarchyStep;
+	qb4o:rollup mdAttribute:inAgeGroup;
+	qb4o:parentLevel mdProperty:ageGroup;
+	qb4o:inHierarchy mdStructure:ageHierarchy;
+	qb4o:childLevel mdProperty:age;
+	qb4o:pcCardinality qb4o:OneToMany.
+
+
+#LEVELS
+
+mdProperty:AdmUnitTwo a qb4o:LevelProperty;
+	rdfs:range onto:ADM2;
+	rdfs:label "Administrative unit-Two covers all districts in Bangladesh"@en;
+	qb4o:hasAttribute mdAttribute:administrativeUnitName, mdAttribute:areaInAcres, mdAttribute:inAdmOne, mdAttribute:admUnitTwoId.
+
+mdProperty:admUnitFive a qb4o:LevelProperty;
+	rdfs:range onto:ADM5;
+	rdfs:label "The administrative unit Five and it includes Mouza and Mahalla of the country. In general, a mouza is under an union where a mahalla is in a ward. "@en;
+	qb4o:hasAttribute mdAttribute:administrativeUnitName, mdAttribute:admUnitFiveId, mdAttribute:inAdmFour.
+
+mdProperty:admUnitFour a qb4o:LevelProperty;
+	rdfs:range onto:ADM4;
+	rdfs:label "This level includes unions and wards of the country. "@en;
+	qb4o:hasAttribute mdAttribute:administrativeUnitName, mdAttribute:admUnitFourId, mdAttribute:areaInAcres, mdAttribute:inAdmThree.
+
+mdProperty:admUnitOne a qb4o:LevelProperty;
+	rdfs:range onto:ADM1;
+	rdfs:label "First order administrative division, It covers all division of the country."@en;
+	qb4o:hasAttribute mdAttribute:areaInAcres, mdAttribute:administrativeUnitName, mdAttribute:admUnitOneId, mdAttribute:inCountry.
+
+mdProperty:admUnitThree a qb4o:LevelProperty;
+	rdfs:range onto:ADM3;
+	rdfs:label "Administrative Unit Tree covers Upazila and Thana. "@en;
+	qb4o:hasAttribute mdAttribute:administrativeUnitName, mdAttribute:admUnitThreeId, mdAttribute:areaInAcres, mdAttribute:inAdmTwo.
+
+mdProperty:age a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAgeGroup, mdAttribute:ageId, mdAttribute:ageName;
+	rdfs:range onto:Age;
+	rdfs:label "Age of the people"@en.
+
+mdProperty:ageGroup a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAgeGroupAll, mdAttribute:ageGroupId, mdAttribute:ageGroupName;
+	rdfs:label "AgeGroup of the population"@en;
+	rdfs:range onto:AgeGroup.
+
+mdProperty:ageGroupAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:ageGroupAllId;
+	rdfs:label ", All age group of the people"@en;
+	rdfs:range onto:AgeGroupAll.
+
+mdProperty:all a qb4o:LevelProperty;
+	rdfs:range onto:All;
+	rdfs:label "Top tier level"@en.
+
+mdProperty:attendingSchool a qb4o:LevelProperty;
+	rdfs:range onto:AttendingSchool;
+	rdfs:label "AttendingSchool of the population of an administrative unit"@en;
+	qb4o:hasAttribute mdAttribute:attendingSchoolType, mdAttribute:attendingSchoolId, mdAttribute:inAttendingSchoolAll.
+
+mdProperty:attendingSchoolAll a qb4o:LevelProperty;
+	rdfs:label "All AttendingSchool"@en;
+	qb4o:hasAttribute mdAttribute:attendingSchoolAllId;
+	rdfs:range onto:AttendingSchoolAll.
+
+mdProperty:cityCorporation a qb4o:LevelProperty;
+	rdfs:range onto:CityCorporation;
+	rdfs:label "City Corporation of the country"@en;
+	qb4o:hasAttribute mdAttribute:cityCorporationId, mdAttribute:cityCorporationName, mdAttribute:inAdmTwo.
+
+mdProperty:country a qb4o:LevelProperty;
+	rdfs:range onto:Country;
+	rdfs:label "The top tier administrative unit"@en;
+	qb4o:hasAttribute mdAttribute:countryId, mdAttribute:administrativeUnitName, mdAttribute:areaInAcres.
+
+mdProperty:disabilityType a qb4o:LevelProperty;
+	rdfs:range onto:DisabilityType;
+	rdfs:label "Disability Type of people"@en.
+
+mdProperty:disabilityTypeAll a qb4o:LevelProperty;
+	rdfs:range onto:DisabilityTypeAll;
+	rdfs:label "All disability type among people"@en.
+
+mdProperty:drinkingWaterSource a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inDrinkingWaterSourceAll, mdAttribute:drinkingWaterSourceId, mdAttribute:drinkingWaterSourceName;
+	rdfs:range onto:DrinkingWaterSource;
+	rdfs:label "Source of drinking water for general household"@en.
+
+mdProperty:drinkingWaterSourceAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:drinkingWaterSourceAllId;
+	rdfs:range onto:DrinkingWaterSourceAll;
+	rdfs:label "All drinking water source for general household"@en.
+
+mdProperty:electricityConnection a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:electricityConnectionId;
+	rdfs:label "Describe the status of electricity connection in household"@en;
+	rdfs:range onto:ElectricityConnection.
+
+mdProperty:ethnicGroup a qb4o:LevelProperty;
+	rdfs:range onto:EthnicGroup;
+	rdfs:label "Ethnic group of the country"@en.
+
+mdProperty:ethnicGroupAll a qb4o:LevelProperty;
+	rdfs:label "All ethnic groups of the country"@en;
+	rdfs:range onto:EthnicGroupAll.
+
+mdProperty:fieldOfActivity a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inFieldOfActivityAll, mdAttribute:fieldOfActivityId, mdAttribute:fieldOfActivityName;
+	rdfs:label "Field of activity of the people of the country"@en;
+	rdfs:range onto:FieldOfActivity.
+
+mdProperty:fieldOfActivityAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:fieldOfActivityAllId;
+	rdfs:label "All Field of activity of the people of the country"@en;
+	rdfs:range onto:FieldOfActivityAll.
+
+mdProperty:householdSize a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inHouseholdSizeAll, mdAttribute:householdSizeId, mdAttribute:householdSizeName;
+	rdfs:label "HouseholdSize of the population of an administrative unit"@en;
+	rdfs:range onto:HouseholdSize.
+
+mdProperty:householdSizeAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:householdSizeAllId;
+	rdfs:label "All Household sizes in the country"@en;
+	rdfs:range onto:HouseholdSizeAll.
+
+mdProperty:householdStructureType a qb4o:LevelProperty;
+	rdfs:range onto:HouseholdStructureType;
+	rdfs:label "household Structure Type for general household"@en;
+	qb4o:hasAttribute mdAttribute:householdStructureTypeName, mdAttribute:householdStructureTypeId, mdAttribute:inHouseholdStructureTypeAll.
+
+mdProperty:householdStructureTypeAll a qb4o:LevelProperty;
+	rdfs:label "All household Structure Type for general household"@en;
+	qb4o:hasAttribute mdAttribute:householdStructureTypeAllId;
+	rdfs:range onto:HouseholdStructureTypeAll.
+
+mdProperty:householdType a qb4o:LevelProperty;
+	rdfs:label "Household type of the people"@en;
+	qb4o:hasAttribute mdAttribute:inHouseholdTypeAll, mdAttribute:householdTypeId, mdAttribute:householdTypeName;
+	rdfs:range onto:HouseholdType.
+
+mdProperty:householdTypeAll a qb4o:LevelProperty;
+	rdfs:label "All Household types in the country"@en;
+	qb4o:hasAttribute mdAttribute:householdTypeAllId;
+	rdfs:range onto:HouseholdTypeAll.
+
+mdProperty:housingTenancy a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inHousingTenancyAll, mdAttribute:housingTenancyId, mdAttribute:housingTenancyName;
+	rdfs:label "Housing tenancy for general household"@en;
+	rdfs:range onto:HousingTenancy.
+
+mdProperty:housingTenancyAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:housingTenancyAllId;
+	rdfs:range onto:HousingTenancyAll;
+	rdfs:label "All Housing tenancy for general household"@en.
+
+mdProperty:literacyStatus a qb4o:LevelProperty;
+	rdfs:label "Literacy status of the people"@en;
+	rdfs:range onto:LiteracyStatus.
+
+mdProperty:livingPosition a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inLivingPositionAll, mdAttribute:livingPositionId, mdAttribute:livingPosName;
+	rdfs:label "Living postion of the population of an administrative unit"@en;
+	rdfs:range onto:LivingPos.
+
+mdProperty:livingPositionAll a qb4o:LevelProperty;
+	rdfs:range onto:LivingPositionAll;
+	qb4o:hasAttribute mdAttribute:livingPositionAllId;
+	rdfs:label "All Living Position"@en.
+
+mdProperty:maritalStatus a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inMaritalStatusAll, mdAttribute:maritalStatusId, mdAttribute:maritalStatusName;
+	rdfs:label "Marital status of the people"@en;
+	rdfs:range onto:MaritalStatus.
+
+mdProperty:maritalStatusAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:maritalStatusAllId;
+	rdfs:label "All marital status of the people"@en;
+	rdfs:range onto:MaritalStatusAll.
+
+mdProperty:municipality a qb4o:LevelProperty;
+	rdfs:range onto:Municipality;
+	rdfs:label "Municipality of the country"@en;
+	qb4o:hasAttribute mdAttribute:municipalityName, mdAttribute:municipalityId, mdAttribute:inAdmThree.
+
+mdProperty:religion a qb4o:LevelProperty;
+	rdfs:label "religion of the people of the country"@en;
+	qb4o:hasAttribute mdAttribute:inReligionAll, mdAttribute:religionId, mdAttribute:religionName;
+	rdfs:range onto:Religion.
+
+mdProperty:religionAll a qb4o:LevelProperty;
+	rdfs:label "All religions of the country"@en;
+	qb4o:hasAttribute mdAttribute:religionAllId;
+	rdfs:range onto:ReligionAll.
+
+mdProperty:residence a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inResidenceType, mdAttribute:residenceId, mdAttribute:residenceName;
+	rdfs:range onto:residence;
+	rdfs:label "Residence of an administrative unit"@en.
+
+mdProperty:residenceType a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inResidenceTypeAll, mdAttribute:residenceTypeId;
+	rdfs:label "Type of residence-rural or urban"@en;
+	rdfs:range onto:ResidenceType.
+
+mdProperty:residenceTypeAll a qb4o:LevelProperty;
+	rdfs:range onto:ResidenceTypeAll;
+	qb4o:hasAttribute mdAttribute:residenceTypeAllId;
+	rdfs:label "All residence Type"@en.
+
+mdProperty:schoolAgeGroup a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inAgeGroupAll, mdAttribute:schoolAgeGroupId, mdAttribute:schoolAgeGroupName;
+	rdfs:range onto:SchoolAgeGroup;
+	rdfs:label "Age group of school going people"@en.
+
+mdProperty:sex a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:inSexAll, mdAttribute:sexId, mdAttribute:sexName;
+	rdfs:label "Sex of the people"@en;
+	rdfs:range onto:Sex.
+
+mdProperty:sexAll a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:sexAllId;
+	rdfs:label "All categories of the sex"@en;
+	rdfs:range onto:SexAll.
+
+mdProperty:toiletFacility a qb4o:LevelProperty;
+	rdfs:range onto:ToiletFacility;
+	rdfs:label "ToiletFacility of the population of an administrative unit"@en;
+	qb4o:hasAttribute mdAttribute:toiletFacilityName, mdAttribute:toiletFacilityId, mdAttribute:inToiletFacilityAll.
+
+mdProperty:toiletFacilityAll a qb4o:LevelProperty;
+	rdfs:label "All ToiletFacility"@en;
+	qb4o:hasAttribute mdAttribute:toiletFacilityAllId;
+	rdfs:range onto:ToiletFacilityAll.
+
+
+#ATTRIBUTES
+
+mdAttribute:ResidenceTypeName a qb4o:LevelAttribute;
+	rdfs:label "Name of residence type"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:admUnitFiveId a qb4o:LevelAttribute;
+	rdfs:label "The unique identifier of administrative unit 5"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:admUnitFourId a qb4o:LevelAttribute;
+	rdfs:label "The unique identifier fo administrative unit tier four."@en;
+	rdfs:range xsd:string.
+
+mdAttribute:admUnitOneId a qb4o:LevelAttribute;
+	rdfs:label "Unique identifier for administrative tier one"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:admUnitThreeId a qb4o:LevelAttribute;
+	rdfs:label "Unique Identifier for administrative tier three"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:admUnitTwoId a qb4o:LevelAttribute;
+	rdfs:label "Unique identifier for administrative unit tier two."@en;
+	rdfs:range xsd:string.
+
+mdAttribute:administrativeUnitName a qb4o:LevelAttribute;
+	rdfs:label "The name of the administrative unit"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:ageGroupAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "AgeGroup all id"@en.
+
+mdAttribute:ageGroupId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a AgeGroup"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:ageGroupName a qb4o:LevelAttribute;
+	rdfs:label "Name of the AgeGroup"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:ageId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "unique id for a age"@en.
+
+mdAttribute:ageName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of the age"@en.
+
+mdAttribute:all a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To aggregate for top tier level"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:areaInAcres a qb4o:LevelAttribute;
+	rdfs:label "Total area of the adiministrative unit"@en;
+	rdfs:range xsd:double.
+
+mdAttribute:attendingSchoolAllId a qb4o:LevelAttribute;
+	rdfs:label "AttendingSchool all id"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:attendingSchoolId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "unique id for a AttendingSchool"@en.
+
+mdAttribute:attendingSchoolType a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Type of the AttendingSchool"@en.
+
+mdAttribute:cityCorporationId a qb4o:LevelAttribute;
+	rdfs:label "Id of a city corporation"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:cityCorporationName a qb4o:LevelAttribute;
+	rdfs:label "Name of a city corporation"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:countryId a qb4o:LevelAttribute;
+	rdfs:label "Unique Id for country"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:drinkingWaterSourceAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "drinking Water Source all id"@en.
+
+mdAttribute:drinkingWaterSourceId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a drinking Water Source"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:drinkingWaterSourceName a qb4o:LevelAttribute;
+	rdfs:label "Name of the drinking Water Source"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:electricityConnectionId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a electric Connection"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:fieldOfActivityAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "fieldOfActivity all id"@en.
+
+mdAttribute:fieldOfActivityId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a fieldOfActivity"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:fieldOfActivityName a qb4o:LevelAttribute;
+	rdfs:label "Name of the field Of Activity"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:householdSizeAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "HouseholdSize all id"@en.
+
+mdAttribute:householdSizeId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a HouseholdSize"@en;
+	qb4o:updateType qb4o:Type2;
+	rdfs:range xsd:string.
+
+mdAttribute:householdSizeName a qb4o:LevelAttribute;
+	rdfs:label "Name of the HouseholdSize"@en;
+	qb4o:updateType qb4o:Type2;
+	rdfs:range xsd:string.
+
+mdAttribute:householdStructureTypeAllId a qb4o:LevelAttribute;
+	rdfs:label "HouseholdStructureType all id"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:householdStructureTypeId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "unique id for a HouseholdStructureType"@en.
+
+mdAttribute:householdStructureTypeName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of the HouseholdStructureType"@en.
+
+mdAttribute:householdTypeAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "HouseholdType all id"@en.
+
+mdAttribute:householdTypeId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a HouseholdType"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:householdTypeName a qb4o:LevelAttribute;
+	rdfs:label "Name of the HouseholdType"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:housingTenancyAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "housing Tenancy all id"@en.
+
+mdAttribute:housingTenancyId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a housing status"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:housingTenancyName a qb4o:LevelAttribute;
+	rdfs:label "Name of the housing Tenancy"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:inAdmFour a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "It is a rollup property to roll up from admUnit5 to admUnit4"@en;
+	rdfs:range onto:ADM4.
+
+mdAttribute:inAdmOne a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup from admUnitTwo to admUnitOne"@en;
+	rdfs:range onto:ADM1.
+
+mdAttribute:inAdmThree a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup admFour to admThree"@en;
+	rdfs:range onto:ADM3.
+
+mdAttribute:inAdmTwo a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup from admUnitThree to admUnitFour"@en;
+	rdfs:range onto:ADM2.
+
+mdAttribute:inCorporation a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup from admUnitFour to either municipality or cityCorporation"@en;
+	rdfs:range onto:cityCorporation.
+
+mdAttribute:inCountry a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup between admUnit1 to country"@en;
+	rdfs:range onto:Country.
+
+mdAttribute:inDrinkingWaterSource a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "drinking water source to residence type"@en;
+	rdfs:range onto:DrinkingWaterSource.
+
+mdAttribute:inFieldOfActivity a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "field of activity"@en;
+	rdfs:range onto:FieldOfActivity.
+
+mdAttribute:inHousingTenancyAll a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "to rollup from hosuing tenancy to residence type"@en;
+	rdfs:range onto:HousingTenancyAll.
+
+mdAttribute:inResidenceType a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "to rollup from residence to residence type"@en;
+	rdfs:range onto:ResidenceType.
+
+mdAttribute:inSex a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "sex type"@en;
+	rdfs:range onto:Sex.
+
+mdAttribute:livingPosName a qb4o:LevelAttribute;
+	rdfs:label "Name of the living position"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:livingPositionAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "living position all id"@en.
+
+mdAttribute:livingPositionId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a living status"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:maritalStatusAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "MaritalStatus all id"@en.
+
+mdAttribute:maritalStatusId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a MaritalStatus"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:maritalStatusName a qb4o:LevelAttribute;
+	rdfs:label "Name of the MaritalStatus"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:municipalityId a qb4o:LevelAttribute;
+	rdfs:label "Identifier for a municipality"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:municipalityName a qb4o:LevelAttribute;
+	rdfs:label "Name of a municipality"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:religionAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Religion all id"@en.
+
+mdAttribute:religionId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a Religion"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:religionName a qb4o:LevelAttribute;
+	rdfs:label "Name of the Religion"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:residenceId a qb4o:LevelAttribute;
+	rdfs:label "Unique Id of a residence "@en;
+	rdfs:range xsd:string.
+
+mdAttribute:residenceName a qb4o:LevelAttribute;
+	rdfs:label "Name of the residence"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:residenceTypeAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Id for residence type all"@en.
+
+mdAttribute:residenceTypeId a qb4o:LevelAttribute;
+	rdfs:label "ID of residence type"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:sexAllId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "sex all id"@en.
+
+mdAttribute:sexId a qb4o:LevelAttribute;
+	rdfs:label "unique id for a sex"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:sexName a qb4o:LevelAttribute;
+	rdfs:label "Name of the sex"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:toiletFacilityAllId a qb4o:LevelAttribute;
+	rdfs:label "ToiletFacility all id"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:toiletFacilityId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "unique id for a ToiletFacility"@en.
+
+mdAttribute:toiletFacilityName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of the ToiletFacility"@en.
+
+mdAttribute:schoolAgeGroupName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Name of the MaritalStatus"@en.
+	
+mdAttribute:schoolAgeGroupId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "unique id for a MaritalStatus"@en.
+
+
+
+#ROLLUP RELATIONSHIPS
+
+mdAttribute:all a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To aggregate for top tier level"@en;
+	rdfs:range xsd:string.
+
+mdAttribute:inAdmFour a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "It is a rollup property to roll up from admUnit5 to admUnit4"@en;
+	rdfs:range onto:ADM4.
+
+mdAttribute:inAdmOne a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup from admUnitTwo to admUnitOne"@en;
+	rdfs:range onto:ADM1.
+
+mdAttribute:inAdmThree a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup admFour to admThree"@en;
+	rdfs:range onto:ADM3.
+
+mdAttribute:inAdmTwo a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup from admUnitThree to admUnitFour"@en;
+	rdfs:range onto:ADM2.
+
+mdAttribute:inAgeGroup a qb4o:RollupProperty.
+
+mdAttribute:inAgeGroupAll a qb4o:RollupProperty.
+
+mdAttribute:inAttendingSchoolAll a qb4o:RollupProperty.
+
+mdAttribute:inCorporation a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup from admUnitFour to either municipality or cityCorporation"@en;
+	rdfs:range onto:cityCorporation.
+
+mdAttribute:inCountry a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "To rollup between admUnit1 to country"@en;
+	rdfs:range onto:Country.
+
+mdAttribute:inDrinkingWaterSource a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "drinking water source to residence type"@en;
+	rdfs:range onto:DrinkingWaterSource.
+
+mdAttribute:inDrinkingWaterSourceAll a qb4o:RollupProperty.
+
+mdAttribute:inFieldOfActivity a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "field of activity"@en;
+	rdfs:range onto:FieldOfActivity.
+
+mdAttribute:inFieldOfActivityAll a qb4o:RollupProperty.
+
+mdAttribute:inHouseholdSizeAll a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "Household Size All"@en;
+	qb4o:updateType qb4o:Type2;
+	rdfs:range onto:HouseholdSizeAll.
+
+mdAttribute:inHouseholdSizeAll a qb4o:RollupProperty.
+
+mdAttribute:inHouseholdStructureTypeAll a qb4o:RollupProperty.
+
+mdAttribute:inHouseholdTypeAll a qb4o:RollupProperty.
+
+mdAttribute:inHousingTenancyAll a qb4o:RollupProperty.
+
+mdAttribute:inLivingPositionAll a qb4o:RollupProperty.
+
+mdAttribute:inMaritalStatusAll a qb4o:RollupProperty.
+
+mdAttribute:inReligionAll a qb4o:RollupProperty.
+
+mdAttribute:inResidenceType a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "to rollup from residence to residence type"@en;
+	rdfs:range onto:ResidenceType.
+
+mdAttribute:inResidenceTypeAll a qb4o:RollupProperty.
+
+mdAttribute:inSex a qb4o:LevelAttribute, qb4o:RollupProperty;
+	rdfs:label "sex type"@en;
+	rdfs:range onto:Sex.
+
+mdAttribute:inSexAll a qb4o:RollupProperty.
+
+mdAttribute:inToiletFacilityAll a qb4o:RollupProperty.
+
+
+#MEASURES
+
+mdProperty:literatePopulation a qb:MeasureProperty;
+	rdfs:label "It is literate population"@en;
+	rdfs:range xsd:long.
+
+mdProperty:numberOfHousehold a qb:MeasureProperty;
+	rdfs:label "Number of Household"@en;
+	rdfs:range xsd:long.
+
+mdProperty:numberOfPopulation a qb:MeasureProperty;
+	rdfs:label "Number of Population"@en;
+	rdfs:range xsd:long.
+
+
+

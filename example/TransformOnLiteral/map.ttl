@@ -1,0 +1,1566 @@
+@prefix schema: <http://linked-statistics-bd.org/2011#> .
+@prefix bus:   <http://extbi.lab.aau.dk/ontology/business/> .
+@prefix geonames: <http://www.geonames.org/ontology#> .
+@prefix mdStructure: <http://linked-statistics-bd.org/2011/mdStructure#> .
+@prefix mdProperty: <http://linked-statistics-bd.org/2011/mdProperty#> .
+@prefix business: <http://extbi.lab.aau.dk/ontology/sdw/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix sdw:   <http://example.com/sdw/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix onto:  <http://linked-statistics-bd-org/2011/ontology/> .
+@prefix mdAttribute: <http://linked-statistics-bd.org/2011/mdAttribute#> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix qb4o:  <http://purl.org/qb4olap/cubes#> .
+@prefix dbpcat: <http://dbpedia.org/resource/Category:> .
+@prefix map:   <http://www.map.org/example#> .
+@prefix dataset: <http://linked-statistics-bd.org/2011/data#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+
+map:PropertyMapper_04_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:dataset_census15_housingtenancy_dataset_HouseholdByAdm5ResHousingTenancy ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_01_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:dataset_census15_housingtenancy_dataset_HouseholdByAdm5ResHousingTenancy ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_133_fieldOfActivityAllId_fieldOfActivityAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:fieldOfActivityAll_fieldOfActivityAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#fieldOfActivityAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:fieldOfActivityAllId .
+
+map:PropertyMapper_63_householdType_householdType
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_householdtype_householdByAdm5ResidenceHouseholdType ;
+        map:sourceProperty      dataset:householdType ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:householdType .
+
+map:census10_populationByAdm5ResidenceSexFieldActivity
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,CONCAT(dataset:sex,CONCAT(_,dataset:fieldOfActivity))))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census10.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census10 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:populationByAdm5ResidenceSexFieldActivity .
+
+map:PropertyMapper_42_drinkingWaterSourceId_drinkingWaterSourceId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:drinkingWaterSource_drinkingWaterSource ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSourceId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:drinkingWaterSourceId .
+
+map:census06_populationByAdm5ResidenceSexLiterate
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:sex))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census06.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census06 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:populationByAdm5ResidenceSexLiterate .
+
+map:PropertyMapper_135_householdSizeId_householdSizeId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdSize_householdSize ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdSizeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      <http://linked-statistics-bd-org/2011/ontology#householdSizeId> .
+
+map:PropertyMapper_37_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_drinkingwatersource_householdByAdm5DrinkingWaterSrc ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_106_allid_inAgeGroupAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:schoolAgeGroup_schoolAgeGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#allid> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAgeGroupAll .
+
+map:PropertyMapper_124_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census13_householdByAdm5ResidenceReligionStatus ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_108_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:houseTenancyAll_housingTenancyAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#houseTenancyAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#houseTenancyAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:housingTenancyAll .
+
+map:PropertyMapper_123_religion_religion
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census13_householdByAdm5ResidenceReligionStatus ;
+        map:sourceProperty      dataset:religion ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:religion .
+
+map:PropertyMapper_69_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_sex_populationByAdm5ResidenceSex ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_27_inhousingTenancyAll_inHousingTenancyAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:housingTenancy_housingTenancy ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#inhousingTenancyAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inHousingTenancyAll .
+
+map:PropertyMapper_20_admUnitFiveId_admUnitFiveId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm5_admUnitFive ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitFiveId .
+
+map:householdSize_householdSize
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#householdSizeId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#householdSize> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         <http://linked-statistics-bd-org/2011/ontology#householdSize> .
+
+map:PropertyMapper_75_sexAllId_sexAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:sexAll_sexAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#sexAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:sexAllId .
+
+map:PropertyMapper_94_schoolAgeGroup_schoolAgeGroup
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:schoolAgeGroup ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:schoolAgeGroup .
+
+map:PropertyMapper_51_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_19_name_administrativeUnitName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm5_admUnitFive ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:attendingSchool_attendingSchool
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#attendingSchool> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:attendingSchool .
+
+map:PropertyMapper_121_toiletFacility_toiletFacility
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:toiletFacility ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:toiletFacility .
+
+map:adm1_admUnitOne  a            map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#admUnitOneId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#adm1> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:admUnitOne .
+
+map:PropertyMapper_31_drinkingWaterSourceAllId_drinkingWaterSourceAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:drinkingWaterSourceAll_drinkingWaterSourceAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSourceAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:drinkingWaterSourceAllId .
+
+map:PropertyMapper_90_sex_sex
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census06_populationByAdm5ResidenceSexLiterate ;
+        map:sourceProperty      dataset:sex ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:sex .
+
+map:PropertyMapper_21_admUnitFourId_inAdmFour
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm5_admUnitFive ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitFourId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmFour .
+
+map:PropertyMapper_41_indrinkingWaterSourceAll_inDrinkingWaterSourceAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:drinkingWaterSource_drinkingWaterSource ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#indrinkingWaterSourceAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inDrinkingWaterSourceAll .
+
+map:census15_drinkingwatersource_householdByAdm5DrinkingWaterSrc
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:drinkingWaterSource))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census15_drinkingwatersource ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:householdByAdm5DrinkingWaterSrc .
+
+map:PropertyMapper_82_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census04_populationByAdm5ResidenceAgeGroup ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_110_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:adm5_admUnitFive  a           map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#adm5> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:admUnitFive .
+
+map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:toiletFacility))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census14_toiletFacility.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census14_toiletfacility ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:householdByAdm5ResidenceToiletFacility .
+
+map:PropertyMapper_14_area_areaInAcres
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm3_admUnitThree ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#area> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:areaInAcres .
+
+map:PropertyMapper_78_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census03_HouseholdByAdm5ResidenceHouseholdSize ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_73_sexAllId_inSexAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:sex_sex ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#sexAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inSexAll .
+
+map:PropertyMapper_134_householdSizeName_householdSizeName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdSize_householdSize ;
+        map:sourceProperty      "CONCAT(onto:householdSizeName, CONCAT(_, onto:inhouseholdSizeAll))" ;
+        map:sourcePropertyType  map:SourceExpression ;
+        map:targetProperty      onto:householdSizeName .
+
+map:PropertyMapper_117_fieldOfActivity_fieldOfActivity
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census10_populationByAdm5ResidenceSexFieldActivity ;
+        map:sourceProperty      dataset:fieldOfActivity ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:fieldOfActivity .
+
+map:householdSizeAll_householdSizeAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#householdSizeAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#householdSizeAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:householdSizeAll .
+
+map:PropertyMapper_81_ageGroup_ageGroup
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census04_populationByAdm5ResidenceAgeGroup ;
+        map:sourceProperty      dataset:ageGroup ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:ageGroup .
+
+map:PropertyMapper_116_sex_sex
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census10_populationByAdm5ResidenceSexFieldActivity ;
+        map:sourceProperty      dataset:sex ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:sex .
+
+map:fieldOfActivity_fieldOfActivity
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#fieldOfActivityId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#fieldOfActivity> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:fieldOfActivity .
+
+map:PropertyMapper_98_attendingSchool_attendingSchool
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:attendingSchool ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:attendingSchool .
+
+map:PropertyMapper_11_admUnitTwoId_inAdmTwo
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm3_admUnitThree ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitTwoId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmTwo .
+
+map:PropertyMapper_111_sex_sex
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:sex ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:sex .
+
+map:PropertyMapper_59_toiletFacilityAllId_toiletFacilityAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:toiletFacilityAll_toiletFacilityAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#toiletFacilityAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:toiletFacilityAllId .
+
+map:PropertyMapper_26_housingTenancyName_housingTenancyName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:housingTenancy_housingTenancy ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#housingTenancyName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:housingTenancyName .
+
+map:schoolAgeGroupAll_ageGroupAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#schoolAgeGroupAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#schoolAgeGroupAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:ageGroupAll .
+
+map:PropertyMapper_35_electricityConnection_electricityConnection
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_electricityconnection_householdByAdm5ResidenceElectricity ;
+        map:sourceProperty      dataset:electricityConnection ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:electricityConnection .
+
+map:sexAll_sexAll  a              map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#sexAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#sexAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:sexAll .
+
+map:PropertyMapper_91_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census06_populationByAdm5ResidenceSexLiterate ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:PropertyMapper_129_religionName_religionName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:religion_religion ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#religionName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:religionName .
+
+map:PropertyMapper_105_name_schoolAgeGroupName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:schoolAgeGroup_schoolAgeGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:schoolAgeGroupName .
+
+map:householdTypeAll_householdTypeAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#householdTypeAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#householdTypeAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:householdTypeAll .
+
+map:PropertyMapper_85_name_ageGroupName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:ageGroup_ageGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:ageGroupName .
+
+map:PropertyMapper_07_countryId_inCountry
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm1_admUnitOne ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#countryId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inCountry .
+
+map:adm2_AdmUnitTwo  a            map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#admUnitTwoId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#adm2> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:AdmUnitTwo .
+
+map:PropertyMapper_29_residenceTypeId_residenceTypeId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:residenceType_residenceType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#residenceTypeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:residenceTypeId .
+
+map:PropertyMapper_12_admUnitThreeId_admUnitThreeId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm3_admUnitThree ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitThreeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitThreeId .
+
+map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,CONCAT(dataset:sex,CONCAT(_,CONCAT(dataset:schoolAgeGroup,CONCAT(_,dataset:attendingSchool))))))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census08.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census08 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:populationByAdm5ResidenceSexAttendSchoolAgeGroup .
+
+map:PropertyMapper_33_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_electricityconnection_householdByAdm5ResidenceElectricity ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_115_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census10_populationByAdm5ResidenceSexFieldActivity ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_114_residence_sex
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census10_populationByAdm5ResidenceSexFieldActivity ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:sex .
+
+map:PropertyMapper_77_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census03_HouseholdByAdm5ResidenceHouseholdSize ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_48_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:census13_householdByAdm5ResidenceReligionStatus
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:religion))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census13.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census13 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:householdByAdm5ResidenceReligionStatus .
+
+map:census02_sex_populationByAdm5ResidenceSex
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:sex))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census02_sex.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census02_sex ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:populationByAdm5ResidenceSex .
+
+map:PropertyMapper_22_id_residenceId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:residence_residence ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:residenceId .
+
+map:PropertyMapper_119_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_100_id_attendingSchoolId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:attendingSchool_attendingSchool ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:attendingSchoolId .
+
+map:drinkingWaterSourceAll_drinkingWaterSourceAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSourceAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSourceAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:drinkingWaterSourceAll .
+
+map:PropertyMapper_32_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_electricityconnection_householdByAdm5ResidenceElectricity ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_101_name_attendingSchoolType
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:attendingSchool_attendingSchool ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:attendingSchoolType .
+
+map:PropertyMapper_64_inHouseholdTypeAll_inHouseholdTypeAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdType_householdType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#inHouseholdTypeAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inHouseholdTypeAll .
+
+map:PropertyMapper_122_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_89_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census06_populationByAdm5ResidenceSexLiterate ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_24_allid_inResidenceType
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:residence_residence ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#allid> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inResidenceType .
+
+map:PropertyMapper_02_housingTenancy_housingTenancy
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:dataset_census15_housingtenancy_dataset_HouseholdByAdm5ResHousingTenancy ;
+        map:sourceProperty      dataset:housingTenancy ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:housingTenancy .
+
+map:PropertyMapper_43_drinkingWaterSourceName_drinkingWaterSourceName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:drinkingWaterSource_drinkingWaterSource ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSourceName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:drinkingWaterSourceName .
+
+map:PropertyMapper_52_householdStructureTypeId_householdStructureTypeId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdStructureType_householdStructureType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdStructureTypeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdStructureTypeId .
+
+map:PropertyMapper_95_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_18_admUnitFourId_admUnitFourId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm4_admUnitFour ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitFourId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitFourId .
+
+map:PropertyMapper_131_fieldOfActivityId_fieldOfActivityId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:fieldOfActivity_fieldOfActivity ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#fieldOfActivityId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:fieldOfActivityId .
+
+map:adm3_admUnitThree
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#admUnitThreeId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#adm3> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:admUnitThree .
+
+map:PropertyMapper_70_sex_sex
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_sex_populationByAdm5ResidenceSex ;
+        map:sourceProperty      dataset:sex ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:sex .
+
+map:PropertyMapper_34_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_electricityconnection_householdByAdm5ResidenceElectricity ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_84_id_ageGroupId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:ageGroup_ageGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:ageGroupId .
+
+map:PropertyMapper_25_housingTenancyId_housingTenancyId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:housingTenancy_housingTenancy ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#housingTenancyId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:housingTenancyId .
+
+map:dataset_census15_housingtenancy_dataset_HouseholdByAdm5ResHousingTenancy
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:housingTenancy))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census15_housingTenancy.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census15_housingtenancy ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:HouseholdByAdm5ResHousingTenancy .
+
+map:bus  a          map:Dataset ;
+        map:source  <http://www.onto.org/schema#source_tbox> ;
+        map:target  <http://www.onto.org/schema#bd_tbox> .
+
+map:PropertyMapper_102_allid_inAttendingSchoolAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:attendingSchool_attendingSchool ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#allid> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAttendingSchoolAll .
+
+map:PropertyMapper_08_admUnitTwoId_admUnitTwoId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm2_AdmUnitTwo ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitTwoId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitTwoId .
+
+map:PropertyMapper_125_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census13_householdByAdm5ResidenceReligionStatus ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_66_householdTypeId_householdTypeId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdType_householdType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdTypeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdTypeId .
+
+map:PropertyMapper_137_householdSizeAllId_householdSizeAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdSizeAll_householdSizeAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdSizeAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdSizeAllId .
+
+map:PropertyMapper_54_inhouseholdStructureTypeAll_inHouseholdStructureTypeAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdStructureType_householdStructureType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#inhouseholdStructureTypeAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inHouseholdStructureTypeAll .
+
+map:PropertyMapper_09_name_administrativeUnitName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm2_AdmUnitTwo ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:sex_sex  a                    map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#sexId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#sex> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:sex .
+
+map:PropertyMapper_96_sex_sex
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:sex ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:sex .
+
+map:householdStructureTypeAll_householdStructureTypeAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#householdStructureTypeAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#householdStructureTypeAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:householdStructureTypeAll .
+
+map:PropertyMapper_56_toiletFacilityId_toiletFacilityId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:toiletFacility_toiletFacility ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#toiletFacilityId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:toiletFacilityId .
+
+map:fieldOfActivityAll_fieldOfActivityAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#fieldOfActivityAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#fieldOfActivityAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:fieldOfActivityAll .
+
+map:PropertyMapper_67_householdTypeAllId_householdTypeAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdTypeAll_householdTypeAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdTypeAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdTypeAllId .
+
+map:PropertyMapper_03_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:dataset_census15_housingtenancy_dataset_HouseholdByAdm5ResHousingTenancy ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:residence_residence
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#residence> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:residence .
+
+map:PropertyMapper_39_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_drinkingwatersource_householdByAdm5DrinkingWaterSrc ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_65_householdTypeName_householdTypeName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdType_householdType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdTypeName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdTypeName .
+
+map:PropertyMapper_93_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_06_admUnitOneId_admUnitOneId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm1_admUnitOne ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitOneId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:admUnitOneId .
+
+map:householdType_householdType
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#householdTypeId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#householdType> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:householdType .
+
+map:PropertyMapper_38_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_drinkingwatersource_householdByAdm5DrinkingWaterSrc ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_30_residenceTypeName_inResidenceTypeAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:residenceType_residenceType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#residenceTypeName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inResidenceTypeAll .
+
+map:PropertyMapper_76_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census03_HouseholdByAdm5ResidenceHouseholdSize ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_103_attendingSchoolAllId_attendingSchoolAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:attendingSchoolAll_attendingSchoolAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#attendingSchoolAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:attendingSchoolAllId .
+
+map:PropertyMapper_109_schoolAgeGroup_schoolAgeGroup
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:schoolAgeGroup ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:schoolAgeGroup .
+
+map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,CONCAT(dataset:sex,CONCAT(_,CONCAT(dataset:schoolAgeGroup,CONCAT(_,dataset:attendingSchool))))))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census07.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census07 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:populationByAdm5ResidenceSexAttendSchoolAgeGroup .
+
+map:PropertyMapper_60_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_householdtype_householdByAdm5ResidenceHouseholdType ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_44_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_householdstructuretype_householdByAdm5ResidenceHouseholdStruct ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:ageGroupAll_ageGroupAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#ageGroupAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#ageGroupAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:ageGroupAll .
+
+map:adm4_admUnitFour  a           map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#admUnitFourId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#adm4> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:admUnitFour .
+
+map:PropertyMapper_47_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_householdstructuretype_householdByAdm5ResidenceHouseholdStruct ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:attendingSchoolAll_attendingSchoolAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#attendingSchoolAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#attendingSchoolAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:attendingSchoolAll .
+
+map:religion_religion
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#religionId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#religion> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:religion .
+
+map:PropertyMapper_74_sexName_sexName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:sex_sex ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#sexName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:sexName .
+
+map:electricConnection_electricityConnection
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#electricConnectionId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#electricConnection> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:electricityConnection .
+
+map:PropertyMapper_50_toiletFacility_toiletFacility
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:toiletFacility ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:toiletFacility .
+
+map:PropertyMapper_57_intoiletFacilityAll_inToiletFacilityAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:toiletFacility_toiletFacility ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#intoiletFacilityAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inToiletFacilityAll .
+
+map:census02_householdtype_householdByAdm5ResidenceHouseholdType
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:householdType))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census02_householdType.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census02_householdtype ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:householdByAdm5ResidenceHouseholdType .
+
+map:PropertyMapper_99_ageGroupAllId_ageGroupAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:ageGroupAll_ageGroupAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#ageGroupAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:ageGroupAllId .
+
+map:PropertyMapper_72_sexId_sexId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:sex_sex ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#sexId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:sexId .
+
+map:PropertyMapper_130_infieldOfActivityAll_inFieldOfActivityAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:fieldOfActivity_fieldOfActivity ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#infieldOfActivityAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inFieldOfActivityAll .
+
+map:drinkingWaterSource_drinkingWaterSource
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSourceId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#drinkingWaterSource> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:drinkingWaterSource .
+
+map:residenceType_residenceType
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#residenceTypeId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#residenceType> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:residenceType .
+
+map:PropertyMapper_53_householdStructureTypeName_householdStructureTypeName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdStructureType_householdStructureType ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdStructureTypeName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdStructureTypeName .
+
+map:PropertyMapper_23_type_residenceName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:residence_residence ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#type> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:residenceName .
+
+map:housingTenancy_housingTenancy
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#housingTenancyId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#housingTenancy> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:housingTenancy .
+
+map:PropertyMapper_126_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census13_householdByAdm5ResidenceReligionStatus ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:PropertyMapper_80_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census04_populationByAdm5ResidenceAgeGroup ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:toiletFacility_toiletFacility
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#toiletFacilityId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#toiletFacility> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:toiletFacility .
+
+map:PropertyMapper_61_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_householdtype_householdByAdm5ResidenceHouseholdType ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_92_literatePopulation_literatePopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census06_populationByAdm5ResidenceSexLiterate ;
+        map:sourceProperty      dataset:literatePopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:literatePopulation .
+
+map:PropertyMapper_45_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_householdstructuretype_householdByAdm5ResidenceHouseholdStruct ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_107_schoolAgeGroupAllId_ageGroupAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:schoolAgeGroupAll_ageGroupAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#schoolAgeGroupAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:ageGroupAllId .
+
+map:schoolAgeGroup_schoolAgeGroup
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#schoolAgeGroup> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:schoolAgeGroup .
+
+map:PropertyMapper_13_name_administrativeUnitName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm3_admUnitThree ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:PropertyMapper_28_houseTenancyAllId_housingTenancyAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:houseTenancyAll_housingTenancyAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#houseTenancyAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:housingTenancyAllId .
+
+map:PropertyMapper_112_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:census14_householdstructuretype_householdByAdm5ResidenceHouseholdStruct
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:householdStructureType))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census14_householdStructureType.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census14_householdstructuretype ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:householdByAdm5ResidenceHouseholdStruct .
+
+map:PropertyMapper_118_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census10_populationByAdm5ResidenceSexFieldActivity ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:PropertyMapper_40_drinkingWaterSource_drinkingWaterSource
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census15_drinkingwatersource_householdByAdm5DrinkingWaterSrc ;
+        map:sourceProperty      dataset:drinkingWaterSource ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:drinkingWaterSource .
+
+map:toiletFacilityAll_toiletFacilityAll
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#toiletFacilityAllId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#toiletFacilityAll> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:toiletFacilityAll .
+
+map:PropertyMapper_127_inreligionAll_inReligionAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:religion_religion ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#inreligionAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inReligionAll .
+
+map:PropertyMapper_55_householdStructureTypeAllId_householdStructureTypeAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdStructureTypeAll_householdStructureTypeAll ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#householdStructureTypeAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:householdStructureTypeAllId .
+
+map:PropertyMapper_36_electricConnectionId_electricityConnectionId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:electricConnection_electricityConnection ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#electricConnectionId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:electricityConnectionId .
+
+map:PropertyMapper_17_area_areaInAcres
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm4_admUnitFour ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#area> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:areaInAcres .
+
+map:PropertyMapper_87_ageGroupAllId_ageGroupAllId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census04_populationByAdm5ResidenceAgeGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#ageGroupAllId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:ageGroupAllId .
+
+map:ageGroup_ageGroup
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#ageGroup> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:ageGroup .
+
+map:PropertyMapper_58_toiletFacilityName_toiletFacilityName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:toiletFacility_toiletFacility ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#toiletFacilityName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:toiletFacilityName .
+
+map:PropertyMapper_62_admUnitFiveId_admUnitFive
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_householdtype_householdByAdm5ResidenceHouseholdType ;
+        map:sourceProperty      dataset:admUnitFiveId ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:admUnitFive .
+
+map:PropertyMapper_104_id_schoolAgeGroupId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:schoolAgeGroup_schoolAgeGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#id> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:schoolAgeGroupId .
+
+map:PropertyMapper_97_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census07_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:PropertyMapper_136_inhouseholdSizeAll_inHouseholdSizeAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:householdSize_householdSize ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      <http://linked-statistics-bd-org/2011/ontology#inhouseholdSizeAll> .
+
+map:census15_electricityconnection_householdByAdm5ResidenceElectricity
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:electricityConnection))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census15_electricityconnection ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:householdByAdm5ResidenceElectricity .
+
+map:PropertyMapper_68_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_sex_populationByAdm5ResidenceSex ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_120_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_46_householdStructureType_householdStructureType
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_householdstructuretype_householdByAdm5ResidenceHouseholdStruct ;
+        map:sourceProperty      dataset:householdStructureType ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:householdStructureType .
+
+map:householdStructureType_householdStructureType
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              <http://linked-statistics-bd-org/2011/ontology#householdStructureTypeId> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_level_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         <http://linked-statistics-bd-org/2011/ontology#householdStructureType> ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         mdProperty:householdStructureType .
+
+map:PropertyMapper_83_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census04_populationByAdm5ResidenceAgeGroup ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:PropertyMapper_49_numberOfHousehold_numberOfHousehold
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census14_toiletfacility_householdByAdm5ResidenceToiletFacility ;
+        map:sourceProperty      dataset:numberOfHousehold ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfHousehold .
+
+map:PropertyMapper_132_fieldOfActivityName_fieldOfActivityName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:fieldOfActivity_fieldOfActivity ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#fieldOfActivityName> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:fieldOfActivityName .
+
+map:PropertyMapper_15_admUnitThreeId_inAdmThree
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm4_admUnitFour ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitThreeId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmThree .
+
+map:PropertyMapper_71_numberOfPopulation_numberOfPopulation
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census02_sex_populationByAdm5ResidenceSex ;
+        map:sourceProperty      dataset:numberOfPopulation ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:numberOfPopulation .
+
+map:PropertyMapper_86_allid_inAgeGroupAll
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:ageGroup_ageGroup ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#allid> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAgeGroupAll .
+
+map:PropertyMapper_05_name_administrativeUnitName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm1_admUnitOne ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:PropertyMapper_128_religionId_religionId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:religion_religion ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#religionId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:religionId .
+
+map:PropertyMapper_79_householdSize_householdSize
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census03_HouseholdByAdm5ResidenceHouseholdSize ;
+        map:sourceProperty      dataset:householdSize ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:householdSize .
+
+map:PropertyMapper_10_admUnitOneId_inAdmOne
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm2_AdmUnitTwo ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#admUnitOneId> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:inAdmOne .
+
+map:PropertyMapper_88_residence_residence
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census06_populationByAdm5ResidenceSexLiterate ;
+        map:sourceProperty      dataset:residence ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:residence .
+
+map:PropertyMapper_16_name_administrativeUnitName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:adm4_admUnitFour ;
+        map:sourceProperty      <http://linked-statistics-bd-org/2011/ontology#name> ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdAttribute:administrativeUnitName .
+
+map:census03_HouseholdByAdm5ResidenceHouseholdSize
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:householdSize))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_aboxes\\Census03.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census03 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:HouseholdByAdm5ResidenceHouseholdSize .
+
+map:PropertyMapper_113_attendingSchool_attendingSchool
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:census08_populationByAdm5ResidenceSexAttendSchoolAgeGroup ;
+        map:sourceProperty      dataset:attendingSchool ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      mdProperty:attendingSchool .
+
+map:census04_populationByAdm5ResidenceAgeGroup
+        a                         map:ConceptMapper ;
+        map:dataset               map:bus ;
+        map:iriValue              "CONCAT(dataset:admUnitFiveId,CONCAT(_,CONCAT(dataset:residence,CONCAT(_,dataset:ageGroup))))" ;
+        map:iriValueType          map:Expression ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Users\\Amrit\\Documents\\New_ODE_ETL\\source_abox.ttl" ;
+        map:sourceCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:sourceConcept         dataset:census04 ;
+        map:targetCommonProperty  <http://linked-statistics-bd-org/2011/ontology#admUnitFiveId> ;
+        map:targetConcept         dataset:populationByAdm5ResidenceAgeGroup .
+

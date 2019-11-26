@@ -9,7 +9,7 @@ Here, we describe how to use SETL using a use case.. https://www.youtube.com/wat
 
 
 ## Description with examples
-In the Example folder, you find some sample files which we use to demonstrate a part of our use case. Because of large size, only a segment of Census_01 is uploaded in Example folder. 
+In the Example folder, you find some sample files which we use to demonstrate a part of our use case. Because of large size, only a segment of Census_01 is uploaded in Example folder. But, we higly recommend to use full dataset to understand the functionalities of SETL. The dataset is avaiable here https://drive.google.com/open?id=1BEjaFowRPIs1BEau7Xz-22kLwVE1DqJM. 
 
 For **Target TBox Definer**, you may use either **populationSourceTBox_01.ttl** or **PopulationByResAdm5LivposTargetTBox-1.ttl** from ./Example_ folder to edit, update, add or delete components from an existing Tbox. Here, **PopulationByResAdm5LivposTargetTBox-1.ttl** is the target TBox of our use case and **populationSourceTBox_01.ttl** is the source TBox  
 

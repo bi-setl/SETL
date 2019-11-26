@@ -329,6 +329,8 @@ public class Methods {
 		hashMap.put("dbpedia:", "http://dbpedia.org/resource/");
 		hashMap.put("virtrdf:", "http://www.openlinksw.com/schemas/virtrdf#");
 		hashMap.put("geonames:", "http://www.geonames.org/ontology#");
+		hashMap.put("map:", "http://www.map.org/example#");
+		hashMap.put("onto:", "http://www.onto.org/schema#");
 
 		return hashMap;
 	}

@@ -129,7 +129,7 @@ public class SETLFrame extends JFrame {
 				addPanelToContainer("QETL" + count,panelTBoxEnrichment);
 			}
 		});
-		mnNew.add(mntmQetl);
+		// mnNew.add(mntmQetl);
 		
 		JMenu mnDefinitionLayer = new JMenu("Definition Layer");
 		mnNew.add(mnDefinitionLayer);

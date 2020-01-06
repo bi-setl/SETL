@@ -17,12 +17,13 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import core.ETLLevelConstuct;
+import core.UpdateConstruct;
 import helper.Methods;
 import model.ETLOperation;
 import net.miginfocom.swing.MigLayout;
 
 public class ETLUpdateDimensionalConstruct implements ETLOperation {
-	private String dimensionalConstruct, newSourceData, oldSourceData, sourceTBox, targetTBox, targetABox, prefix, mapper, provGraph, resultFile;
+	private String dimensionalConstruct, newSourceData, oldSourceData, sourceTBox, targetTBox, targetABox, prefix, mapper, provGraph, resultFile, updateType;
 	private Methods methods;
 	
 	public ETLUpdateDimensionalConstruct() {
@@ -36,8 +37,9 @@ public class ETLUpdateDimensionalConstruct implements ETLOperation {
 		// ETLDimensionConstruct dimensionConstruct = new ETLDimensionConstruct();
 		// dimensionConstruct.updateDimensionalConstruct(dimensionalConstruct, newSourceData, oldSourceData, sourceTBox, targetTBox, targetABox, prefix, mapper, provGraph, updateType);
 		
-		ETLLevelConstuct levelConstuct = new ETLLevelConstuct();
-		String message = levelConstuct.updateLevelConstruct(dimensionalConstruct, newSourceData, oldSourceData, sourceTBox, targetTBox, targetABox, prefix, mapper, provGraph, resultFile);
+		UpdateConstruct updateConstruct = new UpdateConstruct();
+		String message = updateConstruct.updateDimensionConstruct(dimensionalConstruct, newSourceData, oldSourceData, sourceTBox, targetTBox, targetABox, prefix, mapper,
+				 provGraph, resultFile, updateType);
 		textPane.setText(textPane.getText() + "\n" + message);
 		return true;
 	}
@@ -257,21 +259,33 @@ public class ETLUpdateDimensionalConstruct implements ETLOperation {
 		});
 		panelDimensionConstruct.add(btnOpenProvGraph, "cell 2 8");
 		
+		JLabel lblUpdateType = new JLabel("Update Type:");
+		lblUpdateType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDimensionConstruct.add(lblUpdateType, "cell 0 9,alignx trailing");
+		
+		JComboBox comboBoxUpdateType = new JComboBox(Methods.getAllUpdateTypes().toArray());
+		comboBoxUpdateType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDimensionConstruct.add(comboBoxUpdateType, "cell 1 9 2 1,growx");
+		
+		if (getUpdateType() != null) {
+			comboBoxUpdateType.setSelectedItem(getUpdateType());
+		}
+		
 		JLabel lblTargetAboxType = new JLabel("Result File Type:");
 		lblTargetAboxType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDimensionConstruct.add(lblTargetAboxType, "cell 0 9,alignx trailing");
+		panelDimensionConstruct.add(lblTargetAboxType, "cell 0 10,alignx trailing");
 		
 		JComboBox comboBoxTargetABoxType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
 		comboBoxTargetABoxType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDimensionConstruct.add(comboBoxTargetABoxType, "cell 1 9 2 1,growx");
+		panelDimensionConstruct.add(comboBoxTargetABoxType, "cell 1 10 2 1,growx");
 		
-		JLabel lblUpdateType = new JLabel("Result File:");
-		lblUpdateType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDimensionConstruct.add(lblUpdateType, "cell 0 10,alignx trailing");
+		JLabel lblResultType = new JLabel("Result File:");
+		lblResultType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDimensionConstruct.add(lblResultType, "cell 0 11,alignx trailing");
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDimensionConstruct.add(comboBox, "cell 1 10,growx");
+		panelDimensionConstruct.add(comboBox, "cell 1 11,growx");
 		
 		JButton btnNew = new JButton("New");
 		btnNew.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -293,7 +307,7 @@ public class ETLUpdateDimensionalConstruct implements ETLOperation {
 				}
 			}
 		});
-		panelDimensionConstruct.add(btnNew, "cell 2 10, growx");
+		panelDimensionConstruct.add(btnNew, "cell 2 11, growx");
 		
 		ArrayList<String> aboxList = new ArrayList<>();
 		
@@ -316,7 +330,7 @@ public class ETLUpdateDimensionalConstruct implements ETLOperation {
 			setMapper(textFieldMapper.getText().toString().trim());
 			setProvGraph(textFieldProvGraph.getText().toString().trim());
 			setResultFile(comboBox.getSelectedItem().toString());
-			// setUpdateType(comboBox.getSelectedItem().toString());
+			setUpdateType(comboBoxUpdateType.getSelectedItem().toString());
 
 			ArrayList<String> inputList = new ArrayList<>();
 			inputList.add(getDimensionalConstruct());
@@ -422,5 +436,13 @@ public class ETLUpdateDimensionalConstruct implements ETLOperation {
 
 	public void setResultFile(String resultFile) {
 		this.resultFile = resultFile;
+	}
+
+	public String getUpdateType() {
+		return updateType;
+	}
+
+	public void setUpdateType(String updateType) {
+		this.updateType = updateType;
 	}
 }

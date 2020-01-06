@@ -1,0 +1,429 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix qb4o: <http://purl.org/qb4olap/cubes#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix bus: <http://extbi.lab.aau.dk/ontology/business/>.
+@prefix xml: <http://www.w3.org/XML/1998/namespace>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dbpcat: <http://dbpedia.org/resource/Category:>.
+@prefix dbpedia: <http://dbpedia.org/resource/>.
+@prefix business: <http://extbi.lab.aau.dk/ontology/sdw/>.
+@prefix schema: <http://extbi.lab.aau.dk/ontolgoy/sdw/>.
+@prefix mdProperty: <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#>.
+@prefix mdAttribute: <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#>.
+@prefix mdStructure: <http://extbi.lab.aau.dk/ontolgoy/sdw/mdStructure#>.
+@prefix dataset: <http://extbi.lab.aau.dk/ontolgoy/sdw/data#>.
+@prefix sub: <http://extbi.lab.aau.dk/ontolgoy/subsidy/>.
+
+#CUBES
+
+mdStructure:SubsidyCube a qb:DataStructureDefinition;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:dimension mdProperty:subsidyYearDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:schemeDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:payTimeDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:budgetlineDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:dimension mdProperty:beneficiaryDim; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:amountEuro; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+
+#CUBOIDS
+
+mdStructure:SubsidyCuboid a qb:DataStructureDefinition;
+	qb4o:isCuboidOf mdStructure:SubsidyCube;
+	dct:conformsTo <http://purl.org/qb4olap/cubes>;
+	qb:component [ qb4o:level mdProperty:PayDate; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:BudgetLine; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:GlobalScheme; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:SubsidyYear; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb4o:level mdProperty:Recipient; qb4o:cardinality qb4o:ManyToOne];
+	qb:component [ qb:measure mdProperty:amountEuro; qb4o:aggregateFunction qb4o:avg, qb4o:count, qb4o:min, qb4o:max, qb4o:sum].
+
+
+#DATASETS
+
+mdStructure:SubsidyDataset a qb:DataSet;
+	qb:structure mdStructure:SubsidyCuboid.
+
+
+#DIMENSIONS
+
+mdProperty:beneficiaryDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Beneficiary Dimension"@en.
+
+mdProperty:budgetlineDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Budget Line Dimension"@en.
+
+mdProperty:payTimeDim a qb:DimensionProperty;
+	rdfs:range xsd:date;
+	rdfs:label "Pay Date Dimension"@en.
+
+mdProperty:schemeDim a qb:DimensionProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Global Scheme Dimension"@en.
+
+mdProperty:subsidyYearDim a qb:DimensionProperty;
+	rdfs:label "Year of Subsidy Dimension"@en;
+	rdfs:range xsd:int.
+
+
+#HIERARCHIES
+
+mdStructure:AddressHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for recipient address"@en;
+	qb4o:inDimension mdProperty:beneficiaryDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:City, mdProperty:Municipality, mdProperty:Region, mdProperty:Recipient.
+
+mdStructure:BudgetLineHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for Budget Line"@en;
+	qb4o:inDimension mdProperty:budgetlineDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:BudgetLine.
+
+mdStructure:BusinessTypeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchies for Recipient Business Type"@en;
+	qb4o:inDimension mdProperty:beneficiaryDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:BusinessType, mdProperty:Company, mdProperty:Recipient.
+
+mdStructure:GlobalSchemeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for Global Scheme"@en;
+	qb4o:inDimension mdProperty:schemeDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:GlobalScheme.
+
+mdStructure:MainActivityHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for Main Activity"@en;
+	qb4o:inDimension mdProperty:beneficiaryDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:Company, mdProperty:MainActivity, mdProperty:Recipient.
+
+mdStructure:PayTimeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for PayDate"@en;
+	qb4o:inDimension mdProperty:payTimeDim;
+	qb4o:hasLevel mdProperty:Month, mdProperty:PayDate, mdProperty:Year, mdProperty:ALL.
+
+mdStructure:SecondaryActivityHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for Secondary activity"@en;
+	qb4o:inDimension mdProperty:beneficiaryDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:Company, mdProperty:Recipient, mdProperty:SecondaryActivity.
+
+mdStructure:SubsidyYearHierarchy a qb4o:Hierarchy;
+	rdfs:label "Hierarchy for Year of subsidy"@en;
+	qb4o:inDimension mdProperty:subsidyYearDim;
+	qb4o:hasLevel mdProperty:ALL, mdProperty:SubsidyYear.
+
+
+#HIERARCHY STEPS
+
+_:hs1 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:SubsidyYearHierarchy;
+	qb4o:childLevel mdProperty:SubsidyYear;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:all.
+
+_:hs2 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:GlobalSchemeHierarchy;
+	qb4o:childLevel mdProperty:GlobalScheme;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:all.
+
+_:hs3 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:SecondaryActivityHierarchy;
+	qb4o:childLevel mdProperty:Company;
+	qb4o:parentLevel mdProperty:SecondaryActivity;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:hasSecondaryActivity.
+
+_:hs4 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:BudgetLineHierarchy;
+	qb4o:childLevel mdProperty:BudgetLine;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:all.
+
+_:hs5 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:BusinessTypeHierarchy;
+	qb4o:childLevel mdProperty:Recipient;
+	qb4o:parentLevel mdProperty:Company;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:hasCompany.
+
+_:hs6 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:AddressHierarchy;
+	qb4o:childLevel mdProperty:City;
+	qb4o:parentLevel mdProperty:Municipality;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inMunicipality.
+
+_:hs7 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:PayTimeHierarchy;
+	qb4o:childLevel mdProperty:Year;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:payYear.
+
+_:hs8 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:MainActivityHierarchy;
+	qb4o:childLevel mdProperty:MainActivity;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:all.
+
+_:hs9 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:AddressHierarchy;
+	qb4o:childLevel mdProperty:Region;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:ManyToOne;
+	qb4o:rollup mdAttribute:all.
+
+_:hs10 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:BusinessTypeHierarchy;
+	qb4o:childLevel mdProperty:Company;
+	qb4o:parentLevel mdProperty:BusinessType;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:hasFormat.
+
+_:hs11 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:SecondaryActivityHierarchy;
+	qb4o:childLevel mdProperty:SecondaryActivity;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:all.
+
+_:hs12 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:BusinessTypeHierarchy;
+	qb4o:childLevel mdProperty:BusinessType;
+	qb4o:parentLevel mdProperty:ALL;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:all.
+
+_:hs13 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:MainActivityHierarchy;
+	qb4o:childLevel mdProperty:Company;
+	qb4o:parentLevel mdProperty:MainActivity;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:hasMainActivity.
+
+_:hs14 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:PayTimeHierarchy;
+	qb4o:childLevel mdProperty:PayDate;
+	qb4o:parentLevel mdProperty:Month;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:payMonth.
+
+_:hs15 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:AddressHierarchy;
+	qb4o:childLevel mdProperty:Municipality;
+	qb4o:parentLevel mdProperty:Region;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inRegion.
+
+_:hs16 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:AddressHierarchy;
+	qb4o:childLevel mdProperty:Recipient;
+	qb4o:parentLevel mdProperty:City;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:inCity.
+
+_:hs17 a qb4o:HierarchyStep;
+	qb4o:inHierarchy mdStructure:PayTimeHierarchy;
+	qb4o:childLevel mdProperty:Month;
+	qb4o:parentLevel mdProperty:Year;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup mdAttribute:payYear.
+
+
+#LEVELS
+
+mdProperty:ALL a qb4o:LevelProperty;
+	rdfs:range xsd:string;
+	rdfs:label "Top Tier Level"@en.
+
+mdProperty:BudgetLine a qb4o:LevelProperty;
+	rdfs:label "budgetLIne level"@en;
+	rdfs:range sub:BudgetLine.
+
+mdProperty:BusinessType a qb4o:LevelProperty;
+	rdfs:range bus:BusinessType;
+	rdfs:label "Business Type Level"@en.
+
+mdProperty:City a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:cityName, mdAttribute:inMunicipality;
+	rdfs:range sub:City;
+	rdfs:label "City Level"@en.
+
+mdProperty:Company a qb4o:LevelProperty;
+	rdfs:range bus:Company;
+	rdfs:label "Company Level"@en.
+
+mdProperty:GlobalScheme a qb4o:LevelProperty;
+	rdfs:label "Gloabl Scheme Level"@en;
+	rdfs:range sub:GlobalScheme.
+
+mdProperty:MainActivity a qb4o:LevelProperty;
+	rdfs:range bus:MainActivity;
+	rdfs:label "Main Acitivity of the Company"@en.
+
+mdProperty:Month a qb4o:LevelProperty;
+	rdfs:range sub:Month;
+	rdfs:label "Month"@en.
+
+mdProperty:Municipality a qb4o:LevelProperty;
+	rdfs:range sub:Municipality;
+	rdfs:label "Municipality Level"@en.
+
+mdProperty:PayDate a qb4o:LevelProperty;
+	rdfs:label "Date of payment"@en;
+	rdfs:range sub:PayDate.
+
+mdProperty:Recipient a qb4o:LevelProperty;
+	qb4o:hasAttribute mdAttribute:recipientName, mdAttribute:address, mdAttribute:lng, mdAttribute:lat, mdAttribute:inCity, mdAttribute:recipientId, mdAttribute:hasCompany;
+	rdfs:label "Recipient of Subsidy"@en;
+	rdfs:range sub:Recipient.
+
+mdProperty:Region a qb4o:LevelProperty;
+	rdfs:range sub:Region;
+	rdfs:label "Region Level"@en.
+
+mdProperty:SecondaryActivity a qb4o:LevelProperty;
+	rdfs:range bus:SecondaryActivity;
+	rdfs:label "Secondary Activity of the Company"@en.
+
+mdProperty:SubsidyYear a qb4o:LevelProperty;
+	rdfs:label "Subsidy Given Year"@en;
+	rdfs:range sub:SubsidyYear.
+
+mdProperty:Year a qb4o:LevelProperty;
+	rdfs:range sub:Year;
+	rdfs:label "Year of Subsidy"@en.
+
+
+#ATTRIBUTES
+
+mdAttribute:address a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "address of recipient "@en.
+
+mdAttribute:all a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "To aggregate for top tier level"@en.
+
+mdAttribute:cityName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	qb4o:updateType qb4o:Type1;
+	rdfs:label "Name of the city "@en.
+
+mdAttribute:globalrecipientId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Global Id for recipient "@en.
+
+mdAttribute:hasCompany a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:Company;
+	rdfs:label "To aggregate from Recipient to Company "@en.
+
+mdAttribute:hasFormat a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:BusinessType;
+	rdfs:label "To aggregate from Company to Business Type "@en.
+
+mdAttribute:hasMainActivity a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:MainActivity;
+	rdfs:label "To aggregate from Company to Main Activity "@en.
+
+mdAttribute:hasSecondaryActivity a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:SecondaryActivity;
+	rdfs:label "To aggregate from Company to Secondary Activity "@en.
+
+mdAttribute:inCity a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:City;
+	rdfs:label "To aggregate from Recipient to City "@en.
+
+mdAttribute:inMunicipality a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Municipality;
+	rdfs:label "To aggregate from City to Municipality "@en.
+
+mdAttribute:inRegion a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Region;
+	rdfs:label "To aggregate from Municipality to Region "@en.
+
+mdAttribute:lat a qb4o:LevelAttribute;
+	rdfs:range xsd:double;
+	rdfs:label "latitude of recipient "@en.
+
+mdAttribute:lng a qb4o:LevelAttribute;
+	rdfs:range xsd:double;
+	rdfs:label "longitude of recipient "@en.
+
+mdAttribute:payMonth a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Month;
+	rdfs:label "To aggregate from Date to Month "@en.
+
+mdAttribute:payYear a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Year;
+	rdfs:label "To aggregate from Month to Year "@en.
+
+mdAttribute:recipientId a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "Id for recipient "@en.
+
+mdAttribute:recipientName a qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	qb4o:updateType qb4o:Type1;
+	rdfs:label "Name of recipient "@en.
+
+
+#ROLLUP RELATIONSHIPS
+
+mdAttribute:all a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range xsd:string;
+	rdfs:label "To aggregate for top tier level"@en.
+
+mdAttribute:hasCompany a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:Company;
+	rdfs:label "To aggregate from Recipient to Company "@en.
+
+mdAttribute:hasFormat a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:BusinessType;
+	rdfs:label "To aggregate from Company to Business Type "@en.
+
+mdAttribute:hasMainActivity a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:MainActivity;
+	rdfs:label "To aggregate from Company to Main Activity "@en.
+
+mdAttribute:hasSecondaryActivity a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range bus:SecondaryActivity;
+	rdfs:label "To aggregate from Company to Secondary Activity "@en.
+
+mdAttribute:inCity a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:City;
+	rdfs:label "To aggregate from Recipient to City "@en.
+
+mdAttribute:inMunicipality a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Municipality;
+	rdfs:label "To aggregate from City to Municipality "@en.
+
+mdAttribute:inRegion a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Region;
+	rdfs:label "To aggregate from Municipality to Region "@en.
+
+mdAttribute:payMonth a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Month;
+	rdfs:label "To aggregate from Date to Month "@en.
+
+mdAttribute:payYear a qb4o:RollupProperty, qb4o:LevelAttribute;
+	rdfs:range sub:Year;
+	rdfs:label "To aggregate from Month to Year "@en.
+
+
+#MEASURES
+
+mdProperty:amountEuro a qb:MeasureProperty;
+	rdfs:range xsd:double;
+	rdfs:label "Subsidy Amount in Euro"@en.
+
+
+

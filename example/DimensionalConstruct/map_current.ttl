@@ -1,0 +1,176 @@
+@prefix schema: <http://extbi.lab.aau.dk/ontolgoy/sdw/> .
+@prefix bus:   <http://extbi.lab.aau.dk/ontology/business/> .
+@prefix sub:   <http://extbi.lab.aau.dk/ontolgoy/subsidy/> .
+@prefix mdStructure: <http://extbi.lab.aau.dk/ontolgoy/sdw/mdStructure#> .
+@prefix business: <http://extbi.lab.aau.dk/ontology/sdw/> .
+@prefix mdProperty: <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix sdw:   <http://example.com/sdw/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix onto:  <http://www.onto.org/schema#> .
+@prefix mdAttribute: <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#> .
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix qb4o:  <http://purl.org/qb4olap/cubes#> .
+@prefix dbpcat: <http://dbpedia.org/resource/Category:> .
+@prefix dataset: <http://extbi.lab.aau.dk/ontolgoy/sdw/data#> .
+@prefix map:   <http://www.map.org/example#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+
+map:subsidy_  a     map:Dataset ;
+        map:source  onto:subsidy_SourcetABox ;
+        map:target  onto:subsidy .
+
+map:PropertyMapper_08_address_address
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:recipient_Recipient ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidyaddress> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:address .
+
+map:PropertyMapper_06_haspaydate_payDate
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:subsidy_SubsidyDataset ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidyhaspaydate> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdProperty:PayDate .
+
+map:city_City  a                  map:ConceptMapper ;
+        map:dataset               map:city_Subsidy ;
+        map:iriValue              <http://extbi.lab.aau.dk/ontolgoy/subsidy/cityName> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:operation             "LevelEntryGenerator" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Experiment\\city.csv" ;
+        map:sourceCommonProperty  <http://extbi.lab.aau.dk/ontolgoy/subsidy/cityName> ;
+        map:sourceConcept         <http://extbi.lab.aau.dk/ontolgoy/subsidy#City> ;
+        map:targetCommonProperty  <http://extbi.lab.aau.dk/ontolgoy/subsidy/cityName> ;
+        map:targetConcept         mdProperty:City .
+
+map:recipient_Recipient
+        a                         map:ConceptMapper ;
+        map:dataset               map:Recipient_Sbusidy ;
+        map:iriValue              <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientid> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:operation             "LevelEntryGenerator" ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Experiment\\recipient.csv" ;
+        map:sourceCommonProperty  <http://extbi.lab.aau.dk/ontolgoy/subsidy/address> ;
+        map:sourceConcept         <http://extbi.lab.aau.dk/ontolgoy/subsidy#Recipient> ;
+        map:targetCommonProperty  <http://extbi.lab.aau.dk/ontolgoy/subsidy/address> ;
+        map:targetConcept         mdProperty:Recipient .
+
+map:PropertyMapper_02_hasrecipient_recipient
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:subsidy_SubsidyDataset ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidyhasrecipient> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdProperty:Recipient .
+
+map:subsidy_SubsidyDataset
+        a                         map:ConceptMapper ;
+        map:dataset               map:subsidy_ ;
+        map:iriValue              <http://extbi.lab.aau.dk/ontolgoy/subsidy/subsidyid> ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:operation             <C:nullFactEntryGenerator> ;
+        map:relation              skos:exact ;
+        map:sourceABoxLocation    "C:\\Experiment\\sdw\\subsidy.csv" ;
+        map:sourceCommonProperty  <http://extbi.lab.aau.dk/ontolgoy/subsidy/amounteuro> ;
+        map:sourceConcept         sub:subsidy ;
+        map:targetCommonProperty  <http://extbi.lab.aau.dk/ontolgoy/subsidy/amounteuro> ;
+        map:targetConcept         mdStructure:SubsidyDataset .
+
+map:PropertyMapper_04_globalschemeid_globalScheme
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:subsidy_SubsidyDataset ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/globalschemeid> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdProperty:GlobalScheme .
+
+map:PropertyMapper_14_hasmunicipality_inMunicipality
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:city_City ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/hasmunicipality> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:inMunicipality .
+
+map:PropertyMapper_03_year_subsidyYear
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:subsidy_SubsidyDataset ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/year> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdProperty:SubsidyYear .
+
+map:PropertyMapper_13_cityName_cityName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:city_City ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/cityName> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:cityName .
+
+map:PropertyMapper_01_amounteuro_amountEuro
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:subsidy_SubsidyDataset ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/amounteuro> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdProperty:amountEuro .
+
+map:PropertyMapper_07_recipientname_recipientName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:recipient_Recipient ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientname> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:recipientName .
+
+map:city_Subsidy  a  map:Dataset ;
+        map:source  onto:citySourceTABox ;
+        map:target  onto:subsidy .
+
+map:Recipient_Sbusidy
+        a           map:Dataset ;
+        map:source  onto:recipientsourceTBox ;
+        map:target  onto:subsidy .
+
+map:PropertyMapper_05_budgetline_budgetLine
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:subsidy_SubsidyDataset ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/budgetline> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdProperty:BudgetLine .
+
+map:PropertyMapper_12_recipientid_recipientId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:recipient_Recipient ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientid> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:recipientId .
+
+map:PropertyMapper_09_lng_lng
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:recipient_Recipient ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/lng> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:lng .
+
+map:PropertyMapper_11_hastown_inCity
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:recipient_Recipient ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidy/hastown> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:inCity .
+
+map:PropertyMapper_10_lat_lat
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:recipient_Recipient ;
+        map:sourceProperty      <http://extbi.lab.aau.dk/ontolgoy/subsidylat> ;
+        map:sourcePropertyType  map:sourceProperty ;
+        map:targetProperty      mdAttribute:lat .
+

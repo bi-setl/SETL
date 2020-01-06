@@ -1,0 +1,53 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ETL>
+	<Start id="1578334902634">
+		<OperationName>Start</OperationName>
+		<UpperLeftX>50</UpperLeftX>
+		<UpperLeftY>150</UpperLeftY>
+	<InputStatus>true</InputStatus>
+		<NextOperations>
+			<item>1578334911334</item>
+		</NextOperations>
+	</Start>
+	<RDFWrapper id="1578334911334">
+		<OperationName>RDFWrapper</OperationName>
+		<UpperLeftX>512</UpperLeftX>
+		<UpperLeftY>171</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<CsvColumn>"cityName"</CsvColumn>
+		<CsvDelimiter>Comma (,)</CsvDelimiter>
+		<CsvKeyAttributeType>Existing Attribute</CsvKeyAttributeType>
+		<CsvPrefix>https://www.facebook.com/</CsvPrefix>
+		<CsvSource>C:\Users\Amrit\Documents\GitHub\SETL\example\RDFWrapper\city.csv</CsvSource>
+		<CsvTarget>C:\Users\Amrit\Documents\GitHub\SETL\example\RDFWrapper\200107_122235_TargetABox.ttl</CsvTarget>
+		<CsvTargetType>Turtle</CsvTargetType>
+		<DbName>null</DbName>
+		<DbUsername>null</DbUsername>
+		<DbPassword>null</DbPassword>
+		<DbDirectBaseIRI>null</DbDirectBaseIRI>
+		<DbDirectTargetPath>null</DbDirectTargetPath>
+		<DbRmlFilePath>null</DbRmlFilePath>
+		<DbRMLTargetPath>null</DbRMLTargetPath>
+		<DbMappingType>null</DbMappingType>
+		<JsonSource>null</JsonSource>
+		<JsonTarget>null</JsonTarget>
+		<JsonTargetType>null</JsonTargetType>
+		<XmlSource>null</XmlSource>
+		<XmlTarget>null</XmlTarget>
+		<XmlTargetType>null</XmlTargetType>
+		<ExcelColumn>null</ExcelColumn>
+		<ExcelPrefix>null</ExcelPrefix>
+		<ExcelSource>null</ExcelSource>
+		<ExcelKeyAttributeType>null</ExcelKeyAttributeType>
+		<ExcelTarget>null</ExcelTarget>
+		<ExcelTargetType>null</ExcelTargetType>
+	</RDFWrapper>
+	<Arrows>
+		<Arrow>
+			<SourceOperation>1578334902634</SourceOperation>
+			<TargetOperation>1578334911334</TargetOperation>
+		</Arrow>
+	</Arrows>
+</ETL>
+

@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<ETL>
+	<Start id="1578338226767">
+		<OperationName>Start</OperationName>
+		<UpperLeftX>50</UpperLeftX>
+		<UpperLeftY>150</UpperLeftY>
+	<InputStatus>true</InputStatus>
+		<NextOperations>
+			<item>1578338233894</item>
+		</NextOperations>
+	</Start>
+	<UpdateDimensionalConstruct id="1578338233894">
+		<OperationName>UpdateDimensionalConstruct</OperationName>
+		<UpperLeftX>464</UpperLeftX>
+		<UpperLeftY>112</UpperLeftY>
+		<InputStatus>true</InputStatus>
+		<IsExecuted>false</IsExecuted>
+		<DimensionalConstruct>http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#Recipient</DimensionalConstruct>
+		<Mapper>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\map_current.ttl</Mapper>
+		<NewSourceData>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\newSourceABox.ttl</NewSourceData>
+		<OldSourceData>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\sourceABox.ttl</OldSourceData>
+		<Prefix>http://example.com/sdw/</Prefix>
+		<ProvGraph>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\prov.ttl</ProvGraph>
+		<SourceTBox>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\recipientsourceTBox.ttl</SourceTBox>
+		<TargetABox>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\targetABox.ttl</TargetABox>
+		<TargetTBox>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\subsidy.ttl</TargetTBox>
+		<ResultFile>C:\Users\Amrit\Documents\GitHub\SETL\example\DimensionalConstruct\dimconstruct_200107_012136_TargetABox.ttl</ResultFile>
+		<UpdateType>Type1</UpdateType>
+	</UpdateDimensionalConstruct>
+	<Arrows>
+		<Arrow>
+			<SourceOperation>1578338226767</SourceOperation>
+			<TargetOperation>1578338233894</TargetOperation>
+		</Arrow>
+	</Arrows>
+</ETL>
+

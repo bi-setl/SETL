@@ -260,34 +260,38 @@ public class ETLRDFWrapper implements ETLOperation {
 				try {
 					String result = "";
 					RDFWrapper rdfWrapper = new RDFWrapper();
-					switch (getFileType()) {
-					case "CSV":
-						result = rdfWrapper.parseCSV(getCsvSource(), getCsvTarget(), getCsvPrefix(), getCsvColumn(),
-								getCsvDelimiter());
-						break;
-					case "XML":
-						result = rdfWrapper.parseXML(getXmlSource(), getXmlTarget());
-						break;
-					case "Excel":
-						result = rdfWrapper.parseExcel(getExcelSource(), getExcelTarget(), getExcelPrefix(),
-								getExcelColumn());
-						break;
-					case "JSON":
-						result = rdfWrapper.parseJSON(getJsonSource(), getJsonTarget());
-						break;
-					case "DB":
-						if (dbMappingType.equals(DIRECT_MAPPING)) {
-							DBMapping dbMapping = new DBMapping();
-							result = dbMapping.performDirectMapping(dbName, dbUsername, dbPassword, dbDirectBaseIRI, dbDirectTargetPath);
+					if (getFileType() != null) {
+						switch (getFileType()) {
+						case "CSV":
+							result = rdfWrapper.parseCSVNew(getCsvSource(), getCsvPrefix(), getCsvColumn(),
+									getCsvDelimiter(), getCsvTarget());
 							break;
-						} else {
-							DBMapping dbMapping = new DBMapping();
-							result = dbMapping.performRMLMapping(dbName, dbUsername, dbPassword, dbRmlFilePath, dbRMLTargetPath);
+						case "XML":
+							result = rdfWrapper.parseXML(getXmlSource(), getXmlTarget());
+							break;
+						case "Excel":
+							result = rdfWrapper.parseExcel(getExcelSource(), getExcelTarget(), getExcelPrefix(),
+									getExcelColumn());
+							break;
+						case "JSON":
+							result = rdfWrapper.parseJSON(getJsonSource(), getJsonTarget());
+							break;
+						case "DB":
+							if (dbMappingType.equals(DIRECT_MAPPING)) {
+								DBMapping dbMapping = new DBMapping();
+								result = dbMapping.performDirectMapping(dbName, dbUsername, dbPassword, dbDirectBaseIRI, dbDirectTargetPath);
+								break;
+							} else {
+								DBMapping dbMapping = new DBMapping();
+								result = dbMapping.performRMLMapping(dbName, dbUsername, dbPassword, dbRmlFilePath, dbRMLTargetPath);
+								break;
+							}
+							// status = extractDBButtonHandler();
+						default:
 							break;
 						}
-						// status = extractDBButtonHandler();
-					default:
-						break;
+					} else {
+						textPane.setText(textPane.getText() + "\n" + "Check Input");
 					}
 
 					textPane.setText(textPane.getText() + "\n" + result);
@@ -1165,6 +1169,8 @@ public class ETLRDFWrapper implements ETLOperation {
 												concatString += selectedColumns.get(j) + ", ";
 											}
 										}
+										
+										concatString = concatString.replace("\"", "");
 										textFieldCSVKeyAttribute.setText(concatString);
 									}
 								}

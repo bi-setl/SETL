@@ -57,10 +57,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import helper.Variables;
 import net.miginfocom.swing.MigLayout;
 
 public class Methods {
 	private LinkedHashMap<String, String> prefixMap;
+	static Long totalDifference = 0L;
+	static Long startTimeLong = 0L;
+	static Long endTimeLong = 0L;
 	
 	public boolean checkString(String string) {
 		if (string == null) {
@@ -370,7 +374,7 @@ public class Methods {
 
 	}
 
-	public String getFileExtension(String filePath) {
+	public static String getFileExtension(String filePath) {
 		// TODO Auto-generated method stub
 		String[] parts = filePath.split("\\.");
 		if (parts.length == 2) {
@@ -409,7 +413,7 @@ public class Methods {
 		return null;
 	}
 
-	public String saveModel(Model model, String filePath) {
+	public static String saveModel(Model model, String filePath) {
 		// TODO Auto-generated method stub
 		try {
 			OutputStream outputStream = new FileOutputStream(filePath);
@@ -538,7 +542,7 @@ public class Methods {
 		}
 	}
 
-	public Model readModelFromPath(String filePath) {
+	public static Model readModelFromPath(String filePath) {
 		// TODO Auto-generated method stub
 		Model model = ModelFactory.createDefaultModel();
 		try {
@@ -551,7 +555,7 @@ public class Methods {
 		return model;
 	}
 
-	public void createNewFile(String fileName) {
+	public static void createNewFile(String fileName) {
 		// TODO Auto-generated method stub
 		File file = new File(fileName);
 		try {
@@ -564,14 +568,14 @@ public class Methods {
 		}
 	}
 
-	public String modelToString(Model model, String extension) {
+	public static String modelToString(Model model, String extension) {
 		// TODO Auto-generated method stub
 		StringWriter out = new StringWriter();
 		model.write(out, extension.toUpperCase());
 		return out.toString();
 	}
 
-	public void appendToFile(String string, String csvTarget) {
+	public static void appendToFile(String string, String csvTarget) {
 		// TODO Auto-generated method stub
 		try {
 			FileWriter fileWriter = new FileWriter(csvTarget, true);
@@ -588,17 +592,6 @@ public class Methods {
 		// TODO Auto-generated method stub
 		File file = new File(filePath);
 		return file.exists();
-	}
-
-	public String encodeString(String provValue) {
-		// TODO Auto-generated method stub
-		try {
-			return URLEncoder.encode(provValue, "utf-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return provValue;
-		}
 	}
 	
 	public void extractAllPrefixes(String filepath) {
@@ -936,5 +929,218 @@ public class Methods {
 		Object[][] arrayResult = valueList.toArray(new Object[valueList.size()][selectedColumns.size()]);
 		
 		return arrayResult;
+	}
+	
+	public static String encodeString(String string) {
+		byte[] ptext = string.getBytes(StandardCharsets.US_ASCII); 
+		String value = new String(ptext, StandardCharsets.UTF_8);
+		return value;
+	}
+	
+	public static String replaceQuote(String urlString) {
+		urlString = urlString.replace("\"", "");
+		
+		return urlString;
+	}
+
+	public static String getFileName(String filePath) {
+		// TODO Auto-generated method stub
+		File file = new File(filePath);
+		
+		String name = file.getName();
+		String[] parts = name.split("\\.");
+		
+		return parts[0];
+	}
+
+	public static String createHashTypeString(String prefix, String typeString) {
+		// TODO Auto-generated method stub
+		typeString = typeString.substring(0, 1).toUpperCase() + typeString.substring(1);
+		String type = "";
+		
+		if (prefix.endsWith("/")) {
+			type = prefix.substring(0, prefix.length() - 1) + "#" + typeString;
+		} else if (prefix.endsWith("#")) {
+			type = prefix + typeString;
+		} else {
+			type = prefix + "#" + typeString;
+		}
+		
+		return type;
+	}
+	
+	public static String createSlashTypeString(String prefix, String typeString) {
+		// TODO Auto-generated method stub
+		typeString = typeString.substring(0, 1).toUpperCase() + typeString.substring(1);
+		String type = "";
+		
+		if (prefix.endsWith("#")) {
+			type = prefix.substring(0, prefix.length() - 1) + "/" + typeString;
+		} else if (prefix.endsWith("/")) {
+			type = prefix + typeString;
+		} else {
+			type = prefix + "/" + typeString;
+		}
+		
+		return type;
+	}
+	
+
+	public static String createSlashTypeString(String typeString) {
+		// TODO Auto-generated method stub
+		if (typeString.contains("#")) {
+			String[] parts = typeString.split("#");
+			if (parts.length == 2) {
+				return parts[0].trim() + "/" + parts[1].trim();
+			} else {
+				return typeString;
+			}
+		} else {
+			return typeString;
+		}
+	}
+	
+	public static String getCSVDelimiter(String csvDelimiter) {
+		String delimiter = ",";
+		
+		if (csvDelimiter.contains("Space") || csvDelimiter.contains("Tab")) {
+			delimiter = "\\s";
+		} else if (csvDelimiter.contains("Semicolon")) {
+			delimiter = ";";
+		} else if (csvDelimiter.contains("Pipe")) {
+			delimiter = "|";
+		} else {
+			delimiter = ",";
+		}
+		
+		return delimiter;
+	}
+
+	public static String validatePrefix(String prefix) {
+		// TODO Auto-generated method stub
+		if (!prefix.endsWith("/") && !prefix.endsWith("#")) {
+			prefix += "/";
+		}
+		
+		return prefix;
+	}
+	
+	public static String formatURL(String urlString) {
+		urlString = urlString.replace("\"", "");
+		
+		String formatUrl = urlString.replaceAll("[^a-zA-Z0-9/]" , "-");
+		
+		return formatUrl;
+	}
+
+	public static String validateIRI(String iriString) {
+		// I have to validate the IRI with regex
+		return iriString;
+	}
+
+	public static boolean checkToSaveModel(int count, int numOfFiles, Model model) {
+		// TODO Auto-generated method stub
+		if (count % Variables.SAVE_LIMIT == 0) {
+			String tempPath = Variables.TEMP_DIR + numOfFiles + ".ttl";
+			
+			if (!saveTempModel(model, tempPath)) {
+				System.out.println("Couldn't save this temp model");
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static boolean saveTempModel(Model model, String filePath) {
+		// TODO Auto-generated method stub
+		try {
+			OutputStream outputStream = new FileOutputStream(filePath);
+			model.write(outputStream, "TTL");
+			
+			return true;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static void checkToSaveModel(int numOfFiles, Model model) {
+		// TODO Auto-generated method stub
+		String tempPath = Variables.TEMP_DIR + numOfFiles + ".ttl";
+		
+		if (!saveTempModel(model, tempPath)) {
+			System.out.println("Couldn't save this temp model");
+		}
+	}
+	
+	public static String mergeAllTempFiles(int numOfFiles, String resultFile) {
+		// TODO Auto-generated method stub
+		createNewFile(resultFile);
+		
+		for (int i = 1; i <= numOfFiles; i++) {
+			String filePath = Variables.TEMP_DIR + i + ".ttl";
+			
+			try {
+//				System.out.println(filePath);
+				
+				Model model = readModelFromPath(filePath);
+				String string = modelToString(model, getFileExtension(resultFile));
+				appendToFile(string, resultFile);
+				
+				File file = new File(filePath);
+				file.delete();
+				// System.out.println(filePath + " deleted");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("Error in merging file. Check file: " + filePath);
+			}
+		}
+		return "Success.\nFile Saved: " + resultFile;
+	}
+
+	public static boolean checkToSaveModel(int count, String resultFile, Model model, String type) {
+		// TODO Auto-generated method stub
+		if (type.equals("rdf")) {
+			if (count % Variables.RDF_SAVE_LIMIT == 0) {
+				String string = modelToString(model, getFileExtension(resultFile));
+				
+				appendToFile(string, resultFile);
+				
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if (count % Variables.SAVE_LIMIT == 0) {
+				String string = modelToString(model, getFileExtension(resultFile));
+				
+				appendToFile(string, resultFile);
+				
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	public static void checkToSaveModel(String resultFile, Model model) {
+		// TODO Auto-generated method stub
+		String string = modelToString(model, getFileExtension(resultFile));
+		
+		appendToFile(string, resultFile);
+	}
+	
+	public static ArrayList<String> getAllUpdateTypes() {
+		ArrayList<String> list = new ArrayList<>();
+		list.add("Type1");
+		list.add("Type2");
+		list.add("Type3");
+		list.add("Attributal Update");
+		
+		return list;
 	}
 }

@@ -1,87 +1,41 @@
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#6>
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/City#KOEGE>
         a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "6" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "6 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#cityName>
+                "KOEGE" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inMunicipality>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/Municipality#336> ;
         <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#City> .
 
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#4>
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/City#OSTRODA>
         a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "4" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "4 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#cityName>
+                "OSTRODA" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inMunicipality>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/Municipality#0> ;
         <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#City> .
 
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#2>
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#423234>
         a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "2" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "2 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inCity>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/City#KOEGE> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#lng>
+                "12.2106771229774" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientId>
+                "423234" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientName>
+                "Valloe Stift" ;
         <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#Recipient> .
 
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#7>
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#274525>
         a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "7" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "7 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inCity>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/City#OSTRODA> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientId>
+                "274525" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientName>
+                "Christian Baunb??k Espersen" ;
         <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
-
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#5>
-        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "5" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "5 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
-        <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
-
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#3>
-        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "3" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "3 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
-        <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
-
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#8>
-        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "8" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "8 persons" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
-        <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
-
-<http://linked-statistics-bd.org/2011/ontology/HouseholdSize#1>
-        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeId>
-                "1" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName>
-                "1 person" ;
-        <http://linked-statistics-bd.org/2011/mdAttribute#inHouseholdSizeAll>
-                <http://linked-statistics-bd.org/2011/ontology/HouseholdSizeAll#1> ;
-        <http://purl.org/qb4olap/cubes#memberOf>
-                <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#Recipient> .

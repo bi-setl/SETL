@@ -556,6 +556,7 @@ public class ETLOperationToXML {
 			xmlString += "\t\t<TargetABox>" + temp.getTargetABox() + "</TargetABox>\n";
 			xmlString += "\t\t<TargetTBox>" + temp.getTargetTBox() + "</TargetTBox>\n";
 			xmlString += "\t\t<ResultFile>" + temp.getResultFile() + "</ResultFile>\n";
+			xmlString += "\t\t<UpdateType>" + temp.getUpdateType() + "</UpdateType>\n";
 
 			// next operations, and shape
 			ArrayList<Operation> nextOperations = op.getNextOperations();

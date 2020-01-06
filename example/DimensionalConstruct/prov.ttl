@@ -1,0 +1,7 @@
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#274525>
+        <http://www.w3.org/2002/07/owl#sameAs>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#274525_07-01-2020> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#423234>
+        <http://www.w3.org/2002/07/owl#sameAs>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#423234_07-01-2020> .

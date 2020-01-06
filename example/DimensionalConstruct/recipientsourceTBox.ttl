@@ -1,0 +1,72 @@
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#globalrecipientid>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#pay_files_code>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#address>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#hastown>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#recipientname>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#globalrecipientidx>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#lat>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient>
+        a       <http://www.w3.org/2002/07/owl#Class> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#lng>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#recipientidx>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy#recipientid>
+        a       <http://www.w3.org/2002/07/owl#DatatypeProperty> ;
+        <http://www.w3.org/2000/01/rdf-schema#domain>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipient> ;
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://www.w3.org/2001/XMLSchema#string> .

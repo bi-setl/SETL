@@ -1,0 +1,53 @@
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/City#KOEGE>
+        a       <http://extbi.lab.aau.dk/ontolgoy/subsidy#City> ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/cityName>
+                "KOEGE" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/hasmunicipality>
+                "336" .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#423234>
+        a       <http://extbi.lab.aau.dk/ontolgoy/subsidy#Recipient> ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/address>
+                "Slotsgade 3 Valloe" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/globalrecipientid>
+                "DK423234" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/globalrecipientidx>
+                "DK160941" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/hastown>
+                "KOEGE" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/lat>
+                "55.400834900784" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/lng>
+                "12.2106771229774" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientid>
+                "423234" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientidx>
+                "160941" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientname>
+                "Newton" .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/City#OSTRODA>
+        a       <http://extbi.lab.aau.dk/ontolgoy/subsidy#City> ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/cityName>
+                "OSTRODA" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/hasmunicipality>
+                "0" .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#274525>
+        a       <http://extbi.lab.aau.dk/ontolgoy/subsidy#Recipient> ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/address>
+                "ul. Jaracza 26 C m." ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/globalrecipientid>
+                "DK274525" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/globalrecipientidx>
+                "DK274525" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/hastown>
+                "OSTRODA" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/pay_files_code>
+                "2" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientid>
+                "274525" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientidx>
+                "274525" ;
+        <http://extbi.lab.aau.dk/ontolgoy/subsidy/recipientname>
+                "Dalton" .

@@ -633,6 +633,7 @@ public class ParseXML {
 					String targetABox = element.getElementsByTagName("TargetABox").item(0).getTextContent();
 					String targetTBox = element.getElementsByTagName("TargetTBox").item(0).getTextContent();
 					String resultFile = element.getElementsByTagName("ResultFile").item(0).getTextContent();
+					String updateType = element.getElementsByTagName("UpdateType").item(0).getTextContent();
 
 					Operation levelEntryGenOperations = panelETLObj.new Operation(opName, Integer.parseInt(upLeftX),
 							Integer.parseInt(upLeftY));
@@ -651,6 +652,7 @@ public class ParseXML {
 					etllevelEntryGenOperation.setTargetABox(targetABox);
 					etllevelEntryGenOperation.setTargetTBox(targetTBox);
 					etllevelEntryGenOperation.setResultFile(resultFile);
+					etllevelEntryGenOperation.setUpdateType(updateType);
 
 					levelEntryGenOperations.setEtlOperation(etllevelEntryGenOperation);
 

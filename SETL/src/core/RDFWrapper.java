@@ -23,6 +23,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -45,6 +46,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import helper.Methods;
+import helper.Variables;
 
 public class RDFWrapper {
 	private static final String BASE_PATH = "";
@@ -58,10 +60,176 @@ public class RDFWrapper {
 	private static final String ERROR_IN_READING_THE_SOURCE_FILE = "Error in reading the source file";
 	private static final String INVALID_FILE_CHECK_FILE_TYPE_OR_FILE_NAME = "Invalid file. Check file type or file name";
 	Methods fileMethods;
+	CSVExtraction csvExtraction;
 
 	public RDFWrapper() {
 		// TODO Auto-generated constructor stub
 		fileMethods = new Methods();
+		csvExtraction = new CSVExtraction();
+	}
+
+	public String parseCSVNew(String sourceFile, String prefix, String columnName, String delimiter, String targetFile) {
+		// TODO Auto-generated method stub
+		
+		columnName = columnName.replace("\"", "");
+
+		String fileName = Methods.getFileName(sourceFile);
+		String type = Methods.createHashTypeString(prefix, fileName);
+
+		String slashPrefixString = Methods.createSlashTypeString(prefix, fileName);
+
+		delimiter = Methods.getCSVDelimiter(delimiter);
+		prefix = Methods.validatePrefix(prefix);
+
+		BufferedReader br = null;
+		String line = "";
+
+		try {
+			br = new BufferedReader(new FileReader(sourceFile));
+
+			line = br.readLine();
+			line = line + delimiter;
+
+			ArrayList<String> columnNames = csvExtraction.parseCSVLine(line, delimiter, true);
+//			System.out.println("Total Columns: " + columnNames.size());
+			
+			if (!columnNames.contains(columnName) &&!columnName.equals(INCREMENTAL)
+					&& !columnName.contains("CONCAT")) {
+				br.close();
+				return INAVLID_COLUMN_NAME;
+			}
+			
+			if (fileName.contains(" ")) {
+				br.close();
+				return "File name shouldn't contain spaces";
+			}
+
+			int index = columnNames.indexOf(columnName);
+
+			ArrayList<Integer> faultList = new ArrayList<Integer>();
+
+			Model model = ModelFactory.createDefaultModel();
+
+			int count = 0, numOfFiles = 1;
+			while ((line = br.readLine()) != null) {
+//				line = br.readLine();
+//				System.out.println(line);
+
+				ArrayList<String> columnValues = csvExtraction.parseCSVLine(line, delimiter, false);
+
+				if (columnNames.size() == columnValues.size()) {
+//					System.out.println(columnNames.size() + " - " + columnValues.size());
+
+					String iriValue = "";
+
+					if (columnName.equals(Variables.INCREMENTAL)) {
+						iriValue = "" + (count + 1);
+					} else if (columnName.contains("(")) {
+						LinkedHashMap<String, Object> valueMap = new LinkedHashMap<>();
+						
+						for (int i = 0; i < columnNames.size(); i++) {
+							String key = columnNames.get(i);
+							String value = columnValues.get(i);
+							
+							valueMap.put(key, value);
+						}
+						
+						String expressionString = columnName;
+						
+						EquationHandler equationHandler = new EquationHandler();
+						Object valueObject = equationHandler.handleExpression(expressionString,
+								valueMap, true);
+						
+						iriValue = valueObject.toString();
+					} else {
+						iriValue = columnValues.get(index);
+					}
+
+					iriValue = Methods.formatURL(iriValue);
+					// iriValue = iriValue.substring(0, 1).toUpperCase() + iriValue.substring(1);
+
+					UrlValidator urlValidator = new UrlValidator();
+					String iriString = slashPrefixString + "#" + iriValue;
+
+					if (!urlValidator.isValid(iriString)) {
+						iriString = Methods.validateIRI(iriString);
+						System.out.println("No valid URL for " + line);
+					}
+
+					Resource resource = model.createResource(iriString);
+					Resource typeResource = model.createResource(type);
+					resource.addProperty(RDF.type, typeResource);
+
+					for (int i = 0; i < columnNames.size(); i++) {
+						String value = columnValues.get(i);
+
+						if (!value.equals("NA")) {
+							String column = columnNames.get(i);
+
+							String propertyString = prefix + column;
+							Property property = model.createProperty(propertyString);
+
+							Literal literal = model.createLiteral(value);
+							resource.addLiteral(property, literal);
+						}
+					}
+
+					count++;
+				} else {
+					// System.out.println("Skipping Line: " + count + " - " + line);
+					// System.out.println("Found Columns: " + columnValues.size());
+
+					faultList.add(count);
+
+//					if (count == 2) {
+//						ArrayList<String> columnValues = parseCSVLine(line, delimiter);
+//						
+//						if (columnNames.size() != columnValues.size()) {
+//							System.out.println("Skipping Line: " + count + " - " + line);
+//							System.out.println("Found Columns: " + columnValues.size());
+//							return "";
+//						} else {
+//							System.out.println("Matches");
+//						}
+//					}
+				}
+
+				/*
+				 * if (Methods.checkToSaveModel(count, numOfFiles, model)) { model =
+				 * ModelFactory.createDefaultModel(); numOfFiles++; }
+				 */
+
+				if (Methods.checkToSaveModel(count, targetFile, model, "csv")) {
+					model = ModelFactory.createDefaultModel();
+				}
+			}
+
+			/*
+			 * if (model.size() > 0) { Methods.checkToSaveModel(numOfFiles, model); }
+			 */
+
+			if (model.size() > 0) {
+				Methods.checkToSaveModel(targetFile, model);
+			}
+
+			System.out.println("Total count: " + count);
+
+			System.out.println("Total line skipped: " + faultList.size());
+			// return Methods.mergeAllTempFiles(numOfFiles, targetFile);
+			return "Success.\nFile saved: " + targetFile;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Variables.ERROR_READING_FILE;
+		} finally {
+			try {
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return Variables.ERROR_READING_FILE;
+			}
+		}
 	}
 
 	public String parseCSV(String csvSource, String csvTarget, String csvPrefix, String csvColumn,

@@ -1,0 +1,49 @@
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#423234>
+        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inCity>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/City#KOEGE> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#lng>
+                "12.2106771229774" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientId>
+                "423234" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientName>
+                "Valloe Stift" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#Recipient> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#274525>
+        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inCity>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/City#OSTRODA> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientId>
+                "274525" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientName>
+                "Christian Baunb??k Espersen" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#Recipient> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/City#KOEGE>
+        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#cityName>
+                "KOEGE" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inMunicipality>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/Municipality#336> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#City> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#274525_07-01-2020>
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientName>
+                "Dalton" .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/Recipient#423234_07-01-2020>
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#recipientName>
+                "Newton" .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/City#OSTRODA>
+        a       <http://purl.org/qb4olap/cubes#LevelMember> ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#cityName>
+                "OSTRODA" ;
+        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute#inMunicipality>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/Municipality#0> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty#City> .

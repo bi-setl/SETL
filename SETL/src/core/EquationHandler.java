@@ -108,6 +108,117 @@ public class EquationHandler {
 		
 		return null;
 	}
+	
+	public Object handleExpression(String expressionString, LinkedHashMap<String, Object> valueHashMap, boolean isCSV) {
+		// TODO Auto-generated method stub
+		boolean containsKey = checkKey(expressionString);
+		if (containsKey) {
+			int keyWordPosition = expressionString.indexOf("(");
+			String keyWordString = expressionString.substring(0, keyWordPosition);
+			
+			String newExpressionString = expressionString.substring(keyWordPosition + 1, expressionString.length() - 1);
+			
+			return handleExpression(keyWordString, newExpressionString.trim(), valueHashMap, isCSV);
+		} else {
+			boolean containsSigns = checkSigns(expressionString);
+
+			if (containsSigns) {
+				int add = 0, sub = 0, mul = 0, div = 0;
+				ArrayList<Object> arrayList = new ArrayList<Object>();
+
+				String characterString = "";
+				for (int i = 0; i < expressionString.length(); i++) {
+					String character = Character.toString(expressionString.charAt(i));
+
+					if (checkSigns(character)) {
+						arrayList.add(characterString);
+						arrayList.add(character);
+						characterString = "";
+
+						switch (character) {
+						case "+":
+							add++;
+							break;
+
+						case "-":
+							sub++;
+							break;
+
+						case "*":
+							mul++;
+							break;
+
+						case "/":
+							div++;
+							break;
+
+						default:
+							break;
+						}
+
+					} else {
+						characterString += character;
+					}
+				}
+				
+				if (characterString.length() != 0) {
+					arrayList.add(characterString);
+				}
+				
+				arrayList = solveExpression(arrayList, valueHashMap, "/", div);
+				arrayList = solveExpression(arrayList, valueHashMap, "*", mul);
+				arrayList = solveExpression(arrayList, valueHashMap, "-", sub);
+				arrayList = solveExpression(arrayList, valueHashMap, "+", add);
+				
+				if (arrayList.size() == 1) {
+					return arrayList.get(0);
+				}
+			} else {
+				double value = 0.0;
+				
+				String[] parts = expressionString.split(":");
+				if (parts.length == 2) {
+					expressionString = parts[1];
+				}
+				
+//				System.out.println("Ex: " + expressionString);
+				
+				if (valueHashMap.containsKey(expressionString)) {
+//					System.out.println("Found");
+					try {
+						value = Double.parseDouble(valueHashMap.get(expressionString).toString().trim());
+						// System.out.println(value);
+						
+						if (value % 1 == 0) {
+							return Math.round(value);
+						} else {
+							return value;
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+						// System.out.println("it is a string " + expressionString.toString().trim());
+//						System.out.println(valueHashMap.get(expressionString).toString().trim());
+						return valueHashMap.get(expressionString).toString().trim();
+					}
+				} else {
+					try {
+						value = Double.parseDouble(expressionString.toString().trim());
+						// System.out.println(value);
+						if (value % 1 == 0) {
+							return Math.round(value);
+						} else {
+							return value;
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+						return expressionString.trim();
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
 
 	private Object handleExpression(String keyWordString, String expressionString,
 			LinkedHashMap<String, Object> valueHashMap) {
@@ -120,8 +231,8 @@ public class EquationHandler {
 			String firstPartString = expressionString.substring(0, commaPosition);
 			String secondPartString = expressionString.substring(commaPosition + 1, expressionString.length());
 			
-			// System.out.println("First Part " + firstPartString);
-			// System.out.println("Second Part " + secondPartString);
+//			 System.out.println("First Part " + firstPartString);
+//			 System.out.println("Second Part " + secondPartString);
 			
 			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
 			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
@@ -177,6 +288,81 @@ public class EquationHandler {
 			}
 		} else if (keyWordString.toLowerCase().trim().equals("tostring")) {
 			Object firstObject = handleExpression(expressionString, valueHashMap);
+			return firstObject.toString();
+		}
+			
+		
+		return null;
+	}
+	
+	private Object handleExpression(String keyWordString, String expressionString,
+			LinkedHashMap<String, Object> valueHashMap, boolean isCSV) {
+		// TODO Auto-generated method stub
+		
+		if (keyWordString.toLowerCase().trim().equals("concat")) {
+			int commaPosition = getCommaPosition(expressionString, 0);
+			
+			
+			String firstPartString = expressionString.substring(0, commaPosition);
+			String secondPartString = expressionString.substring(commaPosition + 1, expressionString.length());
+			
+//			 System.out.println("First Part " + firstPartString);
+//			 System.out.println("Second Part " + secondPartString);
+			
+			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
+			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
+			
+			// System.out.println("First " + firstObject);
+			// System.out.println("Second " + secondObject);
+			
+			return firstObject + "" + secondObject;
+		} else if (keyWordString.toLowerCase().trim().equals("replace")) {
+			int firstCommaPosition = getCommaPosition(expressionString, 0);
+			int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
+			
+			
+			String firstPartString = expressionString.substring(0, firstCommaPosition);
+			String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
+			String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
+			
+			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
+			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
+			Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap, isCSV);
+			
+			return firstObject.toString().replace(secondObject.toString(), thirdObject.toString());
+		} else if (keyWordString.toLowerCase().trim().equals("split")) {
+			int firstCommaPosition = getCommaPosition(expressionString, 0);
+			int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
+			
+			
+			String firstPartString = expressionString.substring(0, firstCommaPosition);
+			String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
+			String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
+			
+			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
+			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
+			Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap, isCSV);
+			
+			String[] partStrings = firstObject.toString().split(secondObject.toString());
+			int position = (int) Math.round((double) thirdObject);
+			
+			if (position < partStrings.length) {
+				return partStrings[position];
+			} else {
+				return firstObject.toString();
+			}
+		} else if (keyWordString.toLowerCase().trim().equals("tonumber")) {
+			Object firstObject = handleExpression(expressionString, valueHashMap, isCSV);
+			
+			try {
+				double number = Double.parseDouble(firstObject.toString());
+				return number;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return firstObject;
+			}
+		} else if (keyWordString.toLowerCase().trim().equals("tostring")) {
+			Object firstObject = handleExpression(expressionString, valueHashMap, isCSV);
 			return firstObject.toString();
 		}
 			

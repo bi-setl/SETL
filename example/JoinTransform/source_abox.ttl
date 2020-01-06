@@ -1,0 +1,116 @@
+<http://extbi.lab.aau.dk/ontology/sdw/Company/18243202>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "101" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/21000> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "THORKILD ELLERBÆK" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/32739415>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "102" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/462300> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "HENNING SVEND LARSEN" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/43094254>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "103" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/11900> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "HR                                FLEMMING CHRISTIANSEN" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/73424356>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "104" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/11100> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "PARCELLIST                        VAGNER HANSEN" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/21875597>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "105" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/16100> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "Tom B Nielsen" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/21100706>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "106" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/14100> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "LAMBERTUS G DE PATER" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/21076740>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "107" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/11100> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "THOMAS HØJLAND SØGAARD JENSEN" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/21815675>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "108" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/14610> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "MOGENS FRIIS MØLLER" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .
+
+<http://extbi.lab.aau.dk/ontology/sdw/Company/13055475>
+        a       <http://extbi.lab.aau.dk/ontology/sdw/Company> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/companyid>
+                "109" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasformat>
+                "Enkeltmandsvirksomhed" ;
+        <http://extbi.lab.aau.dk/ontology/sdw/hasmainactivity>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/494100> ;
+        <http://extbi.lab.aau.dk/ontology/sdw/name>
+                "VOGNMAND                          HANS ERIK JENSEN" ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://extbi.lab.aau.dk/ontology/sdw/Company> .

@@ -1,0 +1,39 @@
+<http://example.com/sdw/Company/10894433>
+        <http://example.com/sdw/businessTypeId>
+                "Enkeltmandsvirksomhed_101" ;
+        <http://example.com/sdw/companyName>
+                "THORKILD ELLERBÆK_Carl Mortensen." ;
+        <http://example.com/sdw/mainActivityID>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/21000> .
+
+<http://example.com/sdw/Company/18772078>
+        <http://example.com/sdw/businessTypeId>
+                "Enkeltmandsvirksomhed_104" ;
+        <http://example.com/sdw/companyName>
+                "PARCELLIST                        VAGNER HANSEN_LARS FRANDSEN" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/11100> .
+
+<http://example.com/sdw/Company/17096834>
+        <http://example.com/sdw/businessTypeId>
+                "Enkeltmandsvirksomhed_103" ;
+        <http://example.com/sdw/companyName>
+                "HR                                FLEMMING CHRISTIANSEN_Antonius Hendrikus Dorussen" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/11900> .
+
+<http://example.com/sdw/Company/25868471>
+        <http://example.com/sdw/businessTypeId>
+                "Enkeltmandsvirksomhed_105" ;
+        <http://example.com/sdw/companyName>
+                "Tom B Nielsen_Else Qvist" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/16100> .
+
+<http://example.com/sdw/Company/62423714>
+        <http://example.com/sdw/businessTypeId>
+                "Enkeltmandsvirksomhed_102" ;
+        <http://example.com/sdw/companyName>
+                "HENNING SVEND LARSEN_JENS JENSEN" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://extbi.lab.aau.dk/ontology/sdw/Activity/462300> .

@@ -1,0 +1,58 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix qb4o: <http://purl.org/qb4olap/cubes#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix business: <http://extbi.lab.aau.dk/ontology/sdw/>.
+
+
+#class
+business:Company a owl:Class.
+
+
+
+#objecttype Property
+
+business:hasmainactivity rdf:type owl:FunctionalProperty,
+                       owl:ObjectProperty ;
+             
+              rdfs:range business:Activity ;
+             
+              rdfs:domain business:Company .
+business:hasFormat rdf:type owl:FunctionalProperty,
+                       owl:ObjectProperty ;
+             
+              rdfs:range xsd:string ;
+             
+              rdfs:domain business:Company .
+
+
+
+
+
+#datatype Property
+
+business:companyid  rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:label "Legal Unit Id" ;
+                 
+                 rdfs:isDefinedBy business: ;
+                 
+                 rdfs:domain business:Company ;
+                 
+                 rdfs:range xsd:string .
+
+business:name  rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:label "name" ;
+                 
+                 rdfs:isDefinedBy business: ;
+                 
+                 rdfs:domain business:Company ;
+                 
+                 rdfs:range xsd:string .
+
+

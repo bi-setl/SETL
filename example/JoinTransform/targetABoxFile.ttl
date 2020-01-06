@@ -1,0 +1,68 @@
+<http://example.com/sdw/Company/10894433>
+        a       <http://example.com/sdw/Company> ;
+        <http://example.com/sdw/businessTypeId>
+                <http://example.com/sdw/BusinessType/BusinessType> ;
+        <http://example.com/sdw/companyId>
+                "101" ;
+        <http://example.com/sdw/companyName>
+                "Carl Mortensen." ;
+        <http://example.com/sdw/mainActivityID>
+                <http://example.com/sdw/Activity/11100> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://example.com/sdw/Company> .
+
+
+<http://example.com/sdw/Company/62423714>
+        a       <http://example.com/sdw/Company> ;
+        <http://example.com/sdw/businessTypeId>
+                <http://example.com/sdw/BusinessType/BusinessType> ;
+        <http://example.com/sdw/companyId>
+                "102" ;
+        <http://example.com/sdw/companyName>
+                "JENS JENSEN" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://example.com/sdw/Activity/682040> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://example.com/sdw/Company> .
+
+
+<http://example.com/sdw/Company/17096834>
+        a       <http://example.com/sdw/Company> ;
+        <http://example.com/sdw/businessTypeId>
+                <http://example.com/sdw/BusinessType/BusinessType> ;
+        <http://example.com/sdw/companyId>
+                "103" ;
+        <http://example.com/sdw/companyName>
+                "Antonius Hendrikus Dorussen" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://example.com/sdw/Activity/14100> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://example.com/sdw/Company> .
+
+
+<http://example.com/sdw/Company/18772078>
+        a       <http://example.com/sdw/Company> ;
+        <http://example.com/sdw/businessTypeId>
+                <http://example.com/sdw/BusinessType/BusinessType> ;
+        <http://example.com/sdw/companyId>
+                "104" ;
+        <http://example.com/sdw/companyName>
+                "LARS FRANDSEN" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://example.com/sdw/Activity/14100> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://example.com/sdw/Company> .
+
+
+<http://example.com/sdw/Company/25868471>
+        a       <http://example.com/sdw/Company> ;
+        <http://example.com/sdw/businessTypeId>
+                <http://example.com/sdw/BusinessType/BusinessType> ;
+        <http://example.com/sdw/companyId>
+                "105" ;
+        <http://example.com/sdw/companyName>
+                "Else Qvist" ;
+        <http://example.com/sdw/mainActivityID>
+                <http://example.com/sdw/Activity/21000> ;
+        <http://purl.org/qb4olap/cubes#memberOf>
+                <http://example.com/sdw/Company> .

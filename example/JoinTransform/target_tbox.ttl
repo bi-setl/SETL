@@ -1,0 +1,326 @@
+@prefix sdw: <http://example.com/sdw/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix qb4o: <http://purl.org/qb4olap/cubes#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+#CUBES
+
+sdw:Subsidy rdf:type qb:DataStructureDefinition;
+	qb:component [ qb:measure sdw:amountEuro; qb4o:aggregateFunction qb4o:avg, qb4o:sum ];
+	qb:component [ qb4o:dimension sdw:DataSource; qb4o:cardinality qb4o:OneToMany ];
+	qb:component [ qb4o:dimension sdw:TimeDim; qb4o:cardinality qb4o:OneToOne ];
+	qb:component [ qb4o:dimension sdw:BeneficiaryDim; qb4o:cardinality qb4o:OneToOne ];
+	dct:conformsTo <http://purl.org/qb4olap/cubes>.
+
+#CUBOIDS
+
+sdw:subsidyCuboid rdf:type qb:DataStructureDefinition;
+	qb4o:isCuboidOf sdw:Subsidy;
+	qb:component [ qb:measure sdw:amountEuro; qb4o:aggregateFunction qb4o:count, qb4o:sum ];
+	qb:component [ qb4o:level sdw:PayDate; qb4o:cardinality qb4o:OneToMany ];
+	qb:component [ qb4o:level sdw:Receipient; qb4o:cardinality qb4o:OneToMany ];
+	qb:component [ qb4o:level sdw:Source; qb4o:cardinality qb4o:OneToMany ];
+	dct:conformsTo <http://purl.org/qb4olap/cubes>.
+
+#DATASETS
+
+sdw:SubsidyDataset rdf:type qb:DataSet;
+	qb:structure sdw:subsidyCuboid.
+
+#DIMENSIONS
+sdw:BeneficiaryDim a qb:DimensionProperty;
+	rdfs:label "Beneficiary Dimension"@en.
+sdw:TimeDim a qb:DimensionProperty;
+	rdfs:label "Time Dimension"@en;
+	qb4o:hasHierarchy sdw:addressH2, sdw:AdressHi1, sdw:TimeHierarchy.
+sdw:DataSource a qb:DimensionProperty;
+	rdfs:label "Source of payment"@en.
+
+#HIERARCHIES
+sdw:addressH2 a qb4o:Hierarchy;
+	rdfs:label "address hierarchy 2"@en;
+	qb4o:inDimension sdw:TimeDim;
+	qb4o:hasLevel sdw:Municipality, sdw:Receipient.
+sdw:AdressHi1 a qb4o:Hierarchy;
+	rdfs:label "address hierarchy"@en;
+	qb4o:inDimension sdw:TimeDim;
+	qb4o:hasLevel sdw:City, sdw:Municipality, sdw:Receipient, sdw:Region.
+sdw:TimeHierarchy a qb4o:Hierarchy;
+	rdfs:label "Time Hierarchy"@en;
+	qb4o:inDimension sdw:TimeDim.
+
+#LEVELS
+
+#SDW:MONTH
+sdw:Month a qb4o:LevelProperty;
+	rdfs:label "Month Level"@en;
+	qb4o:hasAttribute sdw:monthName, sdw:monthId.
+
+#SDW:YEAR
+sdw:Year a qb4o:LevelProperty;
+	rdfs:label "Year Level"@en;
+	qb4o:hasAttribute sdw:yearId, sdw:yearNum.
+
+#SDW:CITY
+sdw:City a qb4o:LevelProperty;
+	rdfs:label "City Level"@en;
+	qb4o:hasAttribute sdw:cityName, sdw:cityId.
+
+#SDW:RECEIPIENT
+sdw:Receipient a qb4o:LevelProperty;
+	rdfs:label "Receipient Level"@en;
+	qb4o:hasAttribute sdw:recipientId, sdw:zipCode, sdw:cityId, sdw:address, sdw:recipientName, sdw:recipientCountry.
+
+#SDW:PAYDATE
+sdw:PayDate a qb4o:LevelProperty;
+	rdfs:label "Pay Date Level"@en;
+	qb4o:hasAttribute sdw:PayDateID, sdw:dayId.
+
+#SDW:BUSINESSTYPE
+sdw:BusinessType a qb4o:LevelProperty;
+	rdfs:label "Type of Business"@en;
+	qb4o:hasAttribute sdw:businessTypeName, sdw:businessTypeId.
+
+#SDW:ORGANICFIELD
+sdw:OrganicField a qb4o:LevelProperty;
+	rdfs:label "Organic Field Level"@en;
+	qb4o:hasAttribute sdw:fieldId.
+
+#SDW:DAY
+sdw:Day a qb4o:LevelProperty;
+	rdfs:label "Day Level"@en;
+	qb4o:hasAttribute sdw:dayDate, sdw:dayId.
+
+#SDW:ACTIVITY
+sdw:Activity a qb4o:LevelProperty;
+	rdfs:label "Activity level"@en;
+	qb4o:hasAttribute sdw:activityName, sdw:mainActivityID.
+
+#SDW:MUNICIPALITY
+sdw:Municipality a qb4o:LevelProperty;
+	rdfs:label "Municipality Level"@en;
+	qb4o:hasAttribute sdw:municipalityName, sdw:municipalityId.
+
+#SDW:REGION
+sdw:Region a qb4o:LevelProperty;
+	rdfs:label "Region Level"@en;
+	qb4o:hasAttribute sdw:regionId, sdw:regionName.
+
+#SDW:SOURCE
+sdw:Source a qb4o:LevelProperty;
+	rdfs:label "Level  for source"@en;
+	qb4o:hasAttribute sdw:sourceID, sdw:sourceName.
+
+#SDW:COMPANY
+sdw:Company a qb4o:LevelProperty;
+	rdfs:label "Company Level"@en;
+	qb4o:hasAttribute sdw:fieldId, sdw:mainActivityID, sdw:companyName, sdw:businessTypeId, sdw:companyId.
+
+#ATTRIBUTES
+
+#SDW:MUNICIPALITYNAME
+sdw:municipalityName a qb4o:LevelAttribute;
+	rdfs:label "Name of municipality"@en;
+	rdfs:range xsd:string.
+
+#SDW:YEARNUM
+sdw:yearNum a qb4o:LevelAttribute;
+	rdfs:label "Year number"@en;
+	rdfs:range xsd:integer.
+
+#SDW:MONTHNAME
+sdw:monthName a qb4o:LevelAttribute;
+	rdfs:label "Name of the month"@en;
+	rdfs:range xsd:string.
+
+#SDW:SOURCEID
+sdw:sourceID a qb4o:LevelAttribute;
+	rdfs:label "Id for source"@en;
+	rdfs:range sdw:Source.
+
+#SDW:BUSINESSTYPENAME
+sdw:businessTypeName a qb4o:LevelAttribute;
+	rdfs:label "Name of Business Category"@en;
+	rdfs:range xsd:string.
+
+#SDW:FIELDID
+sdw:fieldId a qb4o:LevelAttribute;
+	rdfs:label "Id of the organic field where the company is situated"@en;
+	rdfs:range sdw:OrganicField.
+
+#SDW:MAINACTIVITYID
+sdw:mainActivityID a qb4o:LevelAttribute;
+	rdfs:label "Primary activity of company"@en;
+	rdfs:range sdw:Activity.
+
+#SDW:COMPANYNAME
+sdw:companyName a qb4o:LevelAttribute;
+	rdfs:label "Name of company"@en;
+	rdfs:range xsd:string.
+
+#SDW:RECIPIENTNAME
+sdw:recipientName a qb4o:LevelAttribute;
+	rdfs:label "name of recipient"@en;
+	rdfs:range xsd:string.
+
+#SDW:DAYID
+sdw:dayId a qb4o:LevelAttribute;
+	rdfs:label "Unique Id for each day"@en;
+	rdfs:range sdw:Day.
+
+#SDW:RECIPIENTCOUNTRY
+sdw:recipientCountry a qb4o:LevelAttribute;
+	rdfs:label "Country received the subsidy"@en;
+	rdfs:range xsd:string.
+
+#SDW:ADDRESS
+sdw:address a qb4o:LevelAttribute;
+	rdfs:label "address of recipient"@en;
+	rdfs:range xsd:string.
+
+#SDW:MONTHID
+sdw:monthId a qb4o:LevelAttribute;
+	rdfs:label "Unique Id for each month"@en;
+	rdfs:range sdw:Month.
+
+#SDW:REGIONID
+sdw:regionId a qb4o:LevelAttribute;
+	rdfs:label "Id of region"@en;
+	rdfs:range sdw:Region.
+
+#SDW:BUSINESSTYPEID
+sdw:businessTypeId a qb4o:LevelAttribute;
+	rdfs:label "Type of Business"@en;
+	rdfs:range sdw:BusinessType.
+
+#SDW:DAYDATE
+sdw:dayDate a qb4o:LevelAttribute;
+	rdfs:label "Date of the day"@en;
+	rdfs:range xsd:string.
+
+#SDW:MUNICIPALITYID
+sdw:municipalityId a qb4o:LevelAttribute;
+	rdfs:label "Id of municipality"@en;
+	rdfs:range xsd:string.
+
+#SDW:LONGITUDE
+sdw:longitude a qb4o:LevelAttribute;
+	rdfs:label "longitude of recipient"@en;
+	rdfs:range xsd:double.
+
+#SDW:LATTITUDE
+sdw:lattitude a qb4o:LevelAttribute;
+	rdfs:label "lattitude of recipient"@en;
+	rdfs:range xsd:double.
+
+#SDW:SOURCENAME
+sdw:sourceName a qb4o:LevelAttribute;
+	rdfs:label "Name of the source"@en;
+	rdfs:range xsd:string.
+
+#SDW:YEARID
+sdw:yearId a qb4o:LevelAttribute;
+	rdfs:label "Unique id for the year"@en;
+	rdfs:range xsd:string.
+
+#SDW:CITYNAME
+sdw:cityName a qb4o:LevelAttribute;
+	rdfs:label "Name of city"@en;
+	rdfs:range xsd:string.
+
+#SDW:REGIONNAME
+sdw:regionName a qb4o:LevelAttribute;
+	rdfs:label "Name of region"@en;
+	rdfs:range xsd:string.
+
+#SDW:ACTIVITYNAME
+sdw:activityName a qb4o:LevelAttribute;
+	rdfs:label "Name of the Activity"@en;
+	rdfs:range xsd:string.
+
+#SDW:CITYID
+sdw:cityId a qb4o:LevelAttribute;
+	rdfs:label "Id of city"@en;
+	rdfs:range xsd:string.
+
+#SDW:COMPANYID
+sdw:companyId a qb4o:LevelAttribute;
+	rdfs:label "Id of company"@en;
+	rdfs:range sdw:Company.
+
+#SDW:PAYDATEID
+sdw:PayDateID a qb4o:LevelAttribute;
+	rdfs:label "ID of payment date"@en;
+	rdfs:range sdw:PayDate.
+
+#SDW:RECIPIENTID
+sdw:recipientId a qb4o:LevelAttribute;
+	rdfs:label "Id of recipient"@en;
+	rdfs:range sdw:Receipient.
+
+#SDW:ZIPCODE
+sdw:zipCode a qb4o:LevelAttribute;
+	rdfs:label "zip code of recipient"@en;
+	rdfs:range xsd:string.
+
+#SDW:COMID
+sdw:comId a qb4o:LevelAttribute;
+	rdfs:label "Id for Company"@en;
+	rdfs:range xsd:string.
+
+#ROLLUP RELATIONSHIPS
+sdw:inCity a qb4o:RollupProperty.
+sdw:inYear a qb4o:RollupProperty.
+sdw:inMunicipality a qb4o:RollupProperty.
+sdw:inMonth a qb4o:RollupProperty.
+sdw:inRegion a qb4o:RollupProperty.
+
+#HIERARCHY STEPS
+
+_:ha1 a qb4o:HierarchyStep;
+	qb4o:inHierarchy sdw:AdressHi1;
+	qb4o:childLevel sdw:Receipient;
+	qb4o:parentLevel sdw:City;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup sdw:inCity.
+
+_:ha2 a qb4o:HierarchyStep;
+	qb4o:inHierarchy sdw:AdressHi1;
+	qb4o:childLevel sdw:City;
+	qb4o:parentLevel sdw:Municipality;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup sdw:inMunicipality.
+
+_:ha3 a qb4o:HierarchyStep;
+	qb4o:inHierarchy sdw:AdressHi1;
+	qb4o:childLevel sdw:Municipality;
+	qb4o:parentLevel sdw:Region;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup sdw:inRegion.
+
+_:ha4 a qb4o:HierarchyStep;
+	qb4o:inHierarchy sdw:addressH2;
+	qb4o:childLevel sdw:Receipient;
+	qb4o:parentLevel sdw:Municipality;
+	qb4o:pcCardinality qb4o:OneToMany;
+	qb4o:rollup sdw:inMunicipality.
+
+#MEASURES
+
+#SDW:AMOUNTEURO
+sdw:amountEuro a qb:MeasureProperty;
+	rdfs:label "Amount of payment in Euro"@en;
+	rdfs:range xsd:double.
+
+#PROPERTY
+
+#SDW:SUBSIDYID
+sdw:subsidyId rdf:type owl:ObjectProperty;
+	rdfs:domain sdw:SubsidyDataset;
+	rdfs:range sdw:SubsidyDataset.
+

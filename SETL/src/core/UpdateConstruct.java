@@ -232,7 +232,7 @@ public class UpdateConstruct {
 				updateTypeString = updateType;
 			}
 			
-			System.out.println(updateTypeString);
+//			System.out.println(updateTypeString);
 
 			if (subjectConstructMap.containsKey(subjectString)) {
 				SubjectConstruct subjectConstruct = subjectConstructMap.get(subjectString);

@@ -1,0 +1,50 @@
+@prefix qb:    <http://purl.org/linked-data/cube#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix business: <http://extbi.lab.aau.dk/ontology/sdw/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix sdw:   <http://example.com/sdw/> .
+@prefix qb4o:  <http://purl.org/qb4olap/cubes#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix map:   <http://www.map.org/example#> .
+@prefix onto:  <http://www.onto.org/schema#> .
+
+map:PropertyMapper_02_hasFormat_mainActivityID_businessTypeId
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:business_Company_sdw_Company ;
+        map:sourceProperty      "CONCAT( business:hasformat, CONCAT( _, sdw:companyId))" ;
+        map:sourcePropertyType  map:SourceExpression ;
+        map:targetProperty      sdw:businessTypeId .
+
+map:business_Company_sdw_Company
+        a                         map:ConceptMapper ;
+        map:dataset               map:one ;
+        map:iriValue              business:companyid ;
+        map:iriValueType          map:SourceAttribute ;
+        map:matchedInstances      "All" ;
+        map:relation              skos:exact ;
+        map:sourceCommonProperty  business:companyid ;
+        map:sourceConcept         business:Company ;
+        map:targetCommonProperty  sdw:companyId ;
+        map:targetConcept         sdw:Company .
+
+map:PropertyMapper_03_hasmainactivity_mainActivityID
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:business_Company_sdw_Company ;
+        map:sourceProperty      business:hasmainactivity ;
+        map:sourcePropertyType  map:SourceProperty ;
+        map:targetProperty      sdw:mainActivityID .
+
+map:PropertyMapper_01_name_companyName_companyName
+        a                       map:PropertyMapper ;
+        map:ConceptMapper       map:business_Company_sdw_Company ;
+        map:sourceProperty      "CONCAT(business:name, CONCAT(_, sdw:companyName))" ;
+        map:sourcePropertyType  map:SourceExpression ;
+        map:targetProperty      sdw:companyName .
+
+map:one  a          map:Dataset ;
+        map:source  onto:source_tbox ;
+        map:target  onto:target_tbox .
+

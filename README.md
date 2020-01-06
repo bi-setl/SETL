@@ -45,7 +45,3 @@ The **view** package contains all the panels and frames used in this project. Re
 
 
 
-## Contact 
-If you have any queries contact
-rudra@cs.aau.dk 
-

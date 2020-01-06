@@ -81,14 +81,14 @@ public class PanelETL extends JPanel {
 
 	// Strings for oepration names
 	public static final String START = "Start";
-	public static final String INSTANCE_ENTRY_GENERATOR = "InstanceEntryGenerator";
+	public static final String INSTANCE_ENTRY_GENERATOR = "InstanceGenerator";
 	public static final String NonSemanticToTBoxDeriver = "NonSemanticToTBoxDeriver";
 	public static final String RDF_WRAPPER = "RDFWrapper";
 	public static final String UPDATE_DIMENSION_CONSTRUCT = "UpdateDimensionalConstruct";
 	public static final String TransformationOnLiteral = "TransformationOnLiteral";
 	public static final String FACT_ENTRY_GENERATOR = "FactEntryGenerator";
 	public static final String LEVEL_ENTRY_GENERATOR = "LevelEntryGenerator";
-	public static final String MULTIPLE_TRANFORM = "MultipleTransform";
+	public static final String MULTIPLE_TRANFORM = "JoinTransform";
 	public static final String MAPPING_GEN = "Direct Mapping Generator";
 	public static final String ABOX2TBOX = "ABoxToTBoxDeriver";
 	public static final String LOADER = "Loader";
@@ -231,6 +231,17 @@ public class PanelETL extends JPanel {
 		btnExtdb.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelExtraction.add(btnExtdb);
 
+		JButton btnRdfWrapper = new JButton(RDF_WRAPPER);
+		setMargin(btnRdfWrapper);
+		btnRdfWrapper.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paletteButtonHandler(arg0);
+			}
+		});
+		etlButtonGroup.add(btnRdfWrapper);
+		btnRdfWrapper.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExtraction.add(btnRdfWrapper);
+
 		JPanel panelTransformation = new JPanel();
 		panelTransformation.setBorder(
 				new TitledBorder(null, "Transformation", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -248,6 +259,17 @@ public class PanelETL extends JPanel {
 		etlButtonGroup.add(btnAboxtbox);
 		btnAboxtbox.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelTransformation.add(btnAboxtbox);
+
+		JButton btnTboxBuilder = new JButton(NonSemanticToTBoxDeriver);
+		setMargin(btnTboxBuilder);
+		btnTboxBuilder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paletteButtonHandler(e);
+			}
+		});
+		etlButtonGroup.add(btnTboxBuilder);
+		btnTboxBuilder.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelTransformation.add(btnTboxBuilder);
 
 		JButton btnExpressionHandler = new JButton(TransformationOnLiteral);
 		setMargin(btnExpressionHandler);
@@ -305,16 +327,16 @@ public class PanelETL extends JPanel {
 		btnFactentryGenerator.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelTransformation.add(btnFactentryGenerator);
 
-		JButton btnTboxBuilder = new JButton(NonSemanticToTBoxDeriver);
-		setMargin(btnTboxBuilder);
-		btnTboxBuilder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				paletteButtonHandler(e);
+		JButton btnInstanceentrygenerator = new JButton(INSTANCE_ENTRY_GENERATOR);
+		setMargin(btnInstanceentrygenerator);
+		btnInstanceentrygenerator.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paletteButtonHandler(arg0);
 			}
 		});
-		etlButtonGroup.add(btnTboxBuilder);
-		btnTboxBuilder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelTransformation.add(btnTboxBuilder);
+		etlButtonGroup.add(btnInstanceentrygenerator);
+		btnInstanceentrygenerator.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelTransformation.add(btnInstanceentrygenerator);
 
 		JButton btnUpdateDimensionConstruct = new JButton(UPDATE_DIMENSION_CONSTRUCT);
 		setMargin(btnUpdateDimensionConstruct);
@@ -326,28 +348,6 @@ public class PanelETL extends JPanel {
 		etlButtonGroup.add(btnUpdateDimensionConstruct);
 		btnUpdateDimensionConstruct.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelTransformation.add(btnUpdateDimensionConstruct);
-
-		JButton btnRdfWrapper = new JButton(RDF_WRAPPER);
-		setMargin(btnRdfWrapper);
-		btnRdfWrapper.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				paletteButtonHandler(arg0);
-			}
-		});
-		etlButtonGroup.add(btnRdfWrapper);
-		btnRdfWrapper.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelTransformation.add(btnRdfWrapper);
-
-		JButton btnInstanceentrygenerator = new JButton(INSTANCE_ENTRY_GENERATOR);
-		setMargin(btnInstanceentrygenerator);
-		btnInstanceentrygenerator.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				paletteButtonHandler(arg0);
-			}
-		});
-		etlButtonGroup.add(btnInstanceentrygenerator);
-		btnInstanceentrygenerator.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelTransformation.add(btnInstanceentrygenerator);
 
 		JPanel panelLinking = new JPanel();
 		panelLinking.setBorder(new TitledBorder(null, "Linking", TitledBorder.LEADING, TitledBorder.TOP, null, null));

@@ -623,7 +623,7 @@ public class SETLFrame extends JFrame {
 		panelTextOne.add(panelTextTwo, gbc_panelTextTwo);
 		panelTextTwo.setLayout(new MigLayout("", "[center]", "[][]"));
 		
-		JLabel lblSetl = new JLabel("<html><body><p><u>SETL</u></p></body></html>");
+		JLabel lblSetl = new JLabel("<html><body><p><u>SETL</u><sub>BI</sub></p></body></html>");
 		lblSetl.setFont(new Font("Tahoma", Font.BOLD, 44));
 		panelTextTwo.add(lblSetl, "cell 0 0");
 		

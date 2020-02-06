@@ -223,72 +223,77 @@ public class EquationHandler {
 	private Object handleExpression(String keyWordString, String expressionString,
 			LinkedHashMap<String, Object> valueHashMap) {
 		// TODO Auto-generated method stub
-		
-		if (keyWordString.toLowerCase().trim().equals("concat")) {
-			int commaPosition = getCommaPosition(expressionString, 0);
-			
-			
-			String firstPartString = expressionString.substring(0, commaPosition);
-			String secondPartString = expressionString.substring(commaPosition + 1, expressionString.length());
-			
+
+		switch (keyWordString.toLowerCase().trim()) {
+			case "concat": {
+				int commaPosition = getCommaPosition(expressionString, 0);
+
+
+				String firstPartString = expressionString.substring(0, commaPosition);
+				String secondPartString = expressionString.substring(commaPosition + 1, expressionString.length());
+
 //			 System.out.println("First Part " + firstPartString);
 //			 System.out.println("Second Part " + secondPartString);
-			
-			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
-			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
-			
-			// System.out.println("First " + firstObject);
-			// System.out.println("Second " + secondObject);
-			
-			return firstObject + "" + secondObject;
-		} else if (keyWordString.toLowerCase().trim().equals("replace")) {
-			int firstCommaPosition = getCommaPosition(expressionString, 0);
-			int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
-			
-			
-			String firstPartString = expressionString.substring(0, firstCommaPosition);
-			String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
-			String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
-			
-			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
-			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
-			Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap);
-			
-			return firstObject.toString().replace(secondObject.toString(), thirdObject.toString());
-		} else if (keyWordString.toLowerCase().trim().equals("split")) {
-			int firstCommaPosition = getCommaPosition(expressionString, 0);
-			int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
-			
-			
-			String firstPartString = expressionString.substring(0, firstCommaPosition);
-			String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
-			String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
-			
-			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
-			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
-			Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap);
-			
-			String[] partStrings = firstObject.toString().split(secondObject.toString());
-			int position = (int) Math.round((double) thirdObject);
-			
-			if (position < partStrings.length) {
-				return partStrings[position];
-			} else {
+
+				Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
+				Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
+
+				// System.out.println("First " + firstObject);
+				// System.out.println("Second " + secondObject);
+
+				return firstObject + "" + secondObject;
+			}
+			case "replace": {
+				int firstCommaPosition = getCommaPosition(expressionString, 0);
+				int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
+
+
+				String firstPartString = expressionString.substring(0, firstCommaPosition);
+				String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
+				String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
+
+				Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
+				Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
+				Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap);
+
+				return firstObject.toString().replace(secondObject.toString(), thirdObject.toString());
+			}
+			case "split": {
+				int firstCommaPosition = getCommaPosition(expressionString, 0);
+				int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
+
+
+				String firstPartString = expressionString.substring(0, firstCommaPosition);
+				String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
+				String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
+
+				Object firstObject = handleExpression(firstPartString.trim(), valueHashMap);
+				Object secondObject = handleExpression(secondPartString.trim(), valueHashMap);
+				Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap);
+
+				String[] partStrings = firstObject.toString().split(secondObject.toString());
+				int position = (int) Math.round((double) thirdObject);
+
+				if (position < partStrings.length) {
+					return partStrings[position];
+				} else {
+					return firstObject.toString();
+				}
+			}
+			case "tonumber": {
+				Object firstObject = handleExpression(expressionString, valueHashMap);
+
+				try {
+					return Double.parseDouble(firstObject.toString());
+				} catch (Exception e) {
+					// TODO: handle exception
+					return firstObject;
+				}
+			}
+			case "tostring": {
+				Object firstObject = handleExpression(expressionString, valueHashMap);
 				return firstObject.toString();
 			}
-		} else if (keyWordString.toLowerCase().trim().equals("tonumber")) {
-			Object firstObject = handleExpression(expressionString, valueHashMap);
-			
-			try {
-				double number = Double.parseDouble(firstObject.toString());
-				return number;
-			} catch (Exception e) {
-				// TODO: handle exception
-				return firstObject;
-			}
-		} else if (keyWordString.toLowerCase().trim().equals("tostring")) {
-			Object firstObject = handleExpression(expressionString, valueHashMap);
-			return firstObject.toString();
 		}
 			
 		
@@ -298,72 +303,77 @@ public class EquationHandler {
 	private Object handleExpression(String keyWordString, String expressionString,
 			LinkedHashMap<String, Object> valueHashMap, boolean isCSV) {
 		// TODO Auto-generated method stub
-		
-		if (keyWordString.toLowerCase().trim().equals("concat")) {
-			int commaPosition = getCommaPosition(expressionString, 0);
-			
-			
-			String firstPartString = expressionString.substring(0, commaPosition);
-			String secondPartString = expressionString.substring(commaPosition + 1, expressionString.length());
-			
+
+		switch (keyWordString.toLowerCase().trim()) {
+			case "concat": {
+				int commaPosition = getCommaPosition(expressionString, 0);
+
+
+				String firstPartString = expressionString.substring(0, commaPosition);
+				String secondPartString = expressionString.substring(commaPosition + 1, expressionString.length());
+
 //			 System.out.println("First Part " + firstPartString);
 //			 System.out.println("Second Part " + secondPartString);
-			
-			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
-			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
-			
-			// System.out.println("First " + firstObject);
-			// System.out.println("Second " + secondObject);
-			
-			return firstObject + "" + secondObject;
-		} else if (keyWordString.toLowerCase().trim().equals("replace")) {
-			int firstCommaPosition = getCommaPosition(expressionString, 0);
-			int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
-			
-			
-			String firstPartString = expressionString.substring(0, firstCommaPosition);
-			String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
-			String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
-			
-			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
-			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
-			Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap, isCSV);
-			
-			return firstObject.toString().replace(secondObject.toString(), thirdObject.toString());
-		} else if (keyWordString.toLowerCase().trim().equals("split")) {
-			int firstCommaPosition = getCommaPosition(expressionString, 0);
-			int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
-			
-			
-			String firstPartString = expressionString.substring(0, firstCommaPosition);
-			String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
-			String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
-			
-			Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
-			Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
-			Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap, isCSV);
-			
-			String[] partStrings = firstObject.toString().split(secondObject.toString());
-			int position = (int) Math.round((double) thirdObject);
-			
-			if (position < partStrings.length) {
-				return partStrings[position];
-			} else {
+
+				Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
+				Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
+
+				// System.out.println("First " + firstObject);
+				// System.out.println("Second " + secondObject);
+
+				return firstObject + "" + secondObject;
+			}
+			case "replace": {
+				int firstCommaPosition = getCommaPosition(expressionString, 0);
+				int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
+
+
+				String firstPartString = expressionString.substring(0, firstCommaPosition);
+				String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
+				String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
+
+				Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
+				Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
+				Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap, isCSV);
+
+				return firstObject.toString().replace(secondObject.toString(), thirdObject.toString());
+			}
+			case "split": {
+				int firstCommaPosition = getCommaPosition(expressionString, 0);
+				int secondCommaPosition = getCommaPosition(expressionString, firstCommaPosition + 1);
+
+
+				String firstPartString = expressionString.substring(0, firstCommaPosition);
+				String secondPartString = expressionString.substring(firstCommaPosition + 1, secondCommaPosition);
+				String thirdPartString = expressionString.substring(secondCommaPosition + 1, expressionString.length());
+
+				Object firstObject = handleExpression(firstPartString.trim(), valueHashMap, isCSV);
+				Object secondObject = handleExpression(secondPartString.trim(), valueHashMap, isCSV);
+				Object thirdObject = handleExpression(thirdPartString.trim(), valueHashMap, isCSV);
+
+				String[] partStrings = firstObject.toString().split(secondObject.toString());
+				int position = (int) Math.round((double) thirdObject);
+
+				if (position < partStrings.length) {
+					return partStrings[position];
+				} else {
+					return firstObject.toString();
+				}
+			}
+			case "tonumber": {
+				Object firstObject = handleExpression(expressionString, valueHashMap, isCSV);
+
+				try {
+					return Double.parseDouble(firstObject.toString());
+				} catch (Exception e) {
+					// TODO: handle exception
+					return firstObject;
+				}
+			}
+			case "tostring": {
+				Object firstObject = handleExpression(expressionString, valueHashMap, isCSV);
 				return firstObject.toString();
 			}
-		} else if (keyWordString.toLowerCase().trim().equals("tonumber")) {
-			Object firstObject = handleExpression(expressionString, valueHashMap, isCSV);
-			
-			try {
-				double number = Double.parseDouble(firstObject.toString());
-				return number;
-			} catch (Exception e) {
-				// TODO: handle exception
-				return firstObject;
-			}
-		} else if (keyWordString.toLowerCase().trim().equals("tostring")) {
-			Object firstObject = handleExpression(expressionString, valueHashMap, isCSV);
-			return firstObject.toString();
 		}
 			
 		
@@ -402,12 +412,9 @@ public class EquationHandler {
 
 	private boolean checkKey(String expressionString) {
 		// TODO Auto-generated method stub
-		if (expressionString.toLowerCase().startsWith("concat") || expressionString.toLowerCase().startsWith("replace") ||
-			expressionString.toLowerCase().startsWith("split") || expressionString.toLowerCase().startsWith("tonumber") || 
-			expressionString.toLowerCase().startsWith("tostring") || expressionString.toLowerCase().startsWith("compare")) {
-			return true;
-		}
-		return false;
+		return expressionString.toLowerCase().startsWith("concat") || expressionString.toLowerCase().startsWith("replace") ||
+				expressionString.toLowerCase().startsWith("split") || expressionString.toLowerCase().startsWith("tonumber") ||
+				expressionString.toLowerCase().startsWith("tostring") || expressionString.toLowerCase().startsWith("compare");
 	}
 
 	private ArrayList<Object> solveExpression(ArrayList<Object> arrayList, LinkedHashMap<String, Object> valueHashMap,
@@ -421,32 +428,37 @@ public class EquationHandler {
 			String firstElementString = arrayList.get(position - 1).toString().trim();
 			String secondElementString = arrayList.get(position + 1).toString().trim();
 			
-			double first = 0.0;
-			double second = 0.0;
+			double first;
+			double second;
 			double result = 0.0;
 
 			if (valueHashMap.containsKey(firstElementString)) {
 				first = Double.parseDouble(valueHashMap.get(firstElementString).toString());
 			} else {
-				first = Double.parseDouble(firstElementString.toString());
+				first = Double.parseDouble(firstElementString);
 			}
 
 			if (valueHashMap.containsKey(secondElementString)) {
 				second = Double.parseDouble(valueHashMap.get(secondElementString).toString());
 			} else {
-				second = Double.parseDouble(secondElementString.toString());
+				second = Double.parseDouble(secondElementString);
 			}
-			
-			if (characterString.equals("/")) {
-				if (second != 0.0) {
-					result = first / second;
-				}
-			} else if (characterString.equals("*")) {
-				result = first * second;
-			} else if (characterString.equals("+")) {
-				result = first + second;
-			} else if (characterString.equals("-")) {
-				result = first - second;
+
+			switch (characterString) {
+				case "/":
+					if (second != 0.0) {
+						result = first / second;
+					}
+					break;
+				case "*":
+					result = first * second;
+					break;
+				case "+":
+					result = first + second;
+					break;
+				case "-":
+					result = first - second;
+					break;
 			}
 			
 			arrayList.set(position - 1, result);
@@ -460,10 +472,7 @@ public class EquationHandler {
 	private boolean checkSigns(String expressionString) {
 
 		// TODO Auto-generated method stub
-		if (expressionString.contains("+") || expressionString.contains("-") || expressionString.contains("*")
-				|| expressionString.contains("/")) {
-			return true;
-		}
-		return false;
+		return expressionString.contains("+") || expressionString.contains("-") || expressionString.contains("*")
+				|| expressionString.contains("/");
 	}
 }

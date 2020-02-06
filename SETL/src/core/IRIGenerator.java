@@ -93,20 +93,22 @@ public class IRIGenerator {
 	
 	public String getRangeValue(String targetType, Model targetTBoxModel) {
 		// TODO Auto-generated method stub
+//		System.out.println(targetType);
+		
 		String sparql = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
 				+ "SELECT ?s ?o WHERE {"
 				+ "?s rdfs:range ?o."
 				+ "FILTER regex(str(?s), '" + targetType + "').}";
 
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, targetTBoxModel);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+		ResultSet resultSet = Methods.executeQuery(targetTBoxModel, sparql);
+//		Methods.print(resultSet);
 		
 		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
+			QuerySolution querySolution = resultSet.next();
 			String subject = querySolution.get("s").toString();
 
 			if (subject.equals(targetType)) {
+//				System.out.println("Matches");
 				return querySolution.get("o").toString();
 			}
 		}

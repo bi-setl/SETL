@@ -512,7 +512,6 @@ public class LevelEntryGenerator {
 			}
 		}
 
-//		return "Success.\nFile saved: " + targetABoxFile;
 		Model finalModel = Methods.readModelFromPath(targetABoxFile);
 
 		if (finalModel != null) {

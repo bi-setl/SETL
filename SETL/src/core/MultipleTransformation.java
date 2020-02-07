@@ -210,7 +210,6 @@ public class MultipleTransformation {
 		for (Map.Entry<String, MapperTransform> map : conceptTransform.getMapperTransformMap().entrySet()) {
 			MapperTransform mapTransform = map.getValue();
 			
-//			System.out.println("Property: " + prefixExtraction.assignIRI(mapTransform.getTargetProperty()));
 			Property property = targetModel.createProperty(prefixExtraction.assignIRI(mapTransform.getTargetProperty()));
 			Object propertyValue = null;
 			

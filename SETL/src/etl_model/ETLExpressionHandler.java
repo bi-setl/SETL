@@ -49,8 +49,8 @@ public class ETLExpressionHandler implements ETLOperation {
 					String result = "";
 					result += Calendar.getInstance().getTime().toString() + "\n";
 					
-					Expression expressionHandler = new Expression();
-					result += expressionHandler.transformOnliteral(getMappingFile(), getSourceABoxFile(), getResultFile());
+					Expression expressionHandler = new Expression(true);
+					result += expressionHandler.transformOnLiteral(getMappingFile(), getSourceABoxFile(), getResultFile(), true);
 					result += "\n" + Calendar.getInstance().getTime();
 
 					textPane.setText(textPane.getText().toString() + "\n" + result);

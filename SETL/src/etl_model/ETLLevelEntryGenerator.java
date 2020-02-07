@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.Timer;
 
+import core.LevelEntryGenerator;
 import core.LevelEntryNew;
 import helper.Methods;
 import model.ETLOperation;
@@ -589,13 +590,17 @@ public class ETLLevelEntryGenerator implements ETLOperation {
 					if (getFileType().equals("CSV")) {
 						// LevelEntryGenerator entryGenerator = new LevelEntryGenerator();
 						// result += entryGenerator.generateLevelEntryFromCSV(getSourceCSV(), getMappingFile(), getTargetTBoxFile(), getProvFile(), getTargetABoxFile(), getDelimiter());
-						LevelEntryNew entryNew = new LevelEntryNew();
-						result += entryNew.generateLevelEntryFromCSV(getSourceCSV(), getMappingFile(), getTargetTBoxFile(), getProvFile(), getTargetABoxFile(), getDelimiter());
+						// LevelEntryNew entryNew = new LevelEntryNew();
+						LevelEntryGenerator entryGenerator = new LevelEntryGenerator();
+						result += entryGenerator.generateLevelEntryFromCSV(getSourceCSV(), getMappingFile(), getTargetTBoxFile(), getTargetABoxFile(), getDelimiter());
 					} else {
 						// LevelEntryGenerator entryGenerator = new LevelEntryGenerator();
-						LevelEntryNew entryNew = new LevelEntryNew();
-						result += entryNew.generateLevelEntry(getSourceABoxFile(), getMappingFile(),
-								getTargetTBoxFile(), getProvFile(), getTargetABoxFile());
+//						LevelEntryNew entryNew = new LevelEntryNew();
+//						result += entryNew.generateLevelEntry(getSourceABoxFile(), getMappingFile(),
+//								getTargetTBoxFile(), getProvFile(), getTargetABoxFile());
+						
+						LevelEntryGenerator entryGenerator = new LevelEntryGenerator();
+						result += entryGenerator.generateLevelEntryFromRDF(getSourceABoxFile(), getMappingFile(), getTargetTBoxFile(), getTargetABoxFile(), getProvFile());
 					}
 					
 					result += "\n" + Calendar.getInstance().getTime();

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class ConceptTransform {
@@ -13,6 +12,8 @@ public class ConceptTransform {
 	private String targetCommonProperty;
 	private String sourceABoxLocationString;
 	private LinkedHashMap<String, MapperTransform> mapperTransformMap;
+	private LinkedHashMap<String, String> propertyMap;
+	private String rangeString;
 
 	public ConceptTransform() {
 		super();
@@ -25,7 +26,9 @@ public class ConceptTransform {
 		this.sourceCommonProperty = "";
 		this.targetCommonProperty = "";
 		this.sourceABoxLocationString = "";
+		this.rangeString = "";
 		this.mapperTransformMap = new LinkedHashMap<String, MapperTransform>();
+		this.setPropertyMap(new LinkedHashMap<String, String>());
 	}
 
 	public ConceptTransform(String concept, String sourceType, String targetType, String iriValue, String iriValueType,
@@ -119,5 +122,21 @@ public class ConceptTransform {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return concept;
+	}
+
+	public LinkedHashMap<String, String> getPropertyMap() {
+		return propertyMap;
+	}
+
+	public void setPropertyMap(LinkedHashMap<String, String> propertyMap) {
+		this.propertyMap = propertyMap;
+	}
+
+	public String getRangeString() {
+		return rangeString;
+	}
+
+	public void setRangeString(String rangeString) {
+		this.rangeString = rangeString;
 	}
 }

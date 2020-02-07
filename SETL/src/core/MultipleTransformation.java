@@ -18,30 +18,40 @@ import model.ConceptTransform;
 import model.MapperTransform;
 
 public class MultipleTransformation {
-	private LinkedHashMap<String, String> prefixMap;
-	private Methods methods;
+	PrefixExtraction prefixExtraction;
 	
 	public MultipleTransformation() {
 		super();
-		prefixMap = new LinkedHashMap<String, String>();
-		methods = new Methods();
+		prefixExtraction = new PrefixExtraction();
+	}
+	
+	public static void main(String[] args) {
+		String basePath = "I:\\Data\\joint\\";
+		
+		String firstSourcePath = basePath + "source_abox.ttl";
+		String secondSourcePath = basePath + "targetABoxFile.ttl";
+		String mapPath = basePath + "map.ttl";
+		String targetPath = basePath + "joint.ttl";
+		
+		MultipleTransformation multipleTransformation = new MultipleTransformation();
+		multipleTransformation.transformMultipleLiteral(firstSourcePath, secondSourcePath, mapPath, targetPath);
 	}
 
-	public String transformMultipleLiteral(String firstSourcePath, String secondSourcePath, String mappingPath,
-			String targetPath) {
-		Model firstModel = methods.readModelFromPath(firstSourcePath);
+	public String transformMultipleLiteral(String firstSourcePath, String secondSourcePath,
+			String mappingPath, String targetPath) {
+		Model firstModel = Methods.readModelFromPath(firstSourcePath);
 
 		if (firstModel == null) {
 			return "Error in first source abox file";
 		}
 
-		Model secondModel = methods.readModelFromPath(secondSourcePath);
+		Model secondModel = Methods.readModelFromPath(secondSourcePath);
 
 		if (secondModel == null) {
 			return "Error in second source abox file";
 		}
 
-		Model mapModel = methods.readModelFromPath(mappingPath);
+		Model mapModel = Methods.readModelFromPath(mappingPath);
 
 		if (mapModel == null) {
 			return "Error in map file";
@@ -49,9 +59,9 @@ public class MultipleTransformation {
 		
 		Model targetModel = ModelFactory.createDefaultModel();
 		
-		prefixMap = methods.extractPrefixes(firstSourcePath);
-		prefixMap.putAll(methods.extractPrefixes(secondSourcePath));
-		prefixMap.putAll(methods.extractPrefixes(mappingPath));
+		prefixExtraction.extractPrefix(firstSourcePath);
+		prefixExtraction.extractPrefix(secondSourcePath);
+		prefixExtraction.extractPrefix(mappingPath);
 		
 		/*
 		 * Model model = ModelFactory.createDefaultModel(); model.add(firstModel);
@@ -120,12 +130,12 @@ public class MultipleTransformation {
 			transformMultipleLiteral(firstModel, secondModel, conceptTransform, targetModel);
 		}
 		
-		String prefixString = Methods.getPrefixStrings(prefixMap);
+		String prefixString = Methods.getPrefixStrings(prefixExtraction.prefixMap);
 		
-		if (methods.writeText(targetPath, prefixString)) {
-			Model finalModel = methods.readModelFromPath(targetPath);
+		if (Methods.writeText(targetPath, prefixString)) {
+			Model finalModel = Methods.readModelFromPath(targetPath);
 			finalModel.add(targetModel);
-			return methods.saveModel(finalModel, targetPath);
+			return Methods.saveModel(finalModel, targetPath);
 		} else {
 			return "File save error.";
 		}
@@ -200,14 +210,16 @@ public class MultipleTransformation {
 		for (Map.Entry<String, MapperTransform> map : conceptTransform.getMapperTransformMap().entrySet()) {
 			MapperTransform mapTransform = map.getValue();
 			
-			Property property = targetModel.createProperty(Methods.assignIRI(prefixMap, mapTransform.getTargetProperty()));
+//			System.out.println("Property: " + prefixExtraction.assignIRI(mapTransform.getTargetProperty()));
+			Property property = targetModel.createProperty(prefixExtraction.assignIRI(mapTransform.getTargetProperty()));
 			Object propertyValue = null;
 			
 			if (mapTransform.getSourcePropertyType().contains("SourceExpression")) {
 				ExpressionHandler expressionHandler = new ExpressionHandler();
 				propertyValue = expressionHandler.handleExpression(mapTransform.getSourceProperty(), propertyMap);
 			} else {
-				propertyValue = propertyMap.get(Methods.assignPrefix(prefixMap, mapTransform.getSourceProperty()));
+				
+				propertyValue = propertyMap.get(prefixExtraction.assignPrefix(mapTransform.getSourceProperty()));
 			}
 			
 			// System.out.println(mapTransform.getSourceProperty());
@@ -283,7 +295,7 @@ public class MultipleTransformation {
 			String property = querySolution.get("p").toString();
 			RDFNode value = querySolution.get("o");
 			
-			propertyMap.put(Methods.assignPrefix(prefixMap, property), methods.getRDFNodeValue(value));
+			propertyMap.put(prefixExtraction.assignPrefix(property), Methods.getRDFNodeValue(value));
 		}
 		return propertyMap;
 	}

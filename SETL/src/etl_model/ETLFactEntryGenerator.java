@@ -23,6 +23,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import core.FactEntryGeneration;
+import core.LevelEntryGenerator;
 import core.LevelEntryNew;
 import helper.Methods;
 import model.ETLOperation;
@@ -549,14 +551,19 @@ public class ETLFactEntryGenerator implements ETLOperation {
 						// LevelEntryGenerator entryGenerator = new LevelEntryGenerator();
 						// result += entryGenerator.generateFactEntryFromCSV(getSourceCSV(), getMappingFile(), getTargetTBoxFile(), getProvFile(), getTargetABoxFile(), getDelimiter());
 						
-						LevelEntryNew entryNew = new LevelEntryNew();
-						result += entryNew.generateFactEntryFromCSV(getSourceCSV(), getMappingFile(), getTargetTBoxFile(), getProvFile(), getTargetABoxFile(), getDelimiter());
+						// LevelEntryNew entryNew = new LevelEntryNew();
+						
+						FactEntryGeneration entryGeneration = new FactEntryGeneration();
+						result += entryGeneration.generateFactEntryFromCSV(getSourceCSV(), getMappingFile(), getTargetTBoxFile(), getTargetABoxFile(), getDelimiter());
 					} else {
 						// LevelEntryGenerator entryGenerator = new LevelEntryGenerator();
-						LevelEntryNew entryNew = new LevelEntryNew();
-						result += entryNew.generateFactEntry(getSourceABoxFile(), getMappingFile(), 
-								getTargetTBoxFile(), getProvFile(), getTargetABoxFile());
-							
+//						LevelEntryNew entryNew = new LevelEntryNew();
+//						result += entryNew.generateFactEntry(getSourceABoxFile(), getMappingFile(), 
+//								getTargetTBoxFile(), getProvFile(), getTargetABoxFile());
+//						
+						
+						FactEntryGeneration entryGeneration = new FactEntryGeneration();
+						result += entryGeneration.generateFactEntryFromRDF(getSourceABoxFile(), getMappingFile(), getTargetTBoxFile(), getTargetABoxFile(), getProvFile());
 					}
 
 					result += "\n" + Calendar.getInstance().getTime();

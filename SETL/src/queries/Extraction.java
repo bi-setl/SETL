@@ -1058,4 +1058,25 @@ public class Extraction {
 	public void setAllCubeLevels(ArrayList<String> allCubeLevels) {
 		this.allCubeLevels = allCubeLevels;
 	}
+
+	public ArrayList<String> extractLevels(String mapPath) {
+		// TODO Auto-generated method stub
+		ArrayList<String> levels = new ArrayList<String>();
+		
+		Model mapModel = Methods.readModelFromPath(mapPath);
+		
+		System.out.println(mapPath);
+		
+		if (mapModel != null) {
+			String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
+					+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
+					+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
+					+ "SELECT * WHERE { ?s a qb4o:HierarchyStep; ?p ?o.\r\n"
+					+ "\r\n}";
+			ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
+			Methods.print(resultSet);
+		}
+		
+		return levels;
+	}
 }

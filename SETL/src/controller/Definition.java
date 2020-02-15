@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.apache.jena.rdf.model.Model;
+
 import helper.Methods;
 import model.SelectedLevel;
 import model.SelectedLevelInstance;
@@ -29,6 +31,7 @@ public class Definition {
 	private LinkedHashMap<String, String> filterPropertyMap;
 	private String aboxPath;
 	private String tboxPath;
+	private String mapPath;
 	private LinkedHashMap<String, String> prefixMap;
 	private LinkedHashMap<String, ArrayList<String>> selectedMeasureFunctionMap;
 	private ArrayList<String> allCubeLevels;
@@ -736,5 +739,18 @@ public class Definition {
 
 	public void setAllCubeLevels(ArrayList<String> allCubeLevels) {
 		this.allCubeLevels = allCubeLevels;
+	}
+
+	public String getMapPath() {
+		return mapPath;
+	}
+
+	public void setMapPath(String mapPath) {
+		this.mapPath = mapPath;
+	}
+
+	public ArrayList<String> extractLevels() {
+		// TODO Auto-generated method stub
+		return extraction.extractLevels(mapPath);
 	}
 }

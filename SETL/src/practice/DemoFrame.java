@@ -14,6 +14,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.miginfocom.swing.MigLayout;
+import view.AutoETLPanel;
 import view.PanelETL;
 import view.PanelOlap;
 import view.PanelOnDemandETL;
@@ -69,7 +70,10 @@ public class DemoFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		PanelOnDemandETL panel = new PanelOnDemandETL();
-		contentPane.add(panel, "cell 0 0,grow");
+//		PanelOnDemandETL panel = new PanelOnDemandETL();
+//		contentPane.add(panel, "cell 0 0,grow");
+		
+		AutoETLPanel autoETLPanel = new AutoETLPanel();
+		contentPane.add(autoETLPanel, "cell 0 0,grow");
 	}
 }

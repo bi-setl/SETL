@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16;
 
 import org.apache.jena.sparql.function.library.substring;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import com.github.jsonldjava.utils.Obj;
 

@@ -1,6 +1,5 @@
 package model;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 public class JoinCondition {
 

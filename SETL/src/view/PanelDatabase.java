@@ -29,7 +29,6 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import controller.DBPanelController;
 

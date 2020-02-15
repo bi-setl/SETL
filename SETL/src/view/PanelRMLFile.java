@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import model.DBTable;
 import model.RMLFile;

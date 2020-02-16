@@ -3,6 +3,8 @@ package view;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import net.miginfocom.swing.MigLayout;
 import queries.Extraction;
@@ -15,21 +17,25 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionListener;
 
 import controller.Definition;
+import core.PrefixExtraction;
 
 import javax.swing.event.ListSelectionEvent;
 
 public class AutoETLPanel extends JPanel {
-	String basePath = "C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\";
-	// String basePath = "C:\\Users\\USER\\Documents\\SETL\\AutoETL\\";
+	// String basePath = "C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\";
+	String basePath = "C:\\Users\\USER\\Documents\\SETL\\AutoETL\\";
 	
 	String mapFile = basePath + "map_current.ttl";
-	String targetTBoxFile = "subsidy.ttl";
+	String targetTBoxFile = basePath + "subsidy.ttl";
 
 	/**
 	 * Create the panel.
 	 */
 	
 	Definition definition;
+	PrefixExtraction prefixExtraction;
+	
+	private JList levelList;
 	
 	public AutoETLPanel() {
 		initAll();
@@ -48,7 +54,8 @@ public class AutoETLPanel extends JPanel {
 		btnMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				definition.setMapPath(mapFile);
-				ArrayList<String> levels = definition.extractLevels();
+				
+				prefixExtraction.extractPrefix(mapFile);
 			}
 		});
 		panelButtonHolder.add(btnMap);
@@ -56,7 +63,21 @@ public class AutoETLPanel extends JPanel {
 		JButton btnTargetTBox = new JButton("Target TBox File");
 		btnTargetTBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				definition.setMapPath(mapFile);
+				prefixExtraction.extractPrefix(mapFile);
+				
 				definition.setTboxPath(targetTBoxFile);
+				
+				prefixExtraction.extractPrefix(targetTBoxFile);
+				
+				ArrayList<String> levels = definition.extractLevels();
+				
+				DefaultListModel<String> instanceModel = new DefaultListModel<>();
+				for (String string : levels) {
+					instanceModel.addElement(prefixExtraction.assignPrefix(string));
+				}
+
+				levelList.setModel(instanceModel);
 			}
 		});
 		panelButtonHolder.add(btnTargetTBox);
@@ -75,13 +96,14 @@ public class AutoETLPanel extends JPanel {
 		splitPane.setLeftComponent(panel_3);
 		panel_3.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		JList list = new JList();
-		list.addListSelectionListener(new ListSelectionListener() {
+		levelList = new JList();
+		levelList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
+				System.out.println(levelList.getSelectedValue());
 			}
 		});
-		list.setBackground(Color.WHITE);
-		panel_3.add(list, "cell 0 0,grow");
+		levelList.setBackground(Color.WHITE);
+		panel_3.add(levelList, "cell 0 0,grow");
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.WHITE);
@@ -92,6 +114,7 @@ public class AutoETLPanel extends JPanel {
 	private void initAll() {
 		// TODO Auto-generated method stub
 		definition = new Definition();
+		prefixExtraction = new PrefixExtraction();
 	}
 
 }

@@ -751,6 +751,6 @@ public class Definition {
 
 	public ArrayList<String> extractLevels() {
 		// TODO Auto-generated method stub
-		return extraction.extractLevels(mapPath);
+		return extraction.extractLevels(getTboxPath());
 	}
 }

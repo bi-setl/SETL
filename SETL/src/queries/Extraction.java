@@ -1059,22 +1059,26 @@ public class Extraction {
 		this.allCubeLevels = allCubeLevels;
 	}
 
-	public ArrayList<String> extractLevels(String mapPath) {
+	public ArrayList<String> extractLevels(String path) {
 		// TODO Auto-generated method stub
 		ArrayList<String> levels = new ArrayList<String>();
 		
-		Model mapModel = Methods.readModelFromPath(mapPath);
+		Model model = Methods.readModelFromPath(path);
 		
-		System.out.println(mapPath);
-		
-		if (mapModel != null) {
+		if (model != null) {
 			String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
 					+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
 					+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-					+ "SELECT * WHERE { ?s a qb4o:HierarchyStep; ?p ?o.\r\n"
+					+ "SELECT ?s WHERE { ?s a qb4o:LevelProperty.\r\n"
 					+ "\r\n}";
-			ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
-			Methods.print(resultSet);
+			ResultSet resultSet = Methods.executeQuery(model, sparql);
+			
+			while (resultSet.hasNext()) {
+				QuerySolution querySolution = (QuerySolution) resultSet.next();
+				String levelString = querySolution.get("?s").toString();
+				
+				levels.add(levelString);
+			}
 		}
 		
 		return levels;

@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 public class PrefixExtraction {
 	public static LinkedHashMap<String, String> prefixMap;
 
-	public static void main(String[] args) {
-		PrefixExtraction prefixExtraction = new PrefixExtraction();
-		prefixExtraction.extractPrefix("C:\\Users\\Amrit\\Documents\\test\\test.ttl");
-	}
+//	public static void main(String[] args) {
+//		PrefixExtraction prefixExtraction = new PrefixExtraction();
+//		prefixExtraction.extractPrefix("C:\\Users\\Amrit\\Documents\\test\\test.ttl");
+//	}
 
 	public PrefixExtraction() {
 		initAll();

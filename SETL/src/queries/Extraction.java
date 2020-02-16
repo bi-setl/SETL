@@ -1083,4 +1083,29 @@ public class Extraction {
 		
 		return levels;
 	}
+
+	public ArrayList<String> extractDatasets(String path) {
+		// TODO Auto-generated method stub
+		ArrayList<String> levels = new ArrayList<String>();
+		
+		Model model = Methods.readModelFromPath(path);
+		
+		if (model != null) {
+			String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
+					+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
+					+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
+					+ "SELECT ?s WHERE { ?s a qb:DataSet.\r\n"
+					+ "\r\n}";
+			ResultSet resultSet = Methods.executeQuery(model, sparql);
+			
+			while (resultSet.hasNext()) {
+				QuerySolution querySolution = (QuerySolution) resultSet.next();
+				String levelString = querySolution.get("?s").toString();
+				
+				levels.add(levelString);
+			}
+		}
+		
+		return levels;
+	}
 }

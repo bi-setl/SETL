@@ -753,4 +753,14 @@ public class Definition {
 		// TODO Auto-generated method stub
 		return extraction.extractLevels(getTboxPath());
 	}
+
+	public ArrayList<String> extractDatasets() {
+		// TODO Auto-generated method stub
+		return extraction.extractDatasets(getTboxPath());
+	}
+
+	public void extractDependency(ArrayList<String> selectedArrayList) {
+		// TODO Auto-generated method stub
+		return extraction.extractDependency(mapPath, tboxPath, selectedArrayList);
+	}
 }

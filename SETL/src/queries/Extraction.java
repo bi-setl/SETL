@@ -1108,4 +1108,12 @@ public class Extraction {
 		
 		return levels;
 	}
+
+	public Object extractDependency(String mapPath, String tboxPath, ArrayList<String> selectedArrayList) {
+		// TODO Auto-generated method stub
+		
+		
+		
+		return null;
+	}
 }

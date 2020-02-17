@@ -23,6 +23,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 
+import core.PrefixExtraction;
 import helper.Methods;
 import model.SelectedLevel;
 
@@ -1109,10 +1110,31 @@ public class Extraction {
 		return levels;
 	}
 
-	public Object extractDependency(String mapPath, String tboxPath, ArrayList<String> selectedArrayList) {
+	public Object extractDependency(String mapPath, String tboxPath, ArrayList<String> selectedArrayList, PrefixExtraction prefixExtraction) {
 		// TODO Auto-generated method stub
+		System.out.println(mapPath);
 		
+		Model model = Methods.readModelFromPath(mapPath);
 		
+		if (model != null) {
+			for (String selectionString : selectedArrayList) {
+				String bracketString = Methods.bracketString(prefixExtraction.assignIRI(selectionString));
+				
+				String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
+						+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
+						+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
+						+ "PREFIX	map:	<http://www.map.org/example#>\r\n"
+						+ "SELECT * WHERE { ?s a map:ConceptMapper.\r\n"
+						+ "?s ?p ?o."
+						+ "?s map:targetConcept " + bracketString
+						+ "\r\n}";
+				
+				System.out.println(sparql);
+				
+				ResultSet resultSet = Methods.executeQuery(model, sparql);
+				Methods.print(resultSet);
+			}
+		}
 		
 		return null;
 	}

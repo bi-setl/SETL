@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 
+import core.PrefixExtraction;
 import helper.Methods;
 import model.SelectedLevel;
 import model.SelectedLevelInstance;
@@ -759,8 +760,8 @@ public class Definition {
 		return extraction.extractDatasets(getTboxPath());
 	}
 
-	public void extractDependency(ArrayList<String> selectedArrayList) {
+	public Object extractDependency(ArrayList<String> selectedArrayList, PrefixExtraction prefixExtraction) {
 		// TODO Auto-generated method stub
-		return extraction.extractDependency(mapPath, tboxPath, selectedArrayList);
+		return extraction.extractDependency(mapPath, tboxPath, selectedArrayList, prefixExtraction);
 	}
 }

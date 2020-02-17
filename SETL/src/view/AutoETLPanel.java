@@ -23,8 +23,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.JLabel;
 
 public class AutoETLPanel extends JPanel {
-	String basePath = "C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\";
-	// String basePath = "C:\\Users\\USER\\Documents\\SETL\\AutoETL\\";
+	// String basePath = "C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\";
+	String basePath = "C:\\Users\\USER\\Documents\\SETL\\AutoETL\\";
 	
 	String mapFile = basePath + "map_current.ttl";
 	String targetTBoxFile = basePath + "subsidy.ttl";
@@ -188,6 +188,8 @@ public class AutoETLPanel extends JPanel {
 				for (String string : selectedArrayList) {
 					System.out.println("selectedArrayList.add(\"" + string + "\");");
 				}
+				
+				definition.extractDependency(selectedArrayList, prefixExtraction);
 			}
 		});
 		panel_6.add(btnContinue, "cell 0 2,alignx center");
@@ -195,7 +197,6 @@ public class AutoETLPanel extends JPanel {
 		JPanel panel_7 = new JPanel();
 		panel_7.setBackground(Color.WHITE);
 		splitPane_2.setRightComponent(panel_7);
-
 	}
 
 	protected void refreshSelectionList() {
@@ -206,8 +207,6 @@ public class AutoETLPanel extends JPanel {
 		}
 
 		selectionList.setModel(instanceModel);
-		
-		definition.extractDependency(selectedArrayList);
 	}
 
 	private void initAll() {

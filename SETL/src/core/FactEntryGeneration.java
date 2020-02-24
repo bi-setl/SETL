@@ -637,6 +637,8 @@ public class FactEntryGeneration {
 		}
 
 		Methods.saveModel(provModel, provGraph);
+		
+		Methods.checkOrCreateFile(targetABoxFile);
 
 		Model finalModel = Methods.readModelFromPath(targetABoxFile);
 
@@ -816,6 +818,8 @@ public class FactEntryGeneration {
 	
 	public String generateFactEntryFromRDF(String sourceFile, String mapFile, String targetTBoxFile,
 			String targetABoxFile, String provGraph) {
+		
+		Methods.checkOrCreateFile(provGraph);
 		
 		if (Methods.isJenaAccessible(sourceFile)) {
 			return generateFactEntryFromTinyRDF(sourceFile, mapFile, targetTBoxFile, targetABoxFile, provGraph);

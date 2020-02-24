@@ -8,6 +8,12 @@ public class EquationHandler {
 	public Object handleExpression(String expressionString, LinkedHashMap<String, Object> valueHashMap) {
 		// TODO Auto-generated method stub
 		
+//		System.out.println("Expression: " + expressionString);
+//		
+//		for (String key : valueHashMap.keySet()) {
+//			System.out.println("Key: " + key + " - " + valueHashMap.get(key));
+//		}
+		
 		boolean containsKey = checkKey(expressionString);
 		if (containsKey) {
 			int keyWordPosition = expressionString.indexOf("(");

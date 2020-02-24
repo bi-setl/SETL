@@ -28,6 +28,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.vocabulary.RDF;
 
 import helper.Methods;
+import view.PanelETL;
 
 public class LevelEntryNew {
 	private Methods fileMethods;
@@ -275,7 +276,8 @@ public class LevelEntryNew {
 					+ "?head map:sourceConcept ?type. "
 					+ "?head map:targetConcept ?target. "
 					+ "?head map:iriValueType ?keyType. "
-					+ "?target a owl:Class. "
+//					+ "?target a owl:Class. "
+					+ "?head map:operation \"" + PanelETL.INSTANCE_ENTRY_GENERATOR + "\"."
 					+ "?record a map:PropertyMapper. "
 					+ "?record map:ConceptMapper ?head. "
 					+ "?record map:sourceProperty ?property. "
@@ -287,6 +289,7 @@ public class LevelEntryNew {
 			Query query = QueryFactory.create(sparql);
 			QueryExecution execution = QueryExecutionFactory.create(query, model);
 			ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+			// Methods.print(resultSet);
 			
 			// fileMethods.printResultSet(resultSet);
 			LinkedHashMap<String, String> provHashMap = new LinkedHashMap<>();
@@ -325,6 +328,8 @@ public class LevelEntryNew {
 					if (provValue == null) {
 						provValue = getProvValue(subject);
 					}
+					
+					provValue = Methods.formatURL(provValue);
 					
 					String rangeValue = getRangeValue(targetType, targetTBoxModel);
 					

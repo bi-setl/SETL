@@ -1,0 +1,11 @@
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetThree#-RHUS-N-751-751>
+        <http://www.w3.org/2002/07/owl#sameAs>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetLine#-RHUS-N-751-751> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetThree#EJBY-410-410>
+        <http://www.w3.org/2002/07/owl#sameAs>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetLine#EJBY-410-410> .
+
+<http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetThree#ULFBORG-661-661>
+        <http://www.w3.org/2002/07/owl#sameAs>
+                <http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetLine#ULFBORG-661-661> .

@@ -63,12 +63,12 @@ public class RDFWrapper {
 	CSVExtraction csvExtraction;
 	
 	public static void main(String[] args) {
-//		String basePath = "I:\\Data\\wrapper\\tiny\\";
-//		String sourceFile = basePath + "city.csv";
-//		String prefix = "http://extbi.lab.aau.dk/ontolgoy/subsidy";
-//		String columnName = "cityName";
-//		String delimiter = "Comma (,)";
-//		String targetFile = basePath + "city_wrapper.ttl";
+		String basePath = "C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\";
+		String sourceFile = basePath + "city.csv";
+		String prefix = "http://extbi.lab.aau.dk/ontolgoy/subsidy";
+		String columnName = "cityName";
+		String delimiter = "Comma (,)";
+		String targetFile = basePath + "city_wrapper.ttl";
 		
 //		String sourceFile = basePath + "recipient.csv";
 //		String prefix = "http://extbi.lab.aau.dk/ontolgoy/subsidy";
@@ -76,13 +76,13 @@ public class RDFWrapper {
 //		String delimiter = "Comma (,)";
 //		String targetFile = basePath + "recipient_wrapper.nt";
 		
-		String basePath = "I:\\Data\\fact\\rdf\\tiny\\";		
-		
-		String sourceFile = basePath + "Subsidy.csv";
-		String prefix = "http://extbi.lab.aau.dk/ontolgoy";
-		String columnName = "subsidyid";
-		String delimiter = "Comma (,)";
-		String targetFile = basePath + "subsidy_wrapper.nt";
+//		String basePath = "I:\\Data\\fact\\rdf\\tiny\\";		
+//		
+//		String sourceFile = basePath + "Subsidy.csv";
+//		String prefix = "http://extbi.lab.aau.dk/ontolgoy";
+//		String columnName = "subsidyid";
+//		String delimiter = "Comma (,)";
+//		String targetFile = basePath + "subsidy_wrapper.nt";
 		
 		RDFWrapper rdfWrapper = new RDFWrapper();
 		String string = rdfWrapper.parseCSVNew(sourceFile, prefix, columnName, delimiter, targetFile);

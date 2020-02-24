@@ -43,6 +43,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.apache.commons.lang3.Validate;
+
 import etl.ETLOperationToXML;
 import etl.ParseXML;
 import etl_model.ETLABox2TBox;
@@ -64,6 +66,8 @@ import etl_model.ETLSBagGenerator;
 import etl_model.ETLTBoxBuilder;
 import etl_model.ETLUpdateDimensionalConstruct;
 import helper.Methods;
+import helper.Variables;
+import model.ConceptTransform;
 import model.ETLOperation;
 import net.miginfocom.swing.MigLayout;
 
@@ -99,6 +103,7 @@ public class PanelETL extends JPanel {
 	public static final String SBAG_GENERATOR = "SBag Generator";
 	public static final String MATCHER = "Matcher";
 	private JTabbedPane tabbedPane;
+	JPanel panelTextContainer;
 
 	/**
 	 * Create the panel.
@@ -460,7 +465,7 @@ public class PanelETL extends JPanel {
 		scrollPaneHolder.setViewportView(graphPanel);
 		// panelGraphHolder.add(graphPanel, "cell 0 0,grow");
 
-		JPanel panelTextContainer = new JPanel();
+		panelTextContainer = new JPanel();
 		splitPaneFirst.setRightComponent(panelTextContainer);
 		panelTextContainer.setBackground(Color.WHITE);
 		panelTextContainer.setLayout(new MigLayout("", "[grow]", "[grow]"));
@@ -631,6 +636,7 @@ public class PanelETL extends JPanel {
 		}
 
 		for (Operation operation : expressionHandlerOperations) {
+			System.out.println("This is transformation on literal");
 			operation.getEtlOperation().execute(textPaneETLStatus);
 		}
 		
@@ -639,14 +645,17 @@ public class PanelETL extends JPanel {
 		}
 
 		for (Operation operation : levelEntryGenOpertations) {
+			System.out.println("This is level entry");
 			operation.getEtlOperation().execute(textPaneETLStatus);
 		}
 
 		for (Operation operation : factEntryGenOpertations) {
+			System.out.println("This is fact entry");
 			operation.getEtlOperation().execute(textPaneETLStatus);
 		}
 
 		for (Operation operation : instanceEntryGenOpertations) {
+			System.out.println("This is instance entry");
 			operation.getEtlOperation().execute(textPaneETLStatus);
 		}
 
@@ -706,6 +715,22 @@ public class PanelETL extends JPanel {
 		 * BorderLayout.CENTER); graphPanel.setVisible(false);
 		 * panelETLButtons.setVisible(false); panelComponentPalette.setVisible(false); }
 		 */
+
+		return false;
+	}
+	
+	protected boolean executeETL(boolean isSequential) {
+		for (Operation operation : allOperations) {
+//			System.out.println("Name: " + operation.getOperationName());
+			
+			if (!operation.getOperationName().equals(START)) {
+				if (operation.getEtlOperation() == null) {
+					System.out.println("No ETL operation");
+				} else {
+					operation.getEtlOperation().execute(textPaneETLStatus);
+				}
+			}
+		}
 
 		return false;
 	}
@@ -877,6 +902,9 @@ public class PanelETL extends JPanel {
 
 			stringList = new LinkedHashSet<>();
 			inputMap.put(SPARQL_FILE, stringList);
+			
+			stringList = new LinkedHashSet<>();
+			inputMap.put(INSTANCE_FILE, stringList);
 
 			stringList = new LinkedHashSet<>();
 			inputMap.put(EXPRESSION_FILE, stringList);
@@ -974,6 +1002,7 @@ public class PanelETL extends JPanel {
 			// Association for EXPRESSION_HANDLER
 			association = new ArrayList<>();
 			association.add(RDF_WRAPPER);
+			association.add(INSTANCE_ENTRY_GENERATOR);
 			association.add(NonSemanticToTBoxDeriver);
 			association.add(LEVEL_ENTRY_GENERATOR);
 			association.add(FACT_ENTRY_GENERATOR);
@@ -1008,6 +1037,7 @@ public class PanelETL extends JPanel {
 
 			// Association for INSTANCE_GENERATOR
 			association = new ArrayList<>();
+			association.add(TransformationOnLiteral);
 			association.add(LOADER);
 			associations.put(INSTANCE_ENTRY_GENERATOR, association);
 
@@ -1552,11 +1582,7 @@ public class PanelETL extends JPanel {
 						}
 
 						if (!selectedOpName.equals("Association")) {
-							Operation newOperation = new Operation(selectedOpName, arg0.getX(), arg0.getY());
-							setOperation(newOperation);
-							allOperations.add(newOperation);
-							desectAllPaletteButton();
-							repaint();
+							addNewOperation(selectedOpName, arg0.getX(), arg0.getY());
 						}
 					} else {
 
@@ -1717,6 +1743,15 @@ public class PanelETL extends JPanel {
 				}
 			}
 
+		}
+
+		public void addNewOperation(String selectedOpName, int x, int y) {
+			// TODO Auto-generated method stub
+			Operation newOperation = new Operation(selectedOpName, x, y);
+			setOperation(newOperation);
+			allOperations.add(newOperation);
+			desectAllPaletteButton();
+			repaint();
 		}
 
 		// return the path of all mapping graph output files
@@ -2160,6 +2195,76 @@ public class PanelETL extends JPanel {
 			return tempPoint;
 		}
 
+		public Operation addNewConceptOperation(ConceptTransform conceptTransform, int xCount,
+				int yCount, String mapFile, String targetTBoxFile) {
+			// TODO Auto-generated method stub
+			Operation operation = new Operation(conceptTransform.getOperationName(), xCount, yCount);
+			operation.setInputStatus(true);
+			
+			String sourceFile = conceptTransform.getSourceABoxLocationString();
+			String targetFile = conceptTransform.getTargetFileLocation();
+			
+			if (operation.getOperationName().equals(TransformationOnLiteral)) {
+				ETLExpressionHandler etlExpressionHandler = new ETLExpressionHandler();
+				etlExpressionHandler.setMappingFile(mapFile);
+				etlExpressionHandler.setSourceABoxFile(sourceFile);
+				etlExpressionHandler.setResultFile(targetFile);
+				
+				operation.setEtlOperation(etlExpressionHandler);
+			} else if (operation.getOperationName().equals(INSTANCE_ENTRY_GENERATOR)) {
+				ETLInstanceEntryGenerator entryGenerator = new ETLInstanceEntryGenerator();
+				entryGenerator.setSourceABoxFile(sourceFile);
+				entryGenerator.setMappingFile(mapFile);
+				
+				String provFile = Variables.TEMP_DIR + "prov.ttl";
+				entryGenerator.setProvFile(provFile);
+				
+				entryGenerator.setTargetTBoxFile(targetTBoxFile);
+				entryGenerator.setTargetABoxFile(targetFile);
+				operation.setEtlOperation(entryGenerator);
+			} else if (operation.getOperationName().equals(LEVEL_ENTRY_GENERATOR)) {
+				ETLLevelEntryGenerator entryGenerator = new ETLLevelEntryGenerator();
+				
+				entryGenerator.setFileType("RDF");
+				entryGenerator.setSourceABoxFile(sourceFile);
+				entryGenerator.setMappingFile(mapFile);
+				
+				String provFile = Variables.TEMP_DIR + "prov.ttl";
+				entryGenerator.setProvFile(provFile);
+				
+				entryGenerator.setTargetTBoxFile(targetTBoxFile);
+				entryGenerator.setTargetABoxFile(targetFile);
+				operation.setEtlOperation(entryGenerator);
+			} else if (operation.getOperationName().equals(FACT_ENTRY_GENERATOR)) {
+				ETLFactEntryGenerator entryGenerator = new ETLFactEntryGenerator();
+				
+				entryGenerator.setFileType("RDF");
+				entryGenerator.setSourceABoxFile(sourceFile);
+				entryGenerator.setMappingFile(mapFile);
+				
+				String provFile = Variables.TEMP_DIR + "prov.ttl";
+				entryGenerator.setProvFile(provFile);
+				
+				entryGenerator.setTargetTBoxFile(targetTBoxFile);
+				entryGenerator.setTargetABoxFile(targetFile);
+				operation.setEtlOperation(entryGenerator);
+			}
+			
+//			boolean isInputTaken = operation.getEtlOperation().getInput(this, inputMap);
+//
+//			if (isInputTaken) {
+//				if (!operation.isInputStatus()) {
+//					operation.setInputStatus(isInputTaken);
+//					repaint();
+//				}
+//			}
+			
+			allOperations.add(operation);
+			repaint();
+			
+			return operation;
+		}
+
 	}
 
 	public class Operation {
@@ -2325,5 +2430,12 @@ public class PanelETL extends JPanel {
 			this.arrowSegments = arrowSegments;
 		}
 
+	}
+
+	public void addNewArrow(Operation operation, Operation operation2) {
+		// TODO Auto-generated method stub
+		Arrow arrow = new Arrow(operation, operation2);
+		allArrows.add(arrow);
+		graphPanel.repaint();
 	}
 }

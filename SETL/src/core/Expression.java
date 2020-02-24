@@ -912,6 +912,7 @@ public class Expression {
 				+ "?mapper map:sourcePropertyType map:SourceExpression." + "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
+//		Methods.print(resultSet);
 
 		LinkedHashMap<String, ConceptTransform> conceptMap = new LinkedHashMap<String, ConceptTransform>();
 		LinkedHashMap<String, Integer> propertyMap = new LinkedHashMap<>();
@@ -950,7 +951,9 @@ public class Expression {
 
 			String sparqlString = "SELECT * WHERE {" + "?s a " + typeString + "." + "?s ?p ?o.}";
 
+//			System.out.println(sparqlString);
 			ResultSet set = Methods.executeQuery(sourceModel, sparqlString);
+//			Methods.print(set);
 
 			String currentSubjectString = "";
 			LinkedHashMap<String, Object> valueMap = new LinkedHashMap<String, Object>();
@@ -1027,6 +1030,8 @@ public class Expression {
 							EquationHandler equationHandler = new EquationHandler();
 							Object valueObject = equationHandler.handleExpression(mapperTransform.getSourceProperty(),
 									valueMap);
+							
+							// System.out.println("******* Returned Value: " + valueObject);
 
 							Literal literal = sourceModel.createTypedLiteral(valueObject);
 							resource.addProperty(property, literal);

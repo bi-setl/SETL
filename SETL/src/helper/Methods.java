@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1065,6 +1066,12 @@ public class Methods {
         // TODO Auto-generated method stub
         return Calendar.getInstance().getTimeInMillis();
     }
+    
+    public static int randomNumber() {
+        // TODO Auto-generated method stub
+    	Random rand = new Random(); 
+        return rand.nextInt(1000);
+    }
 
     public static String getTimeInSeconds(Long milliseconds) {
         long minutes = (milliseconds / 1000) / 60;
@@ -1231,4 +1238,18 @@ public class Methods {
     public static boolean isJenaAccessible(String filePath) {
         return getFileSizeMegaBytes(filePath) < Variables.JENA_MB_LIMIT;
     }
+
+	public static void checkOrCreateFile(String targetABoxFile) {
+		// TODO Auto-generated method stub
+		File file = new File(targetABoxFile);
+		
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

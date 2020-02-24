@@ -258,8 +258,12 @@ public class ETLInstanceEntryGenerator implements ETLOperation {
 			setTargetType(comboBoxTargetType2.getSelectedItem().toString());
 			setTargetABoxFile(comboBoxTargetABox2.getSelectedItem().toString());
 			
+			System.out.println("Ok clicked");
+			
 			if (getSourceABoxFile() != null && getMappingFile() != null && 
 					getProvFile() != null && getTargetTBoxFile() != null && getTargetABoxFile() != null) {
+				System.out.println("All are ok");
+				
 				ArrayList<String> inputList = new ArrayList<>();
 				inputList.add(getSourceABoxFile());
 				inputList.add(getMappingFile());
@@ -267,10 +271,19 @@ public class ETLInstanceEntryGenerator implements ETLOperation {
 				inputList.add(getTargetTBoxFile());
 				inputList.add(getTargetABoxFile());
 				
+				System.out.println(getTargetABoxFile());
+				
+				if (inputParamsMap.get(INSTANCE_FILE) == null) {
+					System.out.println("Instance file null");
+				} else {
+					System.out.println("Other null");
+				}
+				
 				inputParamsMap.get(INSTANCE_FILE).add(getTargetABoxFile());
 				
 				return true;
 			} else {
+				
 				methods.showDialog("Please provide value to all input.");
 				return false;
 			}
@@ -281,6 +294,12 @@ public class ETLInstanceEntryGenerator implements ETLOperation {
 
 	@Override
 	public boolean execute(JTextPane textPane) {
+//		System.out.println("Source: " + getSourceABoxFile());
+//		System.out.println("Map: " + getMappingFile());
+//		System.out.println("Target TBox: " + getTargetTBoxFile());
+//		System.out.println("Prov: " + getProvFile());
+//		System.out.println("Target: " + getTargetABoxFile());
+		
 		final JDialog dialog = new JDialog();
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -294,6 +313,8 @@ public class ETLInstanceEntryGenerator implements ETLOperation {
 							getTargetTBoxFile(), getProvFile(), getTargetABoxFile());
 					
 					result += "\n" + Calendar.getInstance().getTime();
+					
+//					System.out.println(result);
 
 					textPane.setText(textPane.getText().toString() + "\n" + result);
 					dialog.dispose();

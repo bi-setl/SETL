@@ -11,6 +11,8 @@ public class ConceptTransform {
 	private String sourceCommonProperty;
 	private String targetCommonProperty;
 	private String sourceABoxLocationString;
+	private String operationName;
+	private String targetFileLocation;
 	private LinkedHashMap<String, MapperTransform> mapperTransformMap;
 	private LinkedHashMap<String, String> propertyMap;
 	private String rangeString;
@@ -27,6 +29,8 @@ public class ConceptTransform {
 		this.targetCommonProperty = "";
 		this.sourceABoxLocationString = "";
 		this.rangeString = "";
+		this.operationName = "";
+		this.targetFileLocation = "";
 		this.mapperTransformMap = new LinkedHashMap<String, MapperTransform>();
 		this.setPropertyMap(new LinkedHashMap<String, String>());
 	}
@@ -138,5 +142,21 @@ public class ConceptTransform {
 
 	public void setRangeString(String rangeString) {
 		this.rangeString = rangeString;
+	}
+
+	public String getOperationName() {
+		return operationName;
+	}
+
+	public void setOperationName(String operationName) {
+		this.operationName = operationName;
+	}
+
+	public String getTargetFileLocation() {
+		return targetFileLocation;
+	}
+
+	public void setTargetFileLocation(String targetFileLocation) {
+		this.targetFileLocation = targetFileLocation;
 	}
 }

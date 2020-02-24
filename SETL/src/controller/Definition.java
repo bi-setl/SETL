@@ -8,6 +8,7 @@ import org.apache.jena.rdf.model.Model;
 
 import core.PrefixExtraction;
 import helper.Methods;
+import model.ConceptTransform;
 import model.SelectedLevel;
 import model.SelectedLevelInstance;
 import model.TwinValue;
@@ -760,8 +761,13 @@ public class Definition {
 		return extraction.extractDatasets(getTboxPath());
 	}
 
-	public Object extractDependency(ArrayList<String> selectedArrayList, PrefixExtraction prefixExtraction) {
+	public LinkedHashMap<String, ArrayList<ConceptTransform>> extractDependency(ArrayList<String> selectedArrayList, PrefixExtraction prefixExtraction) {
 		// TODO Auto-generated method stub
 		return extraction.extractDependency(mapPath, tboxPath, selectedArrayList, prefixExtraction);
+	}
+
+	public String performOperation(ConceptTransform conceptTransform) {
+		// TODO Auto-generated method stub
+		return extraction.performOperation(conceptTransform, mapPath, tboxPath);
 	}
 }

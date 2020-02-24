@@ -359,6 +359,8 @@ public class LevelEntryGenerator {
 
 				System.out.println("Total line skipped: " + faultList.size());
 //				 return Methods.mergeAllTempFiles(numOfFiles, targetABoxFile);
+				
+				Methods.checkOrCreateFile(targetABoxFile);
 
 				Model finalModel = Methods.readModelFromPath(targetABoxFile);
 
@@ -511,6 +513,8 @@ public class LevelEntryGenerator {
 				System.out.println("This file has some errors: " + tinySourcePath);
 			}
 		}
+		
+		Methods.checkOrCreateFile(targetABoxFile);
 
 		Model finalModel = Methods.readModelFromPath(targetABoxFile);
 
@@ -622,6 +626,8 @@ public class LevelEntryGenerator {
 		}
 		
 		Methods.saveModel(provModel, provGraph);
+		
+		Methods.checkOrCreateFile(targetABoxFile);
 
 		Model finalModel = Methods.readModelFromPath(targetABoxFile);
 
@@ -767,6 +773,8 @@ public class LevelEntryGenerator {
 	
 	public String generateLevelEntryFromRDF(String sourceFile, String mapFile, String targetTBoxFile,
 			String targetABoxFile, String provGraph) {
+		
+		Methods.checkOrCreateFile(provGraph);
 		
 		if (Methods.isJenaAccessible(sourceFile)) {
 			return generateLevelEntryFromTinyRDF(sourceFile, mapFile, targetTBoxFile, targetABoxFile, provGraph);

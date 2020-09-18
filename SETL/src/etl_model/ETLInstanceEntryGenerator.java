@@ -514,7 +514,7 @@ public class ETLInstanceEntryGenerator implements ETLOperation {
 		panelEntry.add(btnOpenTargetABox2, "cell 2 5");
 		
 		int confirmation = JOptionPane.showConfirmDialog(null, panelHolder,
-				"Please Input Values for Level Entry Generator.", JOptionPane.OK_CANCEL_OPTION);
+				"Please Input Values for Instance Generator.", JOptionPane.OK_CANCEL_OPTION);
 		
 		if (confirmation == JOptionPane.OK_OPTION) {
 			setFileType(comboBoxFileType.getSelectedItem().toString());

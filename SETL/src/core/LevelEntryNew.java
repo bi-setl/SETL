@@ -401,7 +401,7 @@ public class LevelEntryNew {
 						String provIRI = "";
 						if (provValue == null) {
 							// AUTOMATIC
-							return "Empty Provinance value";
+							return "Empty instance iri value";
 						} else {
 							// LOOK UP PROV GRAPH
 							provValue = Methods.formatURL(provValue);
@@ -956,7 +956,7 @@ public class LevelEntryNew {
 						String provIRI = "";
 						if (provValue == null) {
 							// AUTOMATIC
-							return "Empty Provinance value";
+							return "Empty instance iri value";
 						} else {
 							// LOOK UP PROV GRAPH
 							provValue = Methods.formatURL(provValue);
@@ -1190,7 +1190,7 @@ public class LevelEntryNew {
 						String provIRI = "";
 						if (provValue == null) {
 							// AUTOMATIC
-							return "Empty Provinance value";
+							return "Empty instance iri value";
 						} else {
 							// LOOK UP PROV GRAPH
 							provValue = Methods.formatURL(provValue);

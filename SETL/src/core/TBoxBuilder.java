@@ -247,12 +247,12 @@ public class TBoxBuilder {
 		if (csvSource.contains("\\")) {
 				String[] portions = csvSource.split("\\\\");
 				String[] segments = portions[portions.length - 1].split("\\.");
-				String type = segments[0].toLowerCase();
+				String type = segments[0];
 				return type;
 		} else {
 			String[] portions = csvSource.split("/");
 			String[] segments = portions[portions.length - 1].split("\\.");
-			String type = segments[0].toLowerCase();
+			String type = segments[0];
 			return type;
 		}
 	}
@@ -260,7 +260,7 @@ public class TBoxBuilder {
 	private void createProperty(String string, String object, String property, Model classModel) {
 		// TODO Auto-generated method stub
 		// String propertyName = assignIRI(property);
-
+		string = Methods.formatURL(string);
 		Resource resource = classModel.getResource(string);
 		Property predicate = classModel.createProperty(property);
 		resource.addProperty(predicate, classModel.createResource(object));
@@ -277,6 +277,7 @@ public class TBoxBuilder {
 	public boolean addDataProperty(String name, Model classModel) {
 		// TODO Auto-generated method stub
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#DatatypeProperty");
+		name = Methods.formatURL(name);
 		Resource newResource = classModel.createResource(name);
 		newResource.addProperty(RDF.type, classResource);
 		return true;

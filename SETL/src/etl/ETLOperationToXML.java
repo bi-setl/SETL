@@ -503,7 +503,6 @@ public class ETLOperationToXML {
 		}
 		
 		for (Operation op : instanceEntryGenOperations) {
-
 			xmlString += "\t<" + INSTANCE_ENTRY_GENERATOR + " id=\"" + op.getXmlOperationKey() + "\">\n";
 			xmlString += "\t\t<OperationName>" + op.getOperationName() + "</OperationName>\n";
 			xmlString += "\t\t<UpperLeftX>" + op.getUpperLeftX() + "</UpperLeftX>\n";
@@ -512,6 +511,9 @@ public class ETLOperationToXML {
 			xmlString += "\t\t<IsExecuted>" + op.isExecuted() + "</IsExecuted>\n";
 
 			ETLInstanceEntryGenerator temp = (ETLInstanceEntryGenerator) op.getEtlOperation();
+			xmlString += "\t\t<SourceCSV>" + temp.getSourceCSV() + "</SourceCSV>\n";
+			xmlString += "\t\t<Delimiter>" + temp.getDelimiter() + "</Delimiter>\n";
+			xmlString += "\t\t<FileType>" + temp.getFileType() + "</FileType>\n";
 			xmlString += "\t\t<TargetType>" + temp.getTargetType() + "</TargetType>\n";
 			xmlString += "\t\t<MappingFile>" + temp.getMappingFile() + "</MappingFile>\n";
 			xmlString += "\t\t<SourceABoxFile>" + temp.getSourceABoxFile() + "</SourceABoxFile>\n";

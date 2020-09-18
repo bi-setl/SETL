@@ -14,19 +14,19 @@ public class RunQuery {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String filepath = "C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\city_wrapper.ttl";
+		String filepath = "C:\\Users\\Amrit\\Documents\\SETL\\Instance\\200916_101525_TargetABox.ttl";
 		Methods methods = new Methods();
 
 		Model model = methods.readModelFromPath(filepath);
 
-		// Methods.print(model);
+		 Methods.print(model);
 
-		String sparql = "SELECT * WHERE {?s a <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty/BudgetOne>.?s ?p ?o.}";
-
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
-
-		methods.printResultSet(resultSet);
+//		String sparql = "SELECT * WHERE {?s a <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty/BudgetOne>.?s ?p ?o.}";
+//
+//		Query query = QueryFactory.create(sparql);
+//		QueryExecution execution = QueryExecutionFactory.create(query, model);
+//		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+//
+//		methods.printResultSet(resultSet);
 	}
 }

@@ -671,7 +671,6 @@ public class ParseXML {
 				if (levelEntryGen.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element element = (Element) levelEntryGen;
-
 					String xmlOpKey = element.getAttribute("id");
 					String opName = element.getElementsByTagName("OperationName").item(0).getTextContent();
 					String upLeftX = element.getElementsByTagName("UpperLeftX").item(0).getTextContent();
@@ -679,12 +678,22 @@ public class ParseXML {
 					String inputStatus = element.getElementsByTagName("InputStatus").item(0).getTextContent();
 					String isExecuted = element.getElementsByTagName("IsExecuted").item(0).getTextContent();
 
-					String targetTypeFile = element.getElementsByTagName("TargetType").item(0).getTextContent();					
+					String sourceCSVFile = element.getElementsByTagName("SourceCSV").item(0).getTextContent();
+					String delimiterFile = element.getElementsByTagName("Delimiter").item(0).getTextContent();
+					String fileTypeFile = element.getElementsByTagName("FileType").item(0).getTextContent();
+					String targetTypeFile = element.getElementsByTagName("TargetType").item(0).getTextContent();
+					
 					String mappingFile = element.getElementsByTagName("MappingFile").item(0).getTextContent();
 					String provFile = element.getElementsByTagName("ProvFile").item(0).getTextContent();
 					String sourceABoxFile = element.getElementsByTagName("SourceABoxFile").item(0).getTextContent();
 					String targetTBoxFile = element.getElementsByTagName("TargetTBoxFile").item(0).getTextContent();
 					String targetABoxFile = element.getElementsByTagName("TargetABoxFile").item(0).getTextContent();
+
+//					xmlString+="\t\t<MappingFile>"+temp.getMappingFile() +"</MappingFile>\n";
+//					xmlString+="\t\t<SourceABoxFile>"+temp.getSourceABoxFile()+"</SourceABoxFile>\n";
+//					xmlString+="\t\t<TargetTBoxFile>"+temp.getTargetTBoxFile()+"</TargetTBoxFile>\n";
+//					//xmlString+="\t<BaseIRI>"+temp.getBaseIRI()+"<//BaseIRI>\n";
+//					xmlString+="\t\t<TargetABoxFile>"+temp.getTargetABoxFile()+"</TargetABoxFile>\n";
 
 					Operation levelEntryGenOperations = panelETLObj.new Operation(opName, Integer.parseInt(upLeftX),
 							Integer.parseInt(upLeftY));
@@ -698,6 +707,9 @@ public class ParseXML {
 					etllevelEntryGenOperation.setSourceABoxFile(sourceABoxFile);
 					etllevelEntryGenOperation.setTargetTBoxFile(targetTBoxFile);
 					etllevelEntryGenOperation.setTargetABoxFile(targetABoxFile);
+					etllevelEntryGenOperation.setSourceCSV(sourceCSVFile);
+					etllevelEntryGenOperation.setDelimiter(delimiterFile);
+					etllevelEntryGenOperation.setFileType(fileTypeFile);
 					etllevelEntryGenOperation.setTargetType(targetTypeFile);
 
 					levelEntryGenOperations.setEtlOperation(etllevelEntryGenOperation);

@@ -229,7 +229,255 @@ public class LevelEntryNew {
 		}
 	}
 	
-	public String generateInstanceEntry(String sourceABoxFile, String mappingFile, String targetTBoxFile, String provGraphFile,
+	public static void main(String[] args) {
+		LevelEntryNew entryNew = new LevelEntryNew();
+		entryNew.generateInstanceEntry("CSV", "",
+				"Comma (,)", "C:\\Users\\Amrit\\Documents\\SETL\\Instance\\map_version_1599728328021.ttl",
+				"C:\\Users\\Amrit\\Documents\\SETL\\Instance\\prov.ttl", "C:\\Users\\Amrit\\Documents\\SETL\\Instance\\exiobase.ttl",
+				"Turtle", "C:\\Users\\Amrit\\Documents\\SETL\\Instance\\200916_101525_TargetABox.ttl",
+				"C:\\Users\\Amrit\\Documents\\SETL\\Instance\\inputflow.csv");
+	}
+
+	public String generateInstanceEntry(String fileType, String sourceABoxFile, String delimiter, String mappingFile,
+			String provFile, String targetTBoxFile, String targetType, String targetABoxFile, String csvFile) {
+		// TODO Auto-generated method stub
+		
+		if (fileType.equals("CSV")) {
+			generateInstanceEntryFromCSV(csvFile, mappingFile, targetTBoxFile, provFile, targetABoxFile, delimiter);
+		} else {
+			generateInstanceEntryFromRDF(sourceABoxFile, mappingFile, targetTBoxFile, provFile, targetABoxFile);
+		}
+		return "";
+	}
+
+	private String generateInstanceEntryFromCSV(String sourceABoxFile, String mappingFile, String targetTBoxFile,
+			String provGraphFile, String targetABoxFile, String csvDelimiter) {
+		// TODO Auto-generated method stub
+		String checkFileResult = checkFiles(sourceABoxFile, mappingFile, targetTBoxFile, provGraphFile);
+		
+		if (checkFileResult.equals("OK")) {
+			/*Model sourceABoxModel = fileMethods.readModelFromPath(sourceABoxFile);
+			
+			if (sourceABoxModel == null) {
+				return "Error in reading the source abox file. Please check syntaxes.";
+			}*/
+			
+			if (!fileMethods.getFileExtension(sourceABoxFile).equals("csv")) {
+				return "Check source file type";
+			}
+			
+			Model mapModel = fileMethods.readModelFromPath(mappingFile);
+			
+			if (mapModel == null) {
+				return "Error in reading the mapping file. Please check syntaxes.";
+			}
+			
+			Model targetTBoxModel = fileMethods.readModelFromPath(targetTBoxFile);
+			
+			if (targetTBoxModel == null) {
+				return "Error in reading the target tbox file. Please check syntaxes.";
+			}
+			
+			Model provModel = fileMethods.readModelFromPath(provGraphFile);
+			
+			if (provModel == null) {
+				return "Error in reading the prov graph file. Please check syntaxes.";
+			}
+			
+			ProvGraph provGraph = new ProvGraph(provGraphFile);
+			prefixMap = extractAllPrefixes(targetTBoxFile);
+			
+			String delimiter = ",";
+			if (csvDelimiter.contains("Space") || csvDelimiter.contains("Tab")) {
+				delimiter = "\\s";
+			} else if (csvDelimiter.contains("Semicolon")) {
+				delimiter = ";";
+			} else if (csvDelimiter.contains("Pipe")) {
+				delimiter = "|";
+			} else {
+				delimiter = ",";
+			}
+			
+			String inputStream = fileMethods.getEncodedString(sourceABoxFile);
+	        
+	        Reader inputString = new StringReader(inputStream);
+	        BufferedReader bufferedReader = new BufferedReader(inputString);
+	        
+	        ArrayList<String> keys = new ArrayList<>();
+	        try {
+	        	String eachLine = "";
+	        	
+				while ((eachLine = bufferedReader.readLine()) != null) {
+				    // String[] parts = eachLine.split(delimiter);
+					eachLine = eachLine + delimiter;
+				    
+				    String regEx = "([^" + delimiter + "]*)(" + delimiter + ")";
+                    Pattern pattern = Pattern.compile(regEx);
+                    Matcher matcher = pattern.matcher(eachLine);
+
+                    while (matcher.find()) {
+                    	keys.add(cleanString(matcher.group(1)));
+                    }
+				    
+				    break;
+				}
+				
+				String sourceFileName = getFileName(sourceABoxFile);
+				
+				Model model = ModelFactory.createDefaultModel();
+				model.add(mapModel);
+				model.add(targetTBoxModel);
+				
+				String concept = "";
+				String sourceType = "";
+	            String targetType = "";
+	            String keyAttributeType = "";
+	            LinkedHashMap<String, String> propertiesMap = new LinkedHashMap<>();
+				
+				String sparql = "PREFIX map: <http://www.map.org/example#>\r\n"
+						+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
+						+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
+						+ "SELECT * WHERE {\r\n"
+						+ "?head a map:ConceptMapper. "
+						+ "?head map:sourceConcept ?type. "
+						+ "?head map:targetConcept ?target. "
+						+ "?head map:iriValueType ?keyType. "
+//						+ "?target a owl:Class. "
+						+ "?head map:operation \"" + PanelETL.INSTANCE_ENTRY_GENERATOR + "\"."
+						+ "?record a map:PropertyMapper. "
+						+ "?record map:ConceptMapper ?head. "
+						+ "?record map:sourceProperty ?property. "
+						+ "?record map:targetProperty ?targetProperty. "
+						+ "FILTER regex(str(?type), '" + sourceFileName + "')."
+						+ "}";
+
+				Query query = QueryFactory.create(sparql);
+				QueryExecution execution = QueryExecutionFactory.create(query, model);
+				ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+				
+//				fileMethods.printResultSet(resultSet);
+				while (resultSet.hasNext()) {
+	                QuerySolution querySolution = (QuerySolution) resultSet.next();
+	                sourceType = querySolution.get("type").toString();
+	                
+	                if (getProvValue(sourceType).equals(sourceFileName)) {
+	                	concept = querySolution.get("head").toString();
+		                targetType = querySolution.get("target").toString();
+		                keyAttributeType = querySolution.get("keyType").toString();
+		                String sourceProperty = querySolution.get("property").toString();
+		                String targetProperty = querySolution.get("targetProperty").toString();
+		                
+		                propertiesMap.put(sourceProperty, targetProperty);
+					}
+	            }
+				
+				Model targetModel = ModelFactory.createDefaultModel();
+				
+				int numOfFiles = 1, count = 0, lineCount = 0;
+				while ((eachLine = bufferedReader.readLine()) != null) {
+					count++;
+					lineCount++;
+					
+					eachLine = eachLine + delimiter;
+					LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
+					
+					String regEx = "([^" + delimiter + "]*)(" + delimiter + ")";
+                    Pattern pattern = Pattern.compile(regEx);
+                    Matcher matcher = pattern.matcher(eachLine);
+
+                    ArrayList<String> values = new ArrayList<>();
+                    while (matcher.find()) {
+                    	values.add(cleanString(matcher.group(1)));
+                    }
+                    
+                    if (values.size() != keys.size()) {
+                    	System.out.println("Skipped Line No: " + lineCount + " = " + eachLine);
+					} else {
+						for (int i = 0; i < keys.size(); i++) {
+							linkedHashMap.put(keys.get(i), values.get(i));
+						}
+						
+						String provValue = getIRIValue(concept, keyAttributeType, mapModel, linkedHashMap, provModel);
+						
+						String provIRI = "";
+						if (provValue == null) {
+							// AUTOMATIC
+							return "Empty Provinance value";
+						} else {
+							// LOOK UP PROV GRAPH
+							provValue = Methods.formatURL(provValue);
+							
+							String rangeValue = getRangeValue(targetType, targetTBoxModel);
+							
+							if (rangeValue == null) {
+								provIRI = targetType + "#" + provValue;
+							} else {
+								provIRI = rangeValue + "#" + provValue;
+							}
+						}
+						
+						
+						Resource resource = targetModel.createResource(provIRI);
+
+						resource.addProperty(RDF.type, targetModel.createResource(targetType));
+						
+						for (Map.Entry<String, String> map : propertiesMap.entrySet()) {
+							String sourceProperty = map.getKey();
+	                        String targetProperty = map.getValue();
+	                        String targetValue = linkedHashMap.get(getProvValue(sourceProperty));
+	                        
+	                        Property property = targetModel.createProperty(targetProperty);
+	                        
+	                        if (targetValue != null) {
+								String rangeValue = getRangeValue(targetProperty, targetTBoxModel);
+								
+								if (rangeValue.contains("http://www.w3.org/2001/XMLSchema#")) {
+									Literal literal = targetModel.createTypedLiteral(targetValue);
+									resource.addLiteral(property, literal);
+								} else {
+									String propertyValueIRI = rangeValue + "#" + targetValue;
+									resource.addProperty(property,
+											targetModel.createResource(propertyValueIRI));
+								}
+							}
+						}
+					}
+                    
+                    if (count % 10000 == 0) {
+						String tempPath = numOfFiles + ".ttl";
+						// System.out.println(tempPath);
+						fileMethods.saveModel(targetModel, tempPath);
+						targetModel = ModelFactory.createDefaultModel();
+						numOfFiles++;
+					}
+				}
+				
+				if (count == 0) {
+					return "Sparql Query returns 0 result";
+				}
+
+				if (targetModel.size() > 0) {
+					String tempPath = numOfFiles + ".ttl";
+					// System.out.println(tempPath);
+					fileMethods.saveModel(targetModel, tempPath);
+					targetModel = ModelFactory.createDefaultModel();
+					numOfFiles++;
+				}
+				
+				fileMethods.saveModel(provGraph.model, provGraphFile);
+				return mergeAllTempFiles(numOfFiles, targetABoxFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				return "Error in parsing the csv file";
+			}
+		} else {
+			return checkFileResult;
+		}
+	}
+	
+	public String generateInstanceEntryFromRDF(String sourceABoxFile, String mappingFile, String targetTBoxFile, String provGraphFile,
 			String targetABoxFile) {
 		String checkFileResult = checkFiles(sourceABoxFile, mappingFile, targetTBoxFile, provGraphFile);
 		if (checkFileResult.equals("OK")) {
@@ -712,6 +960,8 @@ public class LevelEntryNew {
 							return "Empty Provinance value";
 						} else {
 							// LOOK UP PROV GRAPH
+							provValue = Methods.formatURL(provValue);
+							
 							String rangeValue = getRangeValue(targetType, targetTBoxModel);
 							
 							if (rangeValue == null) {
@@ -944,6 +1194,8 @@ public class LevelEntryNew {
 							return "Empty Provinance value";
 						} else {
 							// LOOK UP PROV GRAPH
+							provValue = Methods.formatURL(provValue);
+							
 							String rangeValue = getRangeValue(targetType, targetTBoxModel);
 							
 							if (rangeValue == null) {
@@ -1292,7 +1544,9 @@ public class LevelEntryNew {
 			if (keyAttributesMap.containsKey(concept)) {
 				String key = keyAttributesMap.get(concept);
 				ExpressionHandler expressionHandler = new ExpressionHandler();
-				return expressionHandler.handleExpression(key, linkedHashMap).toString();
+				String result = expressionHandler.handleExpression(key, linkedHashMap).toString();
+				
+				return result;
 			} else {
 				String sparql2 = "PREFIX map: <http://www.map.org/example#>\r\n"
 						+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"

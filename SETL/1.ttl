@@ -1,20 +1,38 @@
-<http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetThree#-RHUS-N-751-751>
-        a       <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty/BudgetThree> ;
-        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute/budgetThreeName>
-                "?RHUS N_751_751" ;
-        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute/budgetThreeTotal>
-                "751" .
+<http://ontology.bonsai.uno/core#Flow#F_R_OXYG_A_PARI_AU>
+        a       <http://ontology.bonsai.uno/core#Flow> ;
+        <http://ontology.bonsai.uno/core#hasFlowObject>
+                <http://ontology.bonsai.uno/core#FlowObject#R_OXYG> ;
+        <http://ontology.bonsai.uno/core#hasNumericalValue>
+                "583031.448035589" ;
+        <http://ontology.bonsai.uno/core#isInputOf>
+                <http://ontology.bonsai.uno/core#Activity#A_PARI_AU> ;
+        <http://rdf.bonsai.uno/dataset/exiobase3_3_17/ontology#hasObjectTypeStatus>
+                <http://rdf.bonsai.uno/dataset/exiobase3_3_17/ontology#FlowObjectStatus#resource> ;
+        <http://www.ontology-of-units-of-measure.org/resource/om-2/hasUnit>
+                <http://www.ontology-of-units-of-measure.org/resource/om-2/#tonne> .
 
-<http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetThree#EJBY-410-410>
-        a       <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty/BudgetThree> ;
-        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute/budgetThreeName>
-                "EJBY_410_410" ;
-        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute/budgetThreeTotal>
-                "410" .
+<http://ontology.bonsai.uno/core#Flow#F_R_CODI_A_PARI_AU>
+        a       <http://ontology.bonsai.uno/core#Flow> ;
+        <http://ontology.bonsai.uno/core#hasFlowObject>
+                <http://ontology.bonsai.uno/core#FlowObject#R_CODI> ;
+        <http://ontology.bonsai.uno/core#hasNumericalValue>
+                "1839672.80904463" ;
+        <http://ontology.bonsai.uno/core#isInputOf>
+                <http://ontology.bonsai.uno/core#Activity#A_PARI_AU> ;
+        <http://rdf.bonsai.uno/dataset/exiobase3_3_17/ontology#hasObjectTypeStatus>
+                <http://rdf.bonsai.uno/dataset/exiobase3_3_17/ontology#FlowObjectStatus#resource> ;
+        <http://www.ontology-of-units-of-measure.org/resource/om-2/hasUnit>
+                <http://www.ontology-of-units-of-measure.org/resource/om-2/#tonne> .
 
-<http://extbi.lab.aau.dk/ontolgoy/subsidy/BudgetThree#ULFBORG-661-661>
-        a       <http://extbi.lab.aau.dk/ontolgoy/sdw/mdProperty/BudgetThree> ;
-        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute/budgetThreeName>
-                "ULFBORG_661_661" ;
-        <http://extbi.lab.aau.dk/ontolgoy/sdw/mdAttribute/budgetThreeTotal>
-                "661" .
+<http://ontology.bonsai.uno/core#Flow#F_R_NIHY_A_PARI_AU>
+        a       <http://ontology.bonsai.uno/core#Flow> ;
+        <http://ontology.bonsai.uno/core#hasFlowObject>
+                <http://ontology.bonsai.uno/core#FlowObject#R_NIHY> ;
+        <http://ontology.bonsai.uno/core#hasNumericalValue>
+                "96333.8562869874" ;
+        <http://ontology.bonsai.uno/core#isInputOf>
+                <http://ontology.bonsai.uno/core#Activity#A_PARI_AU> ;
+        <http://rdf.bonsai.uno/dataset/exiobase3_3_17/ontology#hasObjectTypeStatus>
+                <http://rdf.bonsai.uno/dataset/exiobase3_3_17/ontology#FlowObjectStatus#resource> ;
+        <http://www.ontology-of-units-of-measure.org/resource/om-2/hasUnit>
+                <http://www.ontology-of-units-of-measure.org/resource/om-2/#tonne> .

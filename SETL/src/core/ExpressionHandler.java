@@ -301,14 +301,18 @@ public class ExpressionHandler {
 		                    String propertyValue = map.getValue();
 
 		                    if (first.contains(property)) {
-		                    	result = propertyValue + second;
+		                    	result += propertyValue;
 		                    	break;
 							}
 		                }
 					} else {
-						result = value + second;
+						result += value;
 					}
-				} else if (second.contains("http") || second.contains(":") || first.contains("www")) {
+				} else {
+					result += first;
+				} 
+				
+				if (second.contains("http") || second.contains(":") || first.contains("www")) {
 					if (value instanceof LinkedHashMap) {
 						LinkedHashMap<String, String> linkedHashMap = (LinkedHashMap<String, String>) value;
 						for (Map.Entry<String, String> map : linkedHashMap.entrySet()) {
@@ -316,15 +320,15 @@ public class ExpressionHandler {
 		                    String propertyValue = map.getValue();
 
 		                    if (second.contains(property)) {
-		                    	result = first + propertyValue;
+		                    	result += propertyValue;
 		                    	break;
 							}
 		                }
 					} else {
-						result = first + value;
+						result += value;
 					}
 				} else {
-					result = first + second;
+					result += second;
 				}
 			} else if (operation.toLowerCase().equals("Replace".toLowerCase())) {
 				String key = (String) arrayList.get(startIndex + 2);

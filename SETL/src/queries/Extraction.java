@@ -1195,7 +1195,7 @@ public class Extraction {
 			Methods.checkOrCreateFile(provFile);
 			
 			LevelEntryNew entryNew = new LevelEntryNew();
-			String result = entryNew.generateInstanceEntry(conceptTransform.getSourceABoxLocationString(), mapPath, 
+			String result = entryNew.generateInstanceEntryFromRDF(conceptTransform.getSourceABoxLocationString(), mapPath, 
 					tboxPath, provFile, conceptTransform.getTargetFileLocation());
 			
 			return result;

@@ -843,7 +843,7 @@ public class Methods {
     public static String formatURL(String urlString) {
         urlString = urlString.replace("\"", "");
 
-        return urlString.replaceAll("[^a-zA-Z0-9/]" , "-");
+        return urlString.replaceAll("[^a-zA-Z0-9_/]" , "-");
     }
 
     public static String replaceQuote(String urlString) {

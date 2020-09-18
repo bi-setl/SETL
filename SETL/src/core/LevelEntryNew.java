@@ -243,11 +243,10 @@ public class LevelEntryNew {
 		// TODO Auto-generated method stub
 		
 		if (fileType.equals("CSV")) {
-			generateInstanceEntryFromCSV(csvFile, mappingFile, targetTBoxFile, provFile, targetABoxFile, delimiter);
+			return generateInstanceEntryFromCSV(csvFile, mappingFile, targetTBoxFile, provFile, targetABoxFile, delimiter);
 		} else {
-			generateInstanceEntryFromRDF(sourceABoxFile, mappingFile, targetTBoxFile, provFile, targetABoxFile);
+			return generateInstanceEntryFromRDF(sourceABoxFile, mappingFile, targetTBoxFile, provFile, targetABoxFile);
 		}
-		return "";
 	}
 
 	private String generateInstanceEntryFromCSV(String sourceABoxFile, String mappingFile, String targetTBoxFile,

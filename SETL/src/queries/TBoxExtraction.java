@@ -35,6 +35,7 @@ import org.apache.jena.vocabulary.RDF;
 
 import controller.TBoxDefinition;
 import helper.FileMethods;
+import helper.Methods;
 
 public class TBoxExtraction {
 	public static final String TEMP_TBOX_MODEL_TTL = "TEMP_TBOX_MODEL.ttl";
@@ -2564,30 +2565,48 @@ public class TBoxExtraction {
 				}
 			}
 		}
-
-		text += assignPrefix(selectedResource) + " a " + typeString;
+		
+		String subjectPrefix = assignPrefix(selectedResource);
+		if (Methods.containsWWW(subjectPrefix)) {
+			text += "<" + subjectPrefix + ">" + " a " + typeString;
+		} else {
+			text += subjectPrefix + " a " + typeString;
+		}
 
 		for (Map.Entry<String, String> map : linkedHashMap.entrySet()) {
 			String key = map.getKey();
-			String value = map.getValue();
+			String valueText = map.getValue();
+			
+			if (valueText.contains("@")) {
+				String[] parts = valueText.split("@");
+				valueText = "\"" + parts[0] + "\"" + "@" + parts[1];
 
-			if (value.contains("http") || value.contains("www.")) {
-				String valueString = ";\n\t" + key + " <" + value + ">";
+				String valueString = ";\n\t" + key + " " + valueText;
 				text += valueString;
 			} else {
-				if (value.contains(":")) {
-					String valueString = ";\n\t" + key + " " + value;
-					text += valueString;
-				} else {
-					if (value.contains("@")) {
-						String[] parts = value.split("@");
-						value = "\"" + parts[0] + "\"" + "@" + parts[1];
-
-						String valueString = ";\n\t" + key + " " + value;
-						text += valueString;
-					}
-				}
+				String value = Methods.getSplitValues(valueText);
+				
+				String valueString = ";\n\t" + key + " " + value;
+				text += valueString;
 			}
+
+//			if (Methods.isIRI(value)) {
+//				String valueString = ";\n\t" + key + " <" + value + ">";
+//				text += valueString;
+//			} else {
+//				if (value.contains(":")) {
+//					String valueString = ";\n\t" + key + " " + value;
+//					text += valueString;
+//				} else {
+//					if (value.contains("@")) {
+//						String[] parts = value.split("@");
+//						value = "\"" + parts[0] + "\"" + "@" + parts[1];
+//
+//						String valueString = ";\n\t" + key + " " + value;
+//						text += valueString;
+//					}
+//				}
+//			}
 		}
 
 		text += ".\n";

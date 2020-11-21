@@ -2209,6 +2209,7 @@ public class PanelETL extends JPanel {
 				etlExpressionHandler.setMappingFile(mapFile);
 				etlExpressionHandler.setSourceABoxFile(sourceFile);
 				etlExpressionHandler.setResultFile(targetFile);
+				etlExpressionHandler.setNew(false);
 				
 				operation.setEtlOperation(etlExpressionHandler);
 			} else if (operation.getOperationName().equals(INSTANCE_ENTRY_GENERATOR)) {
@@ -2221,6 +2222,13 @@ public class PanelETL extends JPanel {
 				
 				entryGenerator.setTargetTBoxFile(targetTBoxFile);
 				entryGenerator.setTargetABoxFile(targetFile);
+				operation.setEtlOperation(entryGenerator);
+			} else if (operation.getOperationName().equals(MULTIPLE_TRANFORM)) {
+				ETLMultipleTransform entryGenerator = new ETLMultipleTransform();
+				entryGenerator.setFirstSourcePath(sourceFile);
+				entryGenerator.setMapPath(mapFile);
+				entryGenerator.setSecondSourcePath(targetFile);
+				entryGenerator.setTargetPath(targetFile);
 				operation.setEtlOperation(entryGenerator);
 			} else if (operation.getOperationName().equals(LEVEL_ENTRY_GENERATOR)) {
 				ETLLevelEntryGenerator entryGenerator = new ETLLevelEntryGenerator();

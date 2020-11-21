@@ -15,4 +15,6 @@
 @prefix dbpedia: <http://dbpedia.org/resource/>.
 @prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#>.
 @prefix geonames: <http://www.geonames.org/ontology#>.
+@prefix map: <http://www.map.org/example#>.
+@prefix onto: <http://www.onto.org/schema#>.
 

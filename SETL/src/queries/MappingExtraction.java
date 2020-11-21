@@ -376,7 +376,7 @@ public class MappingExtraction {
 	}
 
 	public void addNewHead(String sourceType, String dataset, String source, String target, String relation,
-			String key, String operation, String keyType, String sourceComProperty, String targetComProperty, String filePath) {
+			String key, String operation, String keyType, String sourceComProperty, String targetComProperty, String filePath, String targetABoxPathString) {
 		// TODO Auto-generated method stub
 		dataset = assignIRI(dataset);
 		source = assignIRI(source);
@@ -416,6 +416,7 @@ public class MappingExtraction {
 		Property sourceCommonProperty = model.createProperty(assignIRI("map:sourceCommonProperty"));
 		Property targetCommonProperty = model.createProperty(assignIRI("map:targetCommonProperty"));
 		Property sourceABoxPath = model.createProperty(assignIRI("map:sourceABoxLocation"));
+		Property targetABoxPath = model.createProperty(assignIRI("map:targetABoxLocation"));
 		
 		newResource.addProperty(sourceTypeProperty, model.createLiteral(sourceType));
 		
@@ -427,6 +428,10 @@ public class MappingExtraction {
 		
 		if (new Methods().checkString(filePath)) {
 			newResource.addProperty(sourceABoxPath, model.createTypedLiteral(filePath));
+		}
+		
+		if (new Methods().checkString(filePath)) {
+			newResource.addProperty(targetABoxPath, model.createTypedLiteral(targetABoxPathString));
 		}
 		
 		Methods methods = new Methods();

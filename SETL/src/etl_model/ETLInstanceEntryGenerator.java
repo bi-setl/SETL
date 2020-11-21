@@ -596,6 +596,10 @@ public class ETLInstanceEntryGenerator implements ETLOperation {
 					
 					LevelEntryNew entryNew = new LevelEntryNew();
 					
+					if (getFileType() == null) {
+						setFileType("RDF");
+					}
+					
 					result += entryNew.generateInstanceEntry(getFileType(), getSourceABoxFile(), getDelimiter(),
 							getMappingFile(), getProvFile(), getTargetTBoxFile(), getTargetType(), getTargetABoxFile(), getSourceCSV());
 					

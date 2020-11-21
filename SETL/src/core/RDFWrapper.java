@@ -112,6 +112,7 @@ public class RDFWrapper {
 
 		BufferedReader br = null;
 		String line = "";
+		Methods methods = new Methods();
 
 		try {
 			br = new BufferedReader(new FileReader(sourceFile));
@@ -119,12 +120,13 @@ public class RDFWrapper {
 			line = br.readLine();
 			line = line + delimiter;
 
-			ArrayList<String> columnNames = csvExtraction.parseCSVLine(line, delimiter, true);
+			ArrayList<String> columnNames = methods.getColumnNames(sourceFile, delimiter);
 //			System.out.println("Total Columns: " + columnNames.size());
 			
 			if (!columnNames.contains(columnName) &&!columnName.equals(INCREMENTAL)
 					&& !columnName.contains("CONCAT")) {
 				br.close();
+				
 				return INAVLID_COLUMN_NAME;
 			}
 			

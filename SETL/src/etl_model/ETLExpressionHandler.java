@@ -28,6 +28,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class ETLExpressionHandler implements ETLOperation {
 	private String mappingFile, sourceABoxFile, resultFile;
+	private boolean isNew = true;
 
 	private Methods methods;
 
@@ -50,7 +51,7 @@ public class ETLExpressionHandler implements ETLOperation {
 					result += Calendar.getInstance().getTime().toString() + "\n";
 					
 					Expression expressionHandler = new Expression(true);
-					result += expressionHandler.transformOnLiteral(getMappingFile(), getSourceABoxFile(), getResultFile(), true);
+					result += expressionHandler.transformOnLiteral(getMappingFile(), getSourceABoxFile(), getResultFile(), isNew());
 					result += "\n" + Calendar.getInstance().getTime();
 
 					textPane.setText(textPane.getText().toString() + "\n" + result);
@@ -286,6 +287,14 @@ public class ETLExpressionHandler implements ETLOperation {
 
 	public void setSourceABoxFile(String sourceABoxFile) {
 		this.sourceABoxFile = sourceABoxFile;
+	}
+
+	public boolean isNew() {
+		return isNew;
+	}
+
+	public void setNew(boolean isNew) {
+		this.isNew = isNew;
 	}
 
 }

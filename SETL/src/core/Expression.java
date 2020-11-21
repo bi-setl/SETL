@@ -878,15 +878,20 @@ public class Expression {
 
 	public String transformOnLiteral(String mapFileString, String sourceFileString, String targetFileString, boolean isNew) {
 		// TODO Auto-generated method stub
+		System.out.println("Transform: " + isNew);
+		
 		if (Methods.isJenaAccessible(sourceFileString)) {
-			return transformOnLiteralFromTinyFile(mapFileString, sourceFileString, targetFileString, true);
+			return transformOnLiteralFromTinyFile(mapFileString, sourceFileString, targetFileString, isNew);
 		} else {
 //			System.out.println("Large");
-			return transformOnLiteralFromLargeFile(mapFileString, sourceFileString, targetFileString, true);
+			return transformOnLiteralFromLargeFile(mapFileString, sourceFileString, targetFileString, isNew);
 		}
 	}
 
 	public String transformOnLiteralFromTinyFile(String mapFile, String sourceFile, String targetABoxFile, boolean isNew) {
+		System.out.println("Source: " + sourceFile);
+		System.out.println("Target: " + targetABoxFile);
+		
 		prefixExtraction.extractPrefix(mapFile);
 		prefixExtraction.extractPrefix(sourceFile);
 
@@ -912,7 +917,7 @@ public class Expression {
 				+ "?mapper map:sourcePropertyType map:SourceExpression." + "?mapper map:targetProperty ?target." + "}";
 
 		ResultSet resultSet = Methods.executeQuery(mapModel, sparql);
-//		Methods.print(resultSet);
+		Methods.print(resultSet);
 
 		LinkedHashMap<String, ConceptTransform> conceptMap = new LinkedHashMap<String, ConceptTransform>();
 		LinkedHashMap<String, Integer> propertyMap = new LinkedHashMap<>();

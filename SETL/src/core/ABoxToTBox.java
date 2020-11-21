@@ -126,7 +126,7 @@ public class ABoxToTBox {
 				e.printStackTrace();
 			} 
 			
-			return "Successful";
+			return "Successful.\nFile saved to: " + targetPath;
 		} catch (Exception e) {
 			// TODO: handle exception
 			return e.getMessage();

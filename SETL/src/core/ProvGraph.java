@@ -1,5 +1,7 @@
 package core;
 
+import java.util.LinkedHashMap;
+
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -274,7 +276,7 @@ public class ProvGraph {
 
 				if (concept.equals(head)) {
 					String key = querySolution.get("value").toString();
-					String value = querySolution.get("object").toString();
+					Object value = querySolution.get("object").toString();
 					String subject = querySolution.get("subject").toString();
 					String predicate = querySolution.get("p").toString();
 					
@@ -285,8 +287,12 @@ public class ProvGraph {
 					
 					if (subject.equals(source)) {
 						if (key.contains(predicate)) {
-							ExpressionHandler expressionHandler = new ExpressionHandler();
-							return expressionHandler.handleExpression(key, value).toString();
+							EquationHandler equationHandler = new EquationHandler();
+							
+							LinkedHashMap<String, Object> valueMap = new LinkedHashMap<>();
+							valueMap.put(predicate, value);
+							
+							return equationHandler.handleExpression(key, valueMap).toString();
 						}
 					}
 				}

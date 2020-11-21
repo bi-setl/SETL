@@ -1203,7 +1203,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.setBorder(new TitledBorder(null, "Concept Mapping", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
 		panelConceptMapping.setBackground(Color.WHITE);
 		panelHead.add(panelConceptMapping, "cell 0 1 2 1,grow");
-		panelConceptMapping.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
+		panelConceptMapping.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
 		
 		JLabel lblSourceConcept = new JLabel("Source Concept:");
 		lblSourceConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -1227,6 +1227,10 @@ public class PanelMapSource2TargetNew extends JPanel {
 		lblRelation.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblRelation, "cell 0 2,alignx trailing");
 		
+		JLabel lblSourceABox = new JLabel("Source ABox Location:");
+		lblSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(lblSourceABox, "cell 0 3,alignx trailing");
+		
 		JTextField textFieldSourceABoxPath = new JTextField();
 		textFieldSourceABoxPath.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(textFieldSourceABoxPath, "cell 1 3,growx");
@@ -1246,14 +1250,33 @@ public class PanelMapSource2TargetNew extends JPanel {
 		btnSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(btnSourceABox, "cell 2 3");
 		
+		JLabel lblTargetABox = new JLabel("Target ABox Location:");
+		lblTargetABox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(lblTargetABox, "cell 0 4,alignx trailing");
+		
+		JTextField textFieldTargetABoxPath = new JTextField();
+		textFieldTargetABoxPath.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(textFieldTargetABoxPath, "cell 1 4,growx");
+		textFieldTargetABoxPath.setColumns(10);
+		
+		JButton btnTargetABox = new JButton("Open");
+		btnTargetABox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Methods methods = new Methods();
+				String sourceABoxLocationString = methods.chooseFile("Select Source ABox File");
+				
+				if (methods.checkString(sourceABoxLocationString)) {
+					textFieldTargetABoxPath.setText(sourceABoxLocationString);
+				}
+			}
+		});
+		btnTargetABox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelConceptMapping.add(btnTargetABox, "cell 2 4");
+		
 		comboBoxRelation = new JComboBox(recordDefinition.getRelations());
 		comboBoxRelation.setBackground(Color.WHITE);
 		comboBoxRelation.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(comboBoxRelation, "cell 1 2 2 1,growx");
-		
-		JLabel lblSourceABox = new JLabel("Source ABox Location:");
-		lblSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelConceptMapping.add(lblSourceABox, "cell 0 3,alignx trailing");
 		
 		JPanel panelInstanceMatching = new JPanel();
 		panelInstanceMatching.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Instance Mapping", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -1432,6 +1455,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 				String sourceCommonProperty = comboBoxSourceProperty.getSelectedItem().toString();
 				String targetCommonProperty = comboBoxTargetProperty.getSelectedItem().toString();
 				String sourceABoxPathString = textFieldSourceABoxPath.getText().toString().trim();
+				String targetABoxPathString = textFieldTargetABoxPath.getText().toString().trim();
 				
 				if (instanceToBeMapped.equals("SPARQL Query")) {
 					instanceToBeMapped = textAreaSparql.getText().toString().trim();
@@ -1463,7 +1487,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 						createNewFileIfNotExists();
 					}
 					
-					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty, sourceABoxPathString);
+					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty, sourceABoxPathString, targetABoxPathString);
 					recordExtraction.reloadAll();
 					refreshMappingDefinition();
 					

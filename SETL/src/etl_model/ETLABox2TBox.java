@@ -154,7 +154,7 @@ public class ETLABox2TBox implements ETLOperation {
 			public void actionPerformed(ActionEvent e) {
 				String key = (String) comboBoxTargetABoxType.getSelectedItem();
 				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = "ABoxToTBoxDeriver".toLowerCase() + methods.getDateTime() + "_TargetTBox" + extension;
+				String defaultName = "ABoxToTBoxDeriver_".toLowerCase() + methods.getDateTime() + "_TargetTBox" + extension;
 
 				String filePath = methods.chooseSaveFile("", defaultName,
 						"Select Directory to save property weight File");

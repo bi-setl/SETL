@@ -3,6 +3,7 @@ package etl_model;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -32,6 +33,7 @@ import javax.swing.ScrollPaneConstants;
 import core.DBMapping;
 import core.RDFWrapper;
 import helper.Methods;
+import helper.Variables;
 import model.ETLOperation;
 import net.miginfocom.swing.MigLayout;
 import view.SETLFrame;
@@ -66,9 +68,9 @@ public class ETLRDFWrapper implements ETLOperation {
 
 	private Methods methods;
 
-	private String[] strings = new String[] { "CSV", "XML", "Excel", "JSON", "DB" };
-	private String[] delimiters = new String[] { "Comma (,)", "Space ( )", "Semicolon (;)", "Tab (	)", "Pipe (|)" };
-	private String[] keyAttributes = new String[] { "Existing Attribute", "Expression", "Incremental" };
+	private String[] strings = new String[] { Variables.CSV, Variables.XML, Variables.EXCEL, Variables.JSON, Variables.DB };
+	private String[] delimiters = new String[] { Variables.COMMA, Variables.SPACE, Variables.SEMICOLON, Variables.TAB, Variables.PIPE };
+	private String[] keyAttributes = new String[] { Variables.EXISTING_ATTRIBUTE, Variables.EXPRESSION, Variables.INCREMENTAL };
 
 	private String csvSource, csvPrefix, csvColumn, csvDelimiter, csvTarget, csvTargetType, csvKeyAttributeType;
 	private String excelSource, excelPrefix, excelColumn, excelTarget, excelTargetType, excelKeyAttributeType;
@@ -365,778 +367,107 @@ public class ETLRDFWrapper implements ETLOperation {
 	@Override
 	public boolean getInput(JPanel panel, HashMap<String, LinkedHashSet<String>> inputParamsMap) {
 		// TODO Auto-generated method stub
+//		JPanel panelMain = new JPanel();
+//		panelMain.setBackground(Color.WHITE);
+//		panelMain.setLayout(new MigLayout("", "[800px, grow, fill]", "[grow]"));
+		
 		JPanel panelRDFWrapper = new JPanel();
 		panelRDFWrapper.setBackground(Color.WHITE);
-		panelRDFWrapper.setLayout(new MigLayout("", "[][800px, grow]", "[][400px, grow]"));
-
+//		panelMain.add(panelRDFWrapper, "cell 0 0,grow");
+		panelRDFWrapper.setLayout(new MigLayout("", "[800px,grow]", "[][grow]"));
+//		panelRDFWrapper.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panelComboBox = new JPanel();
+		panelComboBox.setBackground(Color.WHITE);
+		panelRDFWrapper.add(panelComboBox, "cell 0 0,grow");
+		panelComboBox.setLayout(new MigLayout("", "[][grow]", "[]"));
+		
 		JLabel lblFileType = new JLabel("File Type: ");
 		lblFileType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRDFWrapper.add(lblFileType, "cell 0 0,alignx trailing");
+		panelComboBox.add(lblFileType, "cell 0 0,alignx trailing");
 		
 		JPanel panelHolder = new JPanel();
-		JPanel panelCSV = new JPanel();
-		JPanel panelExcel = new JPanel();
-		JScrollPane scrollPaneExcel = new JScrollPane();
-		JPanel panelExcelColumns = new JPanel();
-		JPanel panelDB = new JPanel();
-		JPanel panelJson = new JPanel();
-		JComboBox comboBoxExcelKeyAttributeType = new JComboBox(keyAttributes);
-		JPanel panelXML = new JPanel();
-		textFieldCSVKeyAttribute = new JTextField();
-		textFieldExcelKeyAttribute = new JTextField();
-
-		JComboBox comboBoxFileType = new JComboBox(strings);
-		comboBoxFileType.addActionListener(new ActionListener() {
-
-			@Override
+		panelHolder.setLayout(new CardLayout(0, 0));
+		
+		JComboBox comboBox = new JComboBox(strings);
+		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				setFileType(comboBoxFileType.getSelectedItem().toString());
-				switch (comboBoxFileType.getSelectedItem().toString()) {
-				case "CSV":
-					panelHolder.removeAll();
-					panelHolder.repaint();
-					panelHolder.revalidate();
-
-					panelHolder.add(panelCSV, BorderLayout.CENTER);
-					break;
-				case "XML":
-					panelHolder.removeAll();
-					panelHolder.repaint();
-					panelHolder.revalidate();
-
-					panelHolder.add(panelXML, BorderLayout.CENTER);
-					break;
-				case "Excel":
-					panelHolder.removeAll();
-					panelHolder.repaint();
-					panelHolder.revalidate();
-					
-					panelHolder.add(panelExcel, BorderLayout.CENTER);
-					
-					panelExcelColumns.removeAll();
-					for (int i = 0; i < allColumnNames.size(); i++) {
-						JButton btnColumn = new JButton(allColumnNames.get(i).toString());
-						btnColumn.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Existing Attribute")) {
-									textFieldExcelKeyAttribute.setText(btnColumn.getText().toString().trim());
-								} else if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Expression")) {
-									selectedColumns.add(btnColumn.getText().toString().trim());
-									String concatString = "CONCAT(";
-									for (int j = 0; j < selectedColumns.size(); j++) {
-										if (j == selectedColumns.size() - 1) {
-											concatString += selectedColumns.get(j) + ")";
-										} else {
-											concatString += selectedColumns.get(j) + ", ";
-										}
-									}
-									textFieldCSVKeyAttribute.setText(concatString);
-								}
-							}
-						});
-						btnColumn.setBackground(Color.decode("#FFFFCC"));
-						btnColumn.setContentAreaFilled(false);
-						btnColumn.setOpaque(true);
-						panelExcelColumns.add(btnColumn);
-					}
-					
-					break;
-				case "JSON":
-					panelHolder.removeAll();
-					panelHolder.repaint();
-					panelHolder.revalidate();
-
-					panelHolder.add(panelJson, BorderLayout.CENTER);
-					break;
-				case "DB":
-					panelHolder.removeAll();
-					panelHolder.repaint();
-					panelHolder.revalidate();
-
-					panelHolder.add(panelDB, BorderLayout.CENTER);
-					break;
-				default:
-					System.out.println("Unknown Selection");
-					break;
-				}
-			}
-		});
-		comboBoxFileType.setBackground(Color.WHITE);
-		comboBoxFileType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRDFWrapper.add(comboBoxFileType, "cell 1 0,growx");
-
-		if (getFileType() != null) {
-			comboBoxFileType.setSelectedItem(getFileType());
-		}
-
-		panelRDFWrapper.add(panelHolder, "cell 0 1 2 1,grow");
-		panelHolder.setLayout(new BorderLayout(0, 0));
-
-		panelDB.setBackground(Color.WHITE);
-		// panelHolder.add(panelDB, BorderLayout.CENTER);
-		panelDB.setLayout(new MigLayout("", "[grow]", "[grow]"));
-
-		JPanel panelHolderTwo = new JPanel();
-		panelHolderTwo.setBackground(Color.WHITE);
-		panelDB.add(panelHolderTwo, "cell 0 0,grow");
-		panelHolderTwo.setLayout(new MigLayout("", "[][grow]", "[][grow]"));
-		
-		JLabel lblType = new JLabel("Type:");
-		lblType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelHolderTwo.add(lblType, "cell 0 0,alignx trailing");
-		
-		JPanel panelTypeHolder = new JPanel();
-		panelTypeHolder.setLayout(new CardLayout(0, 0));
-		
-		String[] types = new String[] {DIRECT_MAPPING, R2RML};
-		JComboBox comboBoxType = new JComboBox(types);
-		comboBoxType.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String selectedItem = comboBoxType.getSelectedItem().toString();
+				String selectedItem = comboBox.getSelectedItem().toString();
 				
-				CardLayout cardLayout = (CardLayout) panelTypeHolder.getLayout();
-				if (selectedItem.equals(DIRECT_MAPPING)) {
-					cardLayout.show(panelTypeHolder, DIRECT_MAPPING);
-				} else {
-					cardLayout.show(panelTypeHolder, R2RML);
-				}
+				showMenuCard(panelHolder, selectedItem);
 			}
 		});
-		comboBoxType.setBackground(Color.WHITE);
-		comboBoxType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelHolderTwo.add(comboBoxType, "cell 1 0,growx");
+		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		comboBox.setBackground(Color.WHITE);
+		panelComboBox.add(comboBox, "cell 1 0,growx");
 		
-		if (dbMappingType != null) {
-			comboBoxType.setSelectedItem(getDbMappingType());
+		if (getFileType() != null) {
+			String selectedItem = getFileType();
+			
+			showMenuCard(panelHolder, selectedItem);
 		}
 		
-		panelTypeHolder.setBackground(Color.WHITE);
-		panelHolderTwo.add(panelTypeHolder, "cell 0 1 2 1,grow");
+		panelHolder.setBackground(Color.WHITE);
+		panelRDFWrapper.add(panelHolder, "cell 0 1,grow");
 		
-		JPanel panelDirect = new JPanel();
-		panelDirect.setBackground(Color.WHITE);
-		panelTypeHolder.add(panelDirect, DIRECT_MAPPING);
-		panelDirect.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
-		
-		JLabel lblDbName = new JLabel("DB Name:");
-		lblDbName.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(lblDbName, "cell 0 0,alignx trailing");
-		
-		textFieldDbName = new JTextField();
-		textFieldDbName.setMargin(new Insets(5, 5, 5, 5));
-		textFieldDbName.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(textFieldDbName, "cell 1 0 2 1,growx");
-		textFieldDbName.setColumns(10);
-		
-		if (dbName != null) {
-			textFieldDbName.setText(dbName);
-		}
-		
-		JLabel lblDbUsername = new JLabel("DB Username:");
-		lblDbUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(lblDbUsername, "cell 0 1,alignx trailing");
-		
-		textFieldUsername = new JTextField();
-		textFieldUsername.setMargin(new Insets(5, 5, 5, 5));
-		textFieldUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(textFieldUsername, "cell 1 1 2 1,growx");
-		textFieldUsername.setColumns(10);
-		
-		if (dbUsername != null) {
-			textFieldUsername.setText(dbUsername);
-		}
-		
-		JLabel lblDbUserPassword = new JLabel("DB User Password:");
-		lblDbUserPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(lblDbUserPassword, "cell 0 2,alignx trailing");
-		
-		textFieldPassword = new JPasswordField();
-		textFieldPassword.setMargin(new Insets(5, 5, 5, 5));
-		textFieldPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(textFieldPassword, "cell 1 2 2 1,growx");
-		textFieldPassword.setColumns(10);
-		
-		if (dbPassword != null) {
-			textFieldPassword.setText(dbPassword);
-		}
-		
-		JLabel lblBaseIri_1 = new JLabel("Base IRI:");
-		lblBaseIri_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(lblBaseIri_1, "cell 0 3,alignx trailing");
-		
-		textFieldDirectBaseIRI = new JTextField();
-		textFieldDirectBaseIRI.setToolTipText("Base URL is the URL for primary keys");
-		textFieldDirectBaseIRI.setMargin(new Insets(5, 5, 5, 5));
-		textFieldDirectBaseIRI.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(textFieldDirectBaseIRI, "cell 1 3 2 1,growx");
-		textFieldDirectBaseIRI.setColumns(10);
-		
-		if (dbDirectBaseIRI != null) {
-			textFieldDirectBaseIRI.setText(dbDirectBaseIRI);
-		}
-		
-		JLabel lblTargetPath_1 = new JLabel("Target Path:");
-		lblTargetPath_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(lblTargetPath_1, "cell 0 4,alignx trailing");
-		
-		textFieldTargetPathDirect = new JTextField();
-		textFieldTargetPathDirect.setMargin(new Insets(5, 5, 5, 5));
-		textFieldTargetPathDirect.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(textFieldTargetPathDirect, "cell 1 4,growx");
-		textFieldTargetPathDirect.setColumns(10);
-		
-		if (dbDirectTargetPath != null) {
-			textFieldTargetPathDirect.setText(dbDirectTargetPath);
-		}
-		
-		JButton btnOpen = new JButton("Open");
-		btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String fileNameString = "direct_mapping_" + Calendar.getInstance().getTimeInMillis() +".rdf";
-				String filePath = methods.chooseSaveFile("", fileNameString, "Choose File");
-				textFieldTargetPathDirect.setText(filePath);
-			}
-		});
-		btnOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelDirect.add(btnOpen, "cell 2 4");
-		
-		JPanel panelRML = new JPanel();
-		panelRML.setBackground(Color.WHITE);
-		panelTypeHolder.add(panelRML, R2RML);
-		panelRML.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
-		
-		JLabel lblDbName_1 = new JLabel("DB Name:");
-		lblDbName_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(lblDbName_1, "cell 0 0,alignx trailing");
-		
-		textFieldDbNameRml = new JTextField();
-		textFieldDbNameRml.setMargin(new Insets(5, 5, 5, 5));
-		textFieldDbNameRml.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(textFieldDbNameRml, "cell 1 0 2 1,growx");
-		textFieldDbNameRml.setColumns(10);
-		
-		if (dbName != null) {
-			textFieldDbNameRml.setText(dbName);
-		}
-		
-		JLabel lblDbUsername_1 = new JLabel("DB Username:");
-		lblDbUsername_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(lblDbUsername_1, "cell 0 1,alignx trailing");
-		
-		textFieldRmlUsername = new JTextField();
-		textFieldRmlUsername.setMargin(new Insets(5, 5, 5, 5));
-		textFieldRmlUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(textFieldRmlUsername, "cell 1 1 2 1,growx");
-		textFieldRmlUsername.setColumns(10);
-		
-		if (dbUsername != null) {
-			textFieldRmlUsername.setText(dbUsername);
-		}
-		
-		JLabel lblDbUserPassword_1 = new JLabel("DB User Password:");
-		lblDbUserPassword_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(lblDbUserPassword_1, "cell 0 2,alignx trailing");
-		
-		textFieldRmlPassword = new JPasswordField();
-		textFieldRmlPassword.setMargin(new Insets(5, 5, 5, 5));
-		textFieldRmlPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(textFieldRmlPassword, "cell 1 2 2 1,growx");
-		textFieldRmlPassword.setColumns(10);
-		
-		if (dbPassword != null) {
-			textFieldRmlPassword.setText(dbPassword);
-		}
-		
-		JLabel lblRmlFilePath = new JLabel("RML File Path:");
-		lblRmlFilePath.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(lblRmlFilePath, "cell 0 3,alignx trailing");
-		
-		textFieldRmlFilePath = new JTextField();
-		textFieldRmlFilePath.setMargin(new Insets(5, 5, 5, 5));
-		textFieldRmlFilePath.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(textFieldRmlFilePath, "cell 1 3,growx");
-		textFieldRmlFilePath.setColumns(10);
-		
-		if (dbRmlFilePath != null) {
-			textFieldRmlFilePath.setText(dbRmlFilePath);
-		}
-		
-		JButton btnOpenRMLFile = new JButton("Open");
-		btnOpenRMLFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String filePath = methods.chooseFile("Select R2RML Mapping File");
-				textFieldRmlFilePath.setText(filePath);
-			}
-		});
-		btnOpenRMLFile.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(btnOpenRMLFile, "cell 2 3");
-		
-		JLabel lblTargetPath = new JLabel("Target Path:");
-		lblTargetPath.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(lblTargetPath, "cell 0 4,alignx trailing");
-		
-		textFieldRmlTarget = new JTextField();
-		textFieldRmlTarget.setMargin(new Insets(5, 5, 5, 5));
-		textFieldRmlTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(textFieldRmlTarget, "cell 1 4,growx");
-		textFieldRmlTarget.setColumns(10);
-		
-		if (textFieldRmlTarget != null) {
-			textFieldRmlFilePath.setText(dbRMLTargetPath);
-		}
-		
-		JButton btnOpenTarget = new JButton("Open");
-		btnOpenTarget.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String fileNameString = "r2rml_mapping_" + Calendar.getInstance().getTimeInMillis() +".n3";
-				String filePath = methods.chooseSaveFile("", fileNameString, "Choose File");
-				textFieldRmlTarget.setText(filePath);
-			}
-		});
-		btnOpenTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelRML.add(btnOpenTarget, "cell 2 4");
-
-		// XML PANEL
-		panelXML.setBackground(Color.WHITE);
-		// panelHolder.add(panelXML, BorderLayout.CENTER);
-		panelXML.setLayout(new MigLayout("", "[][grow][]", "[][][]"));
-
-		JLabel lblXMLSourceFile = new JLabel("Source File:");
-		lblXMLSourceFile.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(lblXMLSourceFile, "cell 0 0,alignx trailing");
-
-		textFieldXMLSource = new JTextField();
-		textFieldXMLSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(textFieldXMLSource, "cell 1 0,growx");
-		textFieldXMLSource.setColumns(10);
-
-		if (getXmlSource() != null) {
-			textFieldXMLSource.setText(getXmlSource());
-		}
-
-		JButton btnXMLOpenSource = new JButton("Open");
-		btnXMLOpenSource.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String filePath = methods.chooseFile("Select XML Source File");
-				if (!(filePath == null)) {
-					setXmlSource(filePath);
-					textFieldXMLSource.setText(filePath);
-				}
-			}
-		});
-		btnXMLOpenSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(btnXMLOpenSource, "cell 2 0");
-
-		JLabel lblXMLTargetType = new JLabel("Target Type:");
-		lblXMLTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(lblXMLTargetType, "cell 0 1,alignx trailing");
-
-		JComboBox comboBoxXMLTargetType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
-		comboBoxXMLTargetType.setBackground(Color.WHITE);
-		comboBoxXMLTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(comboBoxXMLTargetType, "cell 1 1 2 1,growx");
-
-		if (getXmlTargetType() != null) {
-			comboBoxXMLTargetType.setSelectedItem(getXmlTargetType());
-		}
-
-		JLabel lblXMLTargetFile = new JLabel("Target File:");
-		lblXMLTargetFile.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(lblXMLTargetFile, "cell 0 2,alignx trailing");
-
-		textFieldXMLTarget = new JTextField();
-		textFieldXMLTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(textFieldXMLTarget, "cell 1 2,growx");
-		textFieldXMLTarget.setColumns(10);
-
-		if (getXmlTarget() != null) {
-			textFieldXMLTarget.setText(getXmlTarget());
-		}
-
-		JButton btnXMLOpenTarget = new JButton("Open");
-		btnXMLOpenTarget.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String key = (String) comboBoxXMLTargetType.getSelectedItem();
-				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
-
-				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
-
-				if (!filePath.equals("")) {
-					setXmlTarget(filePath);
-					textFieldXMLTarget.setText(filePath);
-				}
-			}
-		});
-		btnXMLOpenTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelXML.add(btnXMLOpenTarget, "cell 2 2");
-
-		panelJson.setBackground(Color.WHITE);
-		// panelHolder.add(panelJson, BorderLayout.CENTER);
-		panelJson.setLayout(new MigLayout("", "[][grow][]", "[][][]"));
-
-		JLabel lblJsonSourceFile = new JLabel("Source File:");
-		lblJsonSourceFile.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(lblJsonSourceFile, "cell 0 0,alignx trailing");
-
-		textFieldJsonSource = new JTextField();
-		textFieldJsonSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(textFieldJsonSource, "cell 1 0,growx");
-		textFieldJsonSource.setColumns(10);
-
-		if (getJsonSource() != null) {
-			textFieldJsonSource.setText(getJsonSource());
-		}
-
-		JButton btnJsonOpenSource = new JButton("Open");
-		btnJsonOpenSource.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String filePath = methods.chooseFile("Select JSON Source File");
-				if (!(filePath == null)) {
-					setJsonSource(filePath);
-					textFieldJsonSource.setText(filePath);
-				}
-			}
-		});
-		btnJsonOpenSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(btnJsonOpenSource, "cell 2 0");
-
-		JLabel lblJsonTargetType = new JLabel("Target Type:");
-		lblJsonTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(lblJsonTargetType, "cell 0 1,alignx trailing");
-
-		JComboBox comboBoxJsonTargetType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
-		comboBoxJsonTargetType.setBackground(Color.WHITE);
-		comboBoxJsonTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(comboBoxJsonTargetType, "cell 1 1 2 1,growx");
-
-		if (getJsonTargetType() != null) {
-			comboBoxJsonTargetType.setSelectedItem(getJsonTargetType());
-		}
-
-		JLabel lblJsonTargetFile = new JLabel("Target File:");
-		lblJsonTargetFile.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(lblJsonTargetFile, "cell 0 2,alignx trailing");
-
-		textFieldJsonTarget = new JTextField();
-		textFieldJsonTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(textFieldJsonTarget, "cell 1 2,growx");
-		textFieldJsonTarget.setColumns(10);
-
-		if (getJsonTarget() != null) {
-			textFieldJsonTarget.setText(getJsonTarget());
-		}
-
-		JButton btnJsonOpenTarget = new JButton("Open");
-		btnJsonOpenTarget.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String key = (String) comboBoxJsonTargetType.getSelectedItem();
-				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
-
-				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
-
-				if (!filePath.equals("")) {
-					setJsonTarget(filePath);
-					textFieldJsonTarget.setText(filePath);
-				}
-			}
-		});
-		btnJsonOpenTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelJson.add(btnJsonOpenTarget, "cell 2 2");
-
-		panelExcel.setBackground(Color.WHITE);
-		// panelHolder.add(panelExcel, BorderLayout.CENTER);
-		panelExcel.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][]"));
-
-		JLabel lblExcelSource = new JLabel("Source File:");
-		lblExcelSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(lblExcelSource, "cell 0 0,alignx trailing");
-
-		textFieldExcelSource = new JTextField();
-		textFieldExcelSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(textFieldExcelSource, "cell 1 0,growx");
-		textFieldExcelSource.setColumns(10);
-
-		if (getExcelSource() != null) {
-			textFieldExcelSource.setText(getExcelSource());
-		}
-
-		JButton btnExcelSourceOpen = new JButton("Open");
-		btnExcelSourceOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				String filePath = methods.chooseFile("Select XML Source File");
-				if (!(filePath == null)) {
-					setExcelSource(filePath);
-					textFieldExcelSource.setText(filePath);
-					
-					panelExcelColumns.removeAll();
-
-					allColumnNames = new ArrayList<>();
-					selectedColumns = new ArrayList<>();
-					if (filePath.length() != 0) {
-						allColumnNames = methods.getColumnNames(filePath);
-
-						if (allColumnNames != null) {
-							for (int i = 0; i < allColumnNames.size(); i++) {
-								JButton btnColumn = new JButton(allColumnNames.get(i).toString());
-								btnColumn.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent arg0) {
-										if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Existing Attribute")) {
-											textFieldExcelKeyAttribute.setText(btnColumn.getText().toString().trim());
-										} else if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Expression")) {
-											selectedColumns.add(btnColumn.getText().toString().trim());
-											String concatString = "CONCAT(";
-											for (int j = 0; j < selectedColumns.size(); j++) {
-												if (j == selectedColumns.size() - 1) {
-													concatString += selectedColumns.get(j) + ")";
-												} else {
-													concatString += selectedColumns.get(j) + ", ";
-												}
-											}
-											textFieldExcelKeyAttribute.setText(concatString);
-										}
-									}
-								});
-								btnColumn.setBackground(Color.decode("#FFFFCC"));
-								btnColumn.setContentAreaFilled(false);
-								btnColumn.setOpaque(true);
-								panelExcelColumns.add(btnColumn);
-							}
-
-							panelExcel.repaint();
-							panelExcel.revalidate();
-						}
-					}
-				}
-
-			}
-		});
-		btnExcelSourceOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(btnExcelSourceOpen, "cell 2 0");
-
-		JLabel lblExcelPrefix = new JLabel("Prefix:");
-		lblExcelPrefix.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(lblExcelPrefix, "cell 0 1,alignx trailing");
-
-		textFieldExcelPrefix = new JTextField();
-		textFieldExcelPrefix.setToolTipText("http://www.something.com");
-		textFieldExcelPrefix.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(textFieldExcelPrefix, "cell 1 1 2 1,growx");
-		textFieldExcelPrefix.setColumns(10);
-
-		if (getExcelPrefix() != null) {
-			textFieldExcelPrefix.setText(getExcelPrefix());
-		}
-
-		JLabel lblExcelKeyAttributeType = new JLabel("Key Attribute Type:");
-		lblExcelKeyAttributeType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(lblExcelKeyAttributeType, "cell 0 2,alignx trailing");
-
-		comboBoxExcelKeyAttributeType.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setExcelKeyAttributeType(comboBoxExcelKeyAttributeType.getSelectedItem().toString());
-				if (getExcelKeyAttributeType().equals("Incremental")) {
-					textFieldExcelKeyAttribute.setText("Incremental");
-					panelExcel.remove(scrollPaneExcel);
-				} else if (getExcelKeyAttributeType().equals("Expression")) {
-					selectedColumns = new ArrayList<>();
-					textFieldExcelKeyAttribute.setText("CONCAT(columnName1, columnName2, ...)");
-					panelExcel.add(scrollPaneExcel, "cell 1 4 2 1,grow");
-				} else {
-					textFieldExcelKeyAttribute.setText("");
-					panelExcel.add(scrollPaneExcel, "cell 1 4 2 1,grow");
-				}
-
-				panelExcel.repaint();
-				panelExcel.revalidate();
-			}
-		});
-		comboBoxExcelKeyAttributeType.setBackground(Color.WHITE);
-		comboBoxExcelKeyAttributeType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(comboBoxExcelKeyAttributeType, "cell 1 2 2 1,growx");
-		
-		if (getExcelKeyAttributeType() != null) {
-			comboBoxExcelKeyAttributeType.setSelectedItem(getExcelKeyAttributeType());
-		}
-
-		JLabel lblExcelColumn = new JLabel("Key Attribute:");
-		lblExcelColumn.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(lblExcelColumn, "cell 0 3,alignx trailing");
-
-		textFieldExcelKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(textFieldExcelKeyAttribute, "cell 1 3 2 1,growx");
-		textFieldExcelKeyAttribute.setColumns(10);
-
-		if (getExcelColumn() != null) {
-			textFieldExcelKeyAttribute.setText(getExcelColumn());
-		}
-		
-		scrollPaneExcel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		panelExcel.add(scrollPaneExcel, "cell 1 4 2 1,grow");
-
-		scrollPaneExcel.setViewportView(panelExcelColumns);
-		panelExcelColumns.setLayout(new GridLayout(0, 2));
-
-		JLabel lblExcelTargetType = new JLabel("Target Type:");
-		lblExcelTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(lblExcelTargetType, "cell 0 5,alignx trailing");
-
-		JComboBox comboBoxExcelTargetType = new JComboBox(
-				methods.getAllFileTypes().keySet().toArray());
-		comboBoxExcelTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(comboBoxExcelTargetType, "cell 1 5 2 1,growx");
-
-		if (getExcelTargetType() != null) {
-			comboBoxExcelTargetType.setSelectedItem(getExcelTargetType());
-		}
-
-		JLabel lblExcelTarget = new JLabel("Target File:");
-		lblExcelTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(lblExcelTarget, "cell 0 6,alignx trailing");
-
-		textFieldExcelTarget = new JTextField();
-		textFieldExcelTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(textFieldExcelTarget, "cell 1 6,growx");
-		textFieldExcelTarget.setColumns(10);
-
-		if (getExcelTarget() != null) {
-			textFieldExcelTarget.setText(getExcelTarget());
-		}
-
-		JButton btnExcelTargetOpen = new JButton("Open");
-		btnExcelTargetOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				String key = (String) comboBoxExcelTargetType.getSelectedItem();
-				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
-
-				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
-
-				if (!filePath.equals("")) {
-					setExcelTarget(filePath);
-					textFieldExcelTarget.setText(filePath);
-				}
-
-			}
-		});
-		btnExcelTargetOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelExcel.add(btnExcelTargetOpen, "cell 2 6");
-		
+		JPanel panelCSV = new JPanel();
 		panelCSV.setBackground(Color.WHITE);
-		// panelHolder.add(panelCSV, BorderLayout.CENTER);
-		panelCSV.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][][]"));
-
+		panelHolder.add(panelCSV, Variables.CSV);
+		panelCSV.setLayout(new MigLayout("", "[][grow][]", "[][][][][][grow][][]"));
+		
 		JLabel lblCSVSource = new JLabel("Source File:");
 		lblCSVSource.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(lblCSVSource, "cell 0 0,alignx trailing");
-
+		
 		textFieldCSVSource = new JTextField();
+		Methods.setMargin(textFieldCSVSource);
 		textFieldCSVSource.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(textFieldCSVSource, "cell 1 0,growx");
 		textFieldCSVSource.setColumns(10);
-
+		
 		if (getCsvSource() != null) {
 			textFieldCSVSource.setText(getCsvSource());
 		}
-
+		
 		JButton btnCSVSourceOpen = new JButton("Open");
 		btnCSVSourceOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				String filePath = methods.chooseFile("Select CSV Source File");
 				if (!(filePath == null)) {
 					setCsvSource(filePath);
 					textFieldCSVSource.setText(filePath);
 				}
-
 			}
 		});
 		btnCSVSourceOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelCSV.add(btnCSVSourceOpen, "cell 2 0,grow");
-
+		panelCSV.add(btnCSVSourceOpen, "cell 2 0");
+		
 		JLabel lblCSVPrefix = new JLabel("Prefix:");
 		lblCSVPrefix.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(lblCSVPrefix, "cell 0 1,alignx trailing");
-
+		
 		textFieldCSVPrefix = new JTextField();
+		Methods.setMargin(textFieldCSVPrefix);
 		textFieldCSVPrefix.setToolTipText("http://www.something.com");
 		textFieldCSVPrefix.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(textFieldCSVPrefix, "cell 1 1 2 1,growx");
 		textFieldCSVPrefix.setColumns(10);
-
+		
 		if (getCsvPrefix() != null) {
 			textFieldCSVPrefix.setText(getCsvPrefix());
 		}
-
-		JLabel lblCSVKeyAttributeType = new JLabel("Key Attribute Type:");
-		lblCSVKeyAttributeType.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelCSV.add(lblCSVKeyAttributeType, "cell 0 3,alignx trailing");
-
-		JScrollPane scrollPaneCSV = new JScrollPane();
-		JPanel panelCSVColumns = new JPanel();
-
-		JComboBox comboBoxCSVKeyAttribute = new JComboBox(keyAttributes);
-		comboBoxCSVKeyAttribute.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				setCsvKeyAttributeType(comboBoxCSVKeyAttribute.getSelectedItem().toString());
-				if (getCsvKeyAttributeType().equals("Incremental")) {
-					textFieldCSVKeyAttribute.setText("Incremental");
-					panelCSV.remove(scrollPaneCSV);
-				} else if (getCsvKeyAttributeType().equals("Expression")) {
-					selectedColumns = new ArrayList<>();
-					textFieldCSVKeyAttribute.setText("CONCAT(columnName1, columnName2, ...)");
-					panelCSV.add(scrollPaneCSV, "cell 1 5 2 1,grow");
-				} else {
-					textFieldCSVKeyAttribute.setText("");
-					panelCSV.add(scrollPaneCSV, "cell 1 5 2 1,grow");
-				}
-
-				panelCSV.repaint();
-				panelCSV.revalidate();
-			}
-		});
-		panelCSV.add(comboBoxCSVKeyAttribute, "cell 1 3 2 1,growx");
 		
-		if (getCsvKeyAttributeType() != null) {
-			comboBoxCSVKeyAttribute.setSelectedItem(getCsvKeyAttributeType());
-		}
-
-		JLabel lblCSVKeyAttribute = new JLabel("Key Attribute:");
-		lblCSVKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelCSV.add(lblCSVKeyAttribute, "cell 0 4,alignx trailing");
-
-		textFieldCSVKeyAttribute = new JTextField();
-		textFieldCSVKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelCSV.add(textFieldCSVKeyAttribute, "cell 1 4 2 1,growx");
-		textFieldCSVKeyAttribute.setColumns(10);
-
-		if (getCsvColumn() != null) {
-			textFieldCSVKeyAttribute.setText(getCsvColumn());
-		}
-
-		scrollPaneCSV.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		panelCSV.add(scrollPaneCSV, "cell 1 5 2 1,grow");
-
-		scrollPaneCSV.setViewportView(panelCSVColumns);
-		panelCSVColumns.setLayout(new GridLayout(0, 2));
-
 		JLabel lblCSVDelimiter = new JLabel("Delimiter:");
 		lblCSVDelimiter.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(lblCSVDelimiter, "cell 0 2,alignx trailing");
-
+		
+		JScrollPane scrollPaneCSV = new JScrollPane();
+		JPanel panelCSVColumns = new JPanel();
+		panelCSVColumns.setLayout(new GridLayout(0, 2));
+		scrollPaneCSV.setViewportView(panelCSVColumns);
+		
+		JComboBox comboBoxCSVKeyAttribute = new JComboBox(keyAttributes);
+		
 		JComboBox comboBoxCSVDelimiter = new JComboBox(delimiters);
 		comboBoxCSVDelimiter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1187,106 +518,618 @@ public class ETLRDFWrapper implements ETLOperation {
 				}
 			}
 		});
-		comboBoxCSVDelimiter.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboBoxCSVDelimiter.setBackground(Color.WHITE);
+		comboBoxCSVDelimiter.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(comboBoxCSVDelimiter, "cell 1 2 2 1,growx");
-
+		
 		if (getCsvDelimiter() != null) {
 			comboBoxCSVDelimiter.setSelectedItem(getCsvDelimiter());
 		}
+		
+		JLabel lblCSVKeyAttributeType = new JLabel("Key Attribute Type:");
+		lblCSVKeyAttributeType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCSV.add(lblCSVKeyAttributeType, "cell 0 3,alignx trailing");
+		
+		textFieldCSVKeyAttribute = new JTextField();
+		
+		comboBoxCSVKeyAttribute.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setCsvKeyAttributeType(comboBoxCSVKeyAttribute.getSelectedItem().toString());
+				if (getCsvKeyAttributeType().equals("Incremental")) {
+					textFieldCSVKeyAttribute.setText("Incremental");
+					panelCSV.remove(scrollPaneCSV);
+				} else if (getCsvKeyAttributeType().equals("Expression")) {
+					selectedColumns = new ArrayList<>();
+					textFieldCSVKeyAttribute.setText("CONCAT(columnName1, columnName2, ...)");
+					panelCSV.add(scrollPaneCSV, "cell 1 5 2 1,grow");
+				} else {
+					textFieldCSVKeyAttribute.setText("");
+					panelCSV.add(scrollPaneCSV, "cell 1 5 2 1,grow");
+				}
+
+				panelCSV.repaint();
+				panelCSV.revalidate();
+			}
+		});
+		comboBoxCSVKeyAttribute.setBackground(Color.WHITE);
+		comboBoxCSVKeyAttribute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		comboBoxCSVKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCSV.add(comboBoxCSVKeyAttribute, "cell 1 3 2 1,growx");
+		
+		if (getCsvKeyAttributeType() != null) {
+			comboBoxCSVKeyAttribute.setSelectedItem(getCsvKeyAttributeType());
+		}
+		
+		JLabel lblCSVKeyAttribute = new JLabel("Key Attribute:");
+		lblCSVKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCSV.add(lblCSVKeyAttribute, "cell 0 4,alignx trailing");
+		
+		Methods.setMargin(textFieldCSVKeyAttribute);
+		textFieldCSVKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelCSV.add(textFieldCSVKeyAttribute, "cell 1 4 2 1,growx");
+		textFieldCSVKeyAttribute.setColumns(10);
+		
+		if (getCsvColumn() != null) {
+			textFieldCSVKeyAttribute.setText(getCsvColumn());
+		}
+		
+		panelCSV.add(scrollPaneCSV, "cell 1 5 2 1,grow");
+		panelCSVColumns.setBackground(Color.WHITE);
+		
+		scrollPaneCSV.setPreferredSize(new Dimension(panelCSVColumns.getPreferredSize().width, 200));
+		
+		
 		JLabel lblCSVTargetType = new JLabel("Target Type:");
 		lblCSVTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(lblCSVTargetType, "cell 0 6,alignx trailing");
-
+		
 		JComboBox comboBoxCSVTargetType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
 		comboBoxCSVTargetType.setBackground(Color.WHITE);
 		comboBoxCSVTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(comboBoxCSVTargetType, "cell 1 6 2 1,growx");
-
+		
 		if (getCsvTargetType() != null) {
 			comboBoxCSVTargetType.setSelectedItem(getCsvTargetType());
 		}
-
+		
 		JLabel lblCSVTarget = new JLabel("Target File:");
 		lblCSVTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(lblCSVTarget, "cell 0 7,alignx trailing");
-
+		
 		textFieldCSVTarget = new JTextField();
+		Methods.setMargin(textFieldCSVTarget);
 		textFieldCSVTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCSV.add(textFieldCSVTarget, "cell 1 7,growx");
 		textFieldCSVTarget.setColumns(10);
-
+		
 		if (getCsvTarget() != null) {
 			textFieldCSVTarget.setText(getCsvTarget());
 		}
-
+		
 		JButton btnCSVTargetOpen = new JButton("Open");
 		btnCSVTargetOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				String key = (String) comboBoxCSVTargetType.getSelectedItem();
-				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
-
-				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
+				String filePath = methods.getTargetFileName(comboBoxCSVTargetType, Variables.RDF_WRAPPER);
 
 				if (!filePath.equals("")) {
 					setCsvTarget(filePath);
 					textFieldCSVTarget.setText(filePath);
 				}
-
 			}
 		});
 		btnCSVTargetOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelCSV.add(btnCSVTargetOpen, "cell 2 7,grow");
+		panelCSV.add(btnCSVTargetOpen, "cell 2 7");
 		
-		if (getExcelSource() != null) {
-			panelExcelColumns.removeAll();
+		JPanel panelXML = new JPanel();
+		panelXML.setBackground(Color.WHITE);
+		panelHolder.add(panelXML, Variables.XML);
+		panelXML.setLayout(new MigLayout("", "[][grow][]", "[][][]"));
+		
+		JLabel lblXMLSourceFile = new JLabel("Source File:");
+		lblXMLSourceFile.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(lblXMLSourceFile, "cell 0 0,alignx trailing");
+		
+		textFieldXMLSource = new JTextField();
+		Methods.setMargin(textFieldXMLSource);
+		textFieldXMLSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(textFieldXMLSource, "cell 1 0,growx");
+		textFieldXMLSource.setColumns(10);
+		
+		if (getXmlSource() != null) {
+			textFieldXMLSource.setText(getXmlSource());
+		}
+		
+		JButton btnXMLOpenSource = new JButton("Open");
+		btnXMLOpenSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(btnXMLOpenSource, "cell 2 0");
+		
+		JLabel lblXMLTargetType = new JLabel("Target Type:");
+		lblXMLTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(lblXMLTargetType, "cell 0 1,alignx trailing");
+		
+		JComboBox comboBoxXMLTargetType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
+		comboBoxXMLTargetType.setBackground(Color.WHITE);
+		comboBoxXMLTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(comboBoxXMLTargetType, "cell 1 1 2 1,growx");
+		
+		if (getXmlTargetType() != null) {
+			comboBoxXMLTargetType.setSelectedItem(getXmlTargetType());
+		}
+		
+		JLabel lblXMLTargetFile = new JLabel("Target File:");
+		lblXMLTargetFile.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(lblXMLTargetFile, "cell 0 2,alignx trailing");
+		
+		textFieldXMLTarget = new JTextField();
+		Methods.setMargin(textFieldXMLTarget);
+		textFieldXMLTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(textFieldXMLTarget, "cell 1 2,growx");
+		textFieldXMLTarget.setColumns(10);
+		
+		if (getXmlTarget() != null) {
+			textFieldXMLTarget.setText(getXmlTarget());
+		}
+		
+		JButton btnXMLOpenTarget = new JButton("Open");
+		btnXMLOpenTarget.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filePath = methods.getTargetFileName(comboBoxCSVTargetType, Variables.RDF_WRAPPER);
 
-			allColumnNames = new ArrayList<>();
-			selectedColumns = new ArrayList<>();
-			if (getExcelSource().length() != 0) {
-				allColumnNames = methods.getColumnNames(getExcelSource());
-
-				if (allColumnNames != null) {
-					for (int i = 0; i < allColumnNames.size(); i++) {
-						JButton btnColumn = new JButton(allColumnNames.get(i).toString());
-						btnColumn.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Existing Attribute")) {
-									textFieldExcelKeyAttribute.setText(btnColumn.getText().toString().trim());
-								} else if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Expression")) {
-									selectedColumns.add(btnColumn.getText().toString().trim());
-									String concatString = "CONCAT(";
-									for (int j = 0; j < selectedColumns.size(); j++) {
-										if (j == selectedColumns.size() - 1) {
-											concatString += selectedColumns.get(j) + ")";
-										} else {
-											concatString += selectedColumns.get(j) + ", ";
-										}
-									}
-									textFieldCSVKeyAttribute.setText(concatString);
-								}
-							}
-						});
-						btnColumn.setBackground(Color.decode("#FFFFCC"));
-						btnColumn.setContentAreaFilled(false);
-						btnColumn.setOpaque(true);
-						panelExcelColumns.add(btnColumn);
-					}
-
-					panelExcel.repaint();
-					panelExcel.revalidate();
+				if (!filePath.equals("")) {
+					setXmlTarget(filePath);
+					textFieldXMLTarget.setText(filePath);
 				}
 			}
+		});
+		btnXMLOpenTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelXML.add(btnXMLOpenTarget, "cell 2 2");
+		
+		JPanel panelExcel = new JPanel();
+		panelExcel.setBackground(Color.WHITE);
+		panelHolder.add(panelExcel, Variables.EXCEL);
+		panelExcel.setLayout(new MigLayout("", "[][grow][]", "[][][][][][][]"));
+		
+		JLabel lblExcelSource = new JLabel("Source File:");
+		lblExcelSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(lblExcelSource, "cell 0 0,alignx trailing");
+		
+		textFieldExcelSource = new JTextField();
+		Methods.setMargin(textFieldExcelSource);
+		textFieldExcelSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(textFieldExcelSource, "cell 1 0,growx");
+		textFieldExcelSource.setColumns(10);
+		
+		if (getExcelSource() != null) {
+			textFieldExcelSource.setText(getExcelSource());
 		}
+		
+		JPanel panelExcelColumns = new JPanel();
+		panelExcelColumns.setLayout(new GridLayout(0, 2));
+		
+		JComboBox comboBoxExcelKeyAttributeType = new JComboBox(keyAttributes);
+		
+		JButton btnExcelSourceOpen = new JButton("Open");
+		btnExcelSourceOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filePath = methods.chooseFile("Select XML Source File");
+				if (!(filePath == null)) {
+					setExcelSource(filePath);
+					textFieldExcelSource.setText(filePath);
+					
+					panelExcelColumns.removeAll();
+
+					allColumnNames = new ArrayList<>();
+					selectedColumns = new ArrayList<>();
+					if (filePath.length() != 0) {
+						allColumnNames = methods.getColumnNames(filePath);
+
+						if (allColumnNames != null) {
+							for (int i = 0; i < allColumnNames.size(); i++) {
+								JButton btnColumn = new JButton(allColumnNames.get(i).toString());
+								btnColumn.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Existing Attribute")) {
+											textFieldExcelKeyAttribute.setText(btnColumn.getText().toString().trim());
+										} else if (comboBoxExcelKeyAttributeType.getSelectedItem().toString().equals("Expression")) {
+											selectedColumns.add(btnColumn.getText().toString().trim());
+											String concatString = "CONCAT(";
+											for (int j = 0; j < selectedColumns.size(); j++) {
+												if (j == selectedColumns.size() - 1) {
+													concatString += selectedColumns.get(j) + ")";
+												} else {
+													concatString += selectedColumns.get(j) + ", ";
+												}
+											}
+											textFieldExcelKeyAttribute.setText(concatString);
+										}
+									}
+								});
+								btnColumn.setBackground(Color.decode("#FFFFCC"));
+								btnColumn.setContentAreaFilled(false);
+								btnColumn.setOpaque(true);
+								panelExcelColumns.add(btnColumn);
+							}
+							
+							panelExcel.repaint();
+							panelExcel.revalidate();
+						}
+					}
+				}
+			}
+		});
+		btnExcelSourceOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(btnExcelSourceOpen, "cell 2 0");
+		
+		JLabel lblExcelPrefix = new JLabel("Prefix:");
+		lblExcelPrefix.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(lblExcelPrefix, "cell 0 1,alignx trailing");
+		
+		textFieldExcelPrefix = new JTextField();
+		Methods.setMargin(textFieldExcelPrefix);
+		textFieldExcelPrefix.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(textFieldExcelPrefix, "cell 1 1 2 1,growx");
+		textFieldExcelPrefix.setColumns(10);
+		
+		if (getExcelPrefix() != null) {
+			textFieldExcelPrefix.setText(getExcelPrefix());
+		}
+		
+		JLabel lblExcelKeyAttributeType = new JLabel("Key Attribute Type:");
+		lblExcelKeyAttributeType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(lblExcelKeyAttributeType, "cell 0 2,alignx trailing");
+		
+		comboBoxExcelKeyAttributeType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		comboBoxExcelKeyAttributeType.setBackground(Color.WHITE);
+		panelExcel.add(comboBoxExcelKeyAttributeType, "cell 1 2 2 1,growx");
+		
+		JLabel lblExcelColumn = new JLabel("Key Attribute:");
+		lblExcelColumn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(lblExcelColumn, "cell 0 3,alignx trailing");
+		
+		textFieldExcelKeyAttribute = new JTextField();
+		Methods.setMargin(textFieldExcelKeyAttribute);
+		textFieldExcelKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(textFieldExcelKeyAttribute, "cell 1 3 2 1,growx");
+		textFieldExcelKeyAttribute.setColumns(10);
+		
+		if (getExcelColumn() != null) {
+			textFieldExcelKeyAttribute.setText(getExcelColumn());
+		}
+		
+		JScrollPane scrollPaneExcel = new JScrollPane();
+		panelExcel.add(scrollPaneExcel, "cell 1 4 2 1,grow");
+		
+		scrollPaneExcel.setViewportView(panelExcelColumns);
+		panelExcelColumns.setBackground(Color.WHITE);
+		
+		JLabel lblExcelTargetType = new JLabel("Target Type:");
+		lblExcelTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(lblExcelTargetType, "cell 0 5,alignx trailing");
+		
+		JComboBox comboBoxExcelTargetType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
+		comboBoxExcelTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(comboBoxExcelTargetType, "cell 1 5 2 1,growx");
+		
+		if (getExcelTargetType() != null) {
+			comboBoxExcelTargetType.setSelectedItem(getExcelTargetType());
+		}
+		
+		JLabel lblExcelTarget = new JLabel("Target File:");
+		lblExcelTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(lblExcelTarget, "cell 0 6,alignx trailing");
+		
+		textFieldExcelTarget = new JTextField();
+		Methods.setMargin(textFieldExcelTarget);
+		textFieldExcelTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(textFieldExcelTarget, "cell 1 6,growx");
+		textFieldExcelTarget.setColumns(10);
+		
+		if (getExcelTarget() != null) {
+			textFieldExcelTarget.setText(getExcelTarget());
+		}
+		
+		JButton btnExcelTargetOpen = new JButton("Open");
+		btnExcelTargetOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filePath = methods.getTargetFileName(comboBoxCSVTargetType, Variables.RDF_WRAPPER);
+
+				if (!filePath.equals("")) {
+					setExcelTarget(filePath);
+					textFieldExcelTarget.setText(filePath);
+				}
+
+			}
+		});
+		btnExcelTargetOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelExcel.add(btnExcelTargetOpen, "cell 2 6");
+		
+		JPanel panelJson = new JPanel();
+		panelJson.setBackground(Color.WHITE);
+		panelHolder.add(panelJson, Variables.JSON);
+		panelJson.setLayout(new MigLayout("", "[][grow][]", "[][][]"));
+		
+		JLabel lblJsonSourceFile = new JLabel("Source File:");
+		lblJsonSourceFile.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(lblJsonSourceFile, "cell 0 0,alignx trailing");
+		
+		textFieldJsonSource = new JTextField();
+		Methods.setMargin(textFieldJsonSource);
+		textFieldJsonSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(textFieldJsonSource, "cell 1 0,growx");
+		textFieldJsonSource.setColumns(10);
+		
+		if (getJsonSource() != null) {
+			textFieldJsonSource.setText(getJsonSource());
+		}
+		
+		JButton btnJsonOpenSource = new JButton("Open");
+		btnJsonOpenSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(btnJsonOpenSource, "cell 2 0");
+		
+		JLabel lblJsonTargetType = new JLabel("Target Type:");
+		lblJsonTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(lblJsonTargetType, "cell 0 1,alignx trailing");
+		
+		JComboBox comboBoxJsonTargetType = new JComboBox(methods.getAllFileTypes().keySet().toArray());
+		comboBoxJsonTargetType.setBackground(Color.WHITE);
+		comboBoxJsonTargetType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(comboBoxJsonTargetType, "cell 1 1 2 1,growx");
+		
+		if (getJsonTargetType() != null) {
+			comboBoxJsonTargetType.setSelectedItem(getJsonTargetType());
+		}
+		
+		JLabel lblJsonTargetFile = new JLabel("Target File:");
+		lblJsonTargetFile.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(lblJsonTargetFile, "cell 0 2,alignx trailing");
+		
+		textFieldJsonTarget = new JTextField();
+		Methods.setMargin(textFieldJsonTarget);
+		textFieldJsonTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(textFieldJsonTarget, "cell 1 2,growx");
+		textFieldJsonTarget.setColumns(10);
+
+		if (getJsonTarget() != null) {
+			textFieldJsonTarget.setText(getJsonTarget());
+		}
+		
+		JButton btnJsonOpenTarget = new JButton("Open");
+		btnJsonOpenTarget.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String filePath = methods.getTargetFileName(comboBoxCSVTargetType, Variables.RDF_WRAPPER);
+
+				if (!filePath.equals("")) {
+					setJsonTarget(filePath);
+					textFieldJsonTarget.setText(filePath);
+				}
+			}
+		});
+		btnJsonOpenTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelJson.add(btnJsonOpenTarget, "cell 2 2");
+		
+		JPanel panelDB = new JPanel();
+		panelDB.setBackground(Color.WHITE);
+		panelHolder.add(panelDB, Variables.DB);
+		panelDB.setLayout(new MigLayout("", "[][grow]", "[][grow]"));
+		
+		JLabel lblType = new JLabel("Type:");
+		lblType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDB.add(lblType, "cell 0 0,alignx trailing");
+		
+		JPanel panelTypeHolder = new JPanel();
+		panelTypeHolder.setLayout(new CardLayout(0, 0));
+		
+		String[] types = new String[] {Variables.DIRECT_MAPPING, Variables.R2RML};
+		JComboBox comboBoxType = new JComboBox(types);
+		comboBoxType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String selectedItem = comboBoxType.getSelectedItem().toString();
+				
+				showDBMenuCard(panelTypeHolder, selectedItem);
+			}
+		});
+		comboBoxType.setBackground(Color.WHITE);
+		comboBoxType.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDB.add(comboBoxType, "cell 1 0,growx");
+		
+		if (getDbMappingType() != null) {
+			String selectedItem = getDbMappingType();
+			showDBMenuCard(panelTypeHolder, selectedItem);
+		}
+		
+		panelTypeHolder.setBackground(Color.WHITE);
+		panelDB.add(panelTypeHolder, "cell 0 1 2 1,grow");
+		
+		JPanel panelDirect = new JPanel();
+		panelDirect.setBackground(Color.WHITE);
+		panelTypeHolder.add(panelDirect, Variables.DIRECT_MAPPING);
+		panelDirect.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
+		
+		JLabel lblDbName = new JLabel("DB Name:");
+		lblDbName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(lblDbName, "cell 0 0,alignx trailing");
+		
+		textFieldDbName = new JTextField();
+		Methods.setMargin(textFieldDbName);
+		textFieldDbName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(textFieldDbName, "cell 1 0 2 1,growx");
+		textFieldDbName.setColumns(10);
+		
+		if (getDbName() != null) {
+			textFieldDbName.setText(getDbName());
+		}
+		
+		JLabel lblDbUsername = new JLabel("DB Username:");
+		lblDbUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(lblDbUsername, "cell 0 1,alignx trailing");
+		
+		textFieldUsername = new JTextField();
+		Methods.setMargin(textFieldUsername);
+		textFieldUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(textFieldUsername, "cell 1 1 2 1,growx");
+		textFieldUsername.setColumns(10);
+		
+		if (getDbUsername() != null) {
+			textFieldUsername.setText(getDbUsername());
+		}
+		
+		JLabel lblDbUserPassword = new JLabel("DB User Password:");
+		lblDbUserPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(lblDbUserPassword, "cell 0 2,alignx trailing");
+		
+		textFieldPassword = new JPasswordField();
+		Methods.setMargin(textFieldPassword);
+		textFieldPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(textFieldPassword, "cell 1 2 2 1,growx");
+		textFieldPassword.setColumns(10);
+		
+		if (getDbPassword() != null) {
+			textFieldPassword.setText(getDbPassword());
+		}
+		
+		JLabel lblBaseIri_1 = new JLabel("Base IRI:");
+		lblBaseIri_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(lblBaseIri_1, "cell 0 3,alignx trailing");
+		
+		textFieldDirectBaseIRI = new JTextField();
+		Methods.setMargin(textFieldDirectBaseIRI);
+		textFieldDirectBaseIRI.setToolTipText("Base URL is the URL for primary keys");
+		textFieldDirectBaseIRI.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(textFieldDirectBaseIRI, "cell 1 3 2 1,growx");
+		textFieldDirectBaseIRI.setColumns(10);
+		
+		if (getDbDirectBaseIRI() != null) {
+			textFieldDirectBaseIRI.setText(getDbDirectBaseIRI());
+		}
+		
+		JLabel lblTargetPath_1 = new JLabel("Target Path:");
+		lblTargetPath_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(lblTargetPath_1, "cell 0 4,alignx trailing");
+		
+		textFieldTargetPathDirect = new JTextField();
+		Methods.setMargin(textFieldTargetPathDirect);
+		textFieldTargetPathDirect.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(textFieldTargetPathDirect, "cell 1 4,growx");
+		textFieldTargetPathDirect.setColumns(10);
+		
+		if (getDbDirectTargetPath() != null) {
+			textFieldTargetPathDirect.setText(getDbDirectTargetPath());
+		}
+		
+		JButton btnOpen = new JButton("Open");
+		btnOpen.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelDirect.add(btnOpen, "cell 2 4");
+		
+		JPanel panelRML = new JPanel();
+		panelRML.setBackground(Color.WHITE);
+		panelTypeHolder.add(panelRML, Variables.R2RML);
+		panelRML.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
+		
+		JLabel lblDbName_1 = new JLabel("DB Name:");
+		lblDbName_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(lblDbName_1, "cell 0 0,alignx trailing");
+		
+		textFieldDbNameRml = new JTextField();
+		Methods.setMargin(textFieldDbNameRml);
+		textFieldDbNameRml.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(textFieldDbNameRml, "cell 1 0 2 1,growx");
+		textFieldDbNameRml.setColumns(10);
+		
+		if (getDbName() != null) {
+			textFieldDbNameRml.setText(getDbName());
+		}
+		
+		JLabel lblDbUsername_1 = new JLabel("DB Username:");
+		lblDbUsername_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(lblDbUsername_1, "cell 0 1,alignx trailing");
+		
+		textFieldRmlUsername = new JTextField();
+		Methods.setMargin(textFieldRmlUsername);
+		textFieldRmlUsername.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(textFieldRmlUsername, "cell 1 1 2 1,growx");
+		textFieldRmlUsername.setColumns(10);
+		
+		if (getDbUsername() != null) {
+			textFieldRmlUsername.setText(getDbUsername());
+		}
+		
+		JLabel lblDbUserPassword_1 = new JLabel("DB User Password");
+		lblDbUserPassword_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(lblDbUserPassword_1, "cell 0 2,alignx trailing");
+		
+		textFieldRmlPassword = new JPasswordField();
+		Methods.setMargin(textFieldRmlPassword);
+		textFieldRmlPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(textFieldRmlPassword, "cell 1 2 2 1,growx");
+		textFieldRmlPassword.setColumns(10);
+		
+		if (getDbPassword() != null) {
+			textFieldRmlPassword.setText(getDbPassword());
+		}
+		
+		JLabel lblRmlFilePath = new JLabel("RML File Path:");
+		lblRmlFilePath.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(lblRmlFilePath, "cell 0 3,alignx trailing");
+		
+		textFieldRmlFilePath = new JTextField();
+		Methods.setMargin(textFieldRmlFilePath);
+		textFieldRmlFilePath.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(textFieldRmlFilePath, "cell 1 3,growx");
+		textFieldRmlFilePath.setColumns(10);
+		
+		if (getDbRmlFilePath() != null) {
+			textFieldRmlFilePath.setText(getDbRmlFilePath());
+		}
+		
+		JButton btnOpenRMLFile = new JButton("Open");
+		btnOpenRMLFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filePath = methods.chooseFile("Select R2RML Mapping File");
+				textFieldRmlFilePath.setText(filePath);
+			}
+		});
+		btnOpenRMLFile.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(btnOpenRMLFile, "cell 2 3");
+		
+		JLabel lblTargetPath = new JLabel("Target Path:");
+		lblTargetPath.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(lblTargetPath, "cell 0 4,alignx trailing");
+		
+		textFieldRmlTarget = new JTextField();
+		Methods.setMargin(textFieldRmlTarget);
+		textFieldRmlTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(textFieldRmlTarget, "cell 1 4,growx");
+		textFieldRmlTarget.setColumns(10);
+		
+		if (getDbRMLTargetPath() != null) {
+			textFieldRmlFilePath.setText(getDbRMLTargetPath());
+		}
+		
+		JButton btnOpenTarget = new JButton("Open");
+		btnOpenTarget.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fileNameString = Variables.RDF_WRAPPER + "_" + Calendar.getInstance().getTimeInMillis() +".n3";
+				String filePath = methods.chooseSaveFile("", fileNameString, "Choose File");
+				textFieldRmlTarget.setText(filePath);
+			}
+		});
+		btnOpenTarget.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRML.add(btnOpenTarget, "cell 2 4");
 		
 		int confirmation = JOptionPane.showConfirmDialog(null, panelRDFWrapper, "Please Input Values for RDF wrapper.",
 				JOptionPane.OK_CANCEL_OPTION);
 
 		if (confirmation == JOptionPane.OK_OPTION) {
-			String selection = comboBoxFileType.getSelectedItem().toString();
+			String selection = comboBox.getSelectedItem().toString();
 			setFileType(selection);
 			switch (selection) {
 			case "CSV":
@@ -1296,6 +1139,8 @@ public class ETLRDFWrapper implements ETLOperation {
 				setCsvColumn(textFieldCSVKeyAttribute.getText().toString().trim());
 				setCsvDelimiter(comboBoxCSVDelimiter.getSelectedItem().toString());
 				setCsvTargetType(comboBoxCSVTargetType.getSelectedItem().toString());
+				
+				System.out.println(getCsvColumn());
 
 				ArrayList<String> inputList = new ArrayList<String>();
 				inputList.add(getCsvSource());
@@ -1743,5 +1588,32 @@ public class ETLRDFWrapper implements ETLOperation {
 
 	public static String getDirectMapping() {
 		return DIRECT_MAPPING;
+	}
+
+	private void showMenuCard(JPanel panelHolder, String selectedItem) {
+		CardLayout cardLayout = (CardLayout) panelHolder.getLayout();
+		
+		if (selectedItem.equals(Variables.CSV)) {
+			cardLayout.show(panelHolder, Variables.CSV);
+		} else if (selectedItem.equals(Variables.XML)) {
+			cardLayout.show(panelHolder, Variables.XML);
+		} else if (selectedItem.equals(Variables.EXCEL)) {
+			cardLayout.show(panelHolder, Variables.EXCEL);
+		} else if (selectedItem.equals(Variables.JSON)) {
+			cardLayout.show(panelHolder, Variables.JSON);
+		} else if (selectedItem.equals(Variables.DB)) {
+			cardLayout.show(panelHolder, Variables.DB);
+		} else {
+			cardLayout.show(panelHolder, Variables.CSV);
+		}
+	}
+	
+	private void showDBMenuCard(JPanel panelTypeHolder, String selectedItem) {
+		CardLayout cardLayout = (CardLayout) panelTypeHolder.getLayout();
+		if (selectedItem.equals(Variables.DIRECT_MAPPING)) {
+			cardLayout.show(panelTypeHolder, Variables.DIRECT_MAPPING);
+		} else {
+			cardLayout.show(panelTypeHolder, Variables.R2RML);
+		}
 	}
 }

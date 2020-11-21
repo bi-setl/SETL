@@ -25,6 +25,7 @@ import javax.swing.JTextPane;
 import core.TBoxBuilder;
 import core.XMLParsing;
 import helper.Methods;
+import helper.Variables;
 import model.ETLOperation;
 import net.miginfocom.swing.MigLayout;
 
@@ -187,8 +188,6 @@ public class ETLTBoxBuilder implements ETLOperation {
 		if (confirmation == JOptionPane.OK_OPTION) {
 			String selection = comboBoxFileType.getSelectedItem().toString();
 			setFileType(selection);
-			
-			System.out.println(selection);
 			
 			if (selection.equals("CSV")) {
 				setCsvSource(comboBoxCSVSourceFile.getSelectedItem().toString());
@@ -367,7 +366,7 @@ public class ETLTBoxBuilder implements ETLOperation {
 			public void actionPerformed(ActionEvent e) {
 				String key = (String) comboBoxJsonTargetType.getSelectedItem();
 				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
+				String defaultName = methods.getDateTime() + "_TargetTBox" + extension;
 
 				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
 
@@ -477,7 +476,7 @@ public class ETLTBoxBuilder implements ETLOperation {
 			public void actionPerformed(ActionEvent e) {
 				String key = (String) comboBoxXmlTargetType.getSelectedItem();
 				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
+				String defaultName = methods.getDateTime() + "_TargetTBox" + extension;
 
 				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
 
@@ -589,7 +588,7 @@ public class ETLTBoxBuilder implements ETLOperation {
 			public void actionPerformed(ActionEvent e) {
 				String key = (String) comboBoxExcelTargetType.getSelectedItem();
 				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
+				String defaultName = methods.getDateTime() + "_TargetTBox" + extension;
 
 				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
 
@@ -707,11 +706,7 @@ public class ETLTBoxBuilder implements ETLOperation {
 		setFont(btnOpenTarget);
 		btnOpenTarget.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String key = (String) comboBoxCSVTargetType.getSelectedItem();
-				String extension = methods.getAllFileTypes().get(key);
-				String defaultName = methods.getDateTime() + "_TargetABox" + extension;
-
-				String filePath = methods.chooseSaveFile("", defaultName, "Select Directory to save target File");
+				String filePath = methods.getTargetFileName(comboBoxCSVTargetType, Variables.NON_SEMANTIC_TO_TBOX_DERIVER);
 
 				if (!filePath.equals("")) {
 					setCsvTarget(filePath);

@@ -43,8 +43,20 @@ public class TBoxBuilder {
 	public TBoxBuilder() {
 		methods = new Methods();
 	}
+	
+	public static void main(String[] args) {
+		TBoxBuilder boxBuilder = new TBoxBuilder();
+		boxBuilder.parseCSV("C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\student.csv",
+				"https://www.facebook.com", "Comma (,)",
+				"C:\\Users\\Amrit\\Documents\\SETL\\AutoETL\\student_TBox.ttl");
+	}
 
 	public String parseCSV(String csvSource, String csvPrefix, String csvDelimiter, String csvTarget) {
+//		System.out.println(csvSource);
+//		System.out.println(csvPrefix);
+//		System.out.println(csvDelimiter);
+//		System.out.println(csvTarget);
+		
 		Model model = ModelFactory.createDefaultModel();
 		String fileExtension = methods.getFileExtension(csvSource);
 
@@ -87,11 +99,11 @@ public class TBoxBuilder {
 							return "File name shouldn't contain spaces";
 						}
 
-						String resourceString = csvPrefix + "/" + type.replaceAll("\"", "");
+						String resourceString = csvPrefix + "/" + Methods.formatURL(type);
 						addClassResource(resourceString, model);
 
 						for (int i = 0; i < keys.size(); i++) {
-							String propertyString = csvPrefix + "#" + keys.get(i);
+							String propertyString = csvPrefix + "/" + Methods.formatURL(keys.get(i));
 							
 							addDataProperty(propertyString, model);
 							createProperty(propertyString, resourceString, "http://www.w3.org/2000/01/rdf-schema#domain", model);
@@ -260,7 +272,7 @@ public class TBoxBuilder {
 	private void createProperty(String string, String object, String property, Model classModel) {
 		// TODO Auto-generated method stub
 		// String propertyName = assignIRI(property);
-		string = Methods.formatURL(string);
+		
 		Resource resource = classModel.getResource(string);
 		Property predicate = classModel.createProperty(property);
 		resource.addProperty(predicate, classModel.createResource(object));
@@ -277,7 +289,6 @@ public class TBoxBuilder {
 	public boolean addDataProperty(String name, Model classModel) {
 		// TODO Auto-generated method stub
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#DatatypeProperty");
-		name = Methods.formatURL(name);
 		Resource newResource = classModel.createResource(name);
 		newResource.addProperty(RDF.type, classResource);
 		return true;

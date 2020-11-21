@@ -511,6 +511,8 @@ public class FileMethods {
 		if (filePath != null) {
 			if (filePath.trim().length() != 0) {
 				if (filePath.contains(".ttl")) {
+//					System.out.println("Case 1");
+					
 					try (PrintWriter out = new PrintWriter(filePath)) {
 						out.println(data);
 					} catch (FileNotFoundException e) {
@@ -519,7 +521,7 @@ public class FileMethods {
 					}
 					
 				} else {
-					
+//					System.out.println("Case 2");
 					try (PrintWriter out = new PrintWriter(TEMP_FILE_NAME)) {
 						out.println(data);
 					} catch (FileNotFoundException e) {

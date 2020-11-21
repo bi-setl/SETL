@@ -2,6 +2,7 @@ package helper;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Insets;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -37,11 +38,13 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JTextField;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.query.Query;
@@ -412,6 +415,7 @@ public class Methods {
                     if ((string = bufferedReader.readLine()) != null) {
                     	String[] parts = string.split(delimiter);
 						for (String part : parts) {
+							part = Methods.replaceQuote(part);
 							keys.add(part);
 						}
                     }
@@ -677,10 +681,18 @@ public class Methods {
             String[] parts = iriValue.split("#");
             if (parts.length == 2) {
                 String firstSegment = parts[0].trim() + "#";
-                String prefix = getMapValue(prefixMap, firstSegment);
+                String prefix1 = getMapValue(prefixMap, firstSegment);
 
-                if (prefix != null) {
-                    return prefix + parts[1].trim();
+                if (prefix1 != null) {
+                    return prefix1 + parts[1].trim();
+                } else {
+                	String secondSegment = parts[0].trim() + "/";
+                	
+                	String prefix = getMapValue(prefixMap, secondSegment);
+
+                    if (prefix != null) {
+                        return prefix + parts[1].trim();
+                    }
                 }
             }
         } else {
@@ -688,10 +700,20 @@ public class Methods {
             String lastSegment = parts[parts.length - 1];
             String firstSegment = iriValue.replace(lastSegment, "");
 
-            String prefix = getMapValue(prefixMap, firstSegment);
+            String prefix1 = getMapValue(prefixMap, firstSegment);
+            
+            if (prefix1 != null) {
+            	return prefix1 + lastSegment;
+            } else {
+            	String lastSegment2 = "/" + lastSegment;
+                firstSegment = iriValue.replace(lastSegment2, "");
+                firstSegment = firstSegment + "#";
+            	
+            	String prefix = getMapValue(prefixMap, firstSegment);
 
-            if (prefix != null) {
-                return prefix + lastSegment;
+                if (prefix != null) {
+                    return prefix + lastSegment;
+                }
             }
         }
         return iriValue;
@@ -740,6 +762,8 @@ public class Methods {
             String value = "@prefix " + prefix + " <" + iri + ">.\n";
             stringBuilder.append(value);
         }
+        
+        stringBuilder.append("\n\n\n\n");
 
         return stringBuilder.toString();
     }
@@ -781,6 +805,13 @@ public class Methods {
         if (keyAttribute.contains("http") || keyAttribute.contains("www")) {
             return true;
         } else return keyAttribute.contains(":");
+    }
+
+    public static boolean containsWWW(String keyAttribute) {
+        // TODO Auto-generated method stub
+        if (keyAttribute.contains("http") || keyAttribute.contains("www")) {
+            return true;
+        } else return false;
     }
 
     public static void printTime() {
@@ -1158,7 +1189,7 @@ public class Methods {
         // TODO Auto-generated method stub
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)),
-					StandardCharsets.ISO_8859_1);
+					StandardCharsets.UTF_8);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -1217,6 +1248,28 @@ public class Methods {
         return "";
     }
 
+    public static String readStringFromFileWithNewLine(String filePath) {
+        File file = new File(filePath);
+        BufferedReader bufferedReader = null;
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader(file));
+
+            String text = "", s;
+            StringBuilder stringBuilder = new StringBuilder(text);
+            while ((s = bufferedReader.readLine()) != null) {
+                stringBuilder.append(s + "\n");
+            }
+
+            return stringBuilder.toString();
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e.getMessage());
+        }
+
+        return "";
+    }
+
     public static boolean writeText(String filePath, String text) {
         // TODO Auto-generated method stub
         try (PrintWriter out = new PrintWriter(filePath)) {
@@ -1251,5 +1304,92 @@ public class Methods {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static String getSplitValues(String value) {
+		// TODO Auto-generated method stub
+		
+		String valueText = "";
+		String[] parts = value.split(",");
+		
+		for (int i = 0; i < parts.length; i++) {
+			String segment = parts[i];
+			
+			if (Methods.containsWWW(segment)) {
+				valueText = "<" + segment.trim() + ">";
+			} else {
+				valueText = segment;
+			}
+			
+			if (i < parts.length - 1) {
+				valueText += ",";
+			}
+		}
+		
+		return valueText;
+	}
+
+	public static void setMargin(JTextField textField) {
+		// TODO Auto-generated method stub
+		textField.setMargin(new Insets(5, 5, 5, 5));
+	}
+
+	public String getTargetFileName(JComboBox comboBox, String type) {
+		String key = (String) comboBox.getSelectedItem();
+		String extension = getAllFileTypes().get(key);
+		String defaultName = type + "_" + getDateTime() + "_TargetABox" + extension;
+
+		String filePath = chooseSaveFile("", defaultName, "Select Directory to save target File");
+		return filePath;
+	}
+
+	public static LinkedHashMap<String, String> copyMap(LinkedHashMap<String, String> prefixMap, LinkedHashMap<String, String> prefixMap1) {
+		for (Map.Entry<String, String> map : prefixMap1.entrySet()) {
+            String key = map.getKey();
+            String value = map.getValue();
+
+            prefixMap.put(key, value);
+        }
+		return prefixMap;
+	}
+	
+	public static String mergeAllTempFiles(int numOfFiles, String targetABoxFile, boolean isPrefixIncluded) {
+		// TODO Auto-generated method stub
+		Methods fileMethods = new Methods();
+		fileMethods.createNewFile(targetABoxFile);
+		
+		int startIndex = 1;
+
+		if (isPrefixIncluded) {
+			String filePath = startIndex + ".ttl";
+			String textString = Methods.readStringFromFileWithNewLine(filePath);
+			
+			fileMethods.appendToFile(textString, targetABoxFile);
+			
+			File file = new File(filePath);
+			file.delete();
+			
+			startIndex++;
+		}
+		
+		for (int i = startIndex; i < numOfFiles; i++) {
+			String filePath = i + ".ttl";
+
+			try {
+				Model model = fileMethods.readModelFromPath(filePath);
+				String string = fileMethods.modelToString(model, fileMethods.getFileExtension(targetABoxFile));
+				fileMethods.appendToFile(string, targetABoxFile);
+
+				File file = new File(filePath);
+				file.delete();
+				// System.out.println(filePath + " deleted");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "Invalid File Content";
+			}
+		}
+		
+		return "Success.\nFile Saved: " + targetABoxFile;
 	}
 }

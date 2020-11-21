@@ -72,7 +72,7 @@ public class FileAndFolder {
 				}
 
 				System.out.println("Finish");
-				playSound();
+//				playSound();
 				new Methods().showDialog("Complete");
 			}
 		});

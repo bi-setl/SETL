@@ -12,9 +12,11 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,6 +48,7 @@ import controller.MappingDefinition;
 import controller.TBoxDefinition;
 import helper.FileMethods;
 import helper.Methods;
+import helper.Variables;
 import net.miginfocom.swing.MigLayout;
 import queries.MappingExtraction;
 import queries.TBoxExtraction;
@@ -53,6 +56,35 @@ import queries.TBoxExtraction;
 import java.awt.CardLayout;
 
 public class PanelMapSource2TargetNew extends JPanel {
+	private static final String ENTER_MAP_IRI = "Enter Map IRI:";
+	private static final String VALUE_TYPE = "Value Type:";
+	private static final String SAVE_CONCEPT = "Save Concept";
+	private static final String BOTH_SAME = "Both Same";
+	private static final String TARGET_COMMON_PROPERTY = "Target Common Property:";
+	private static final String SOURCE_COMMON_PROPERTY = "Source Common Property:";
+	private static final String COMMON_PROPERTY = "Common Property";
+	private static final String OPERATION = "Operation:";
+	private static final String VALUE = "Value:";
+	private static final String VALUE_FOR_CREATING_TARGET_INSTANCES_IRI = "Value for Creating Target Instances' IRI";
+	private static final String SOURCE_QUERY = "Source Query:";
+	private static final String SPARQL_QUERY = "SPARQL Query";
+	private static final String ALL = "All";
+	private static final String INSTANCES_TO_BE_MAPPED = "Instances to be mapped:";
+	private static final String INSTANCE_MAPPING = "Instance Mapping";
+	private static final String SELECT_SOURCE_A_BOX_FILE = "Select Source ABox File";
+	private static final String TARGET_A_BOX_LOCATION = "Target ABox Location:";
+	private static final String OPEN = "Open";
+	private static final String SOURCE_A_BOX_LOCATION = "Source ABox Location:";
+	private static final String RELATION = "Relation:";
+	private static final String TARGET_CONCEPT = "Target Concept:";
+	private static final String SOURCE_CONCEPT = "Source Concept:";
+	private static final String CONCEPT_MAPPING = "Concept Mapping";
+	private static final String DATASET = "Dataset:";
+	private static final String MAP_PREFIX = "map:";
+	private static final String SAVE = "Save";
+	private static final String TARGET_NAME = "Target Name:";
+	private static final String SOURCE_NAME = "Source Name:";
+	private static final String DATASET_NAME = "Dataset Name:";
 	private static final String PANEL_MAP_EXPRESSION = "PANEL_MAP_EXPRESSION";
 	private static final String PANEL_MAP_TARGET = "PANEL_MAP_TARGET";
 	private static final String PANEL_CONCEPT_OTHER = "PANEL_CONCEPT_OTHER";
@@ -62,7 +94,13 @@ public class PanelMapSource2TargetNew extends JPanel {
 	private static final String PANEL_DATASET = "PANEL_DATASET";
 	private static final String PANEL_CONCEPT = "PANEL_CONCEPT";
 	private static final String PANEL_MAPPER = "PANEL_MAPPER";
-	private static final String RECORD_TEMP_FILE_TTL = "record_temp_file.ttl";
+	private static final String RECORD_TEMP_FILE_TTL = Variables.TEMP_DIR + "record_temp_file.ttl";
+	
+	private final String SOURCE_FILE_PREFIX = "onto:";
+	private final String TARGET_FILE_PREFIX = "onto:";
+	
+	public static String mapIRI = "http://www.map.org/example#";
+	
 	private String sourceConstruct = "";
 
 	private JTree treeSource;
@@ -154,6 +192,15 @@ public class PanelMapSource2TargetNew extends JPanel {
 		});
 		btnTargetFile.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelRelationButton.add(btnTargetFile);
+		
+		JButton btnSetMapIRI = new JButton("Set Map IRI");
+		btnSetMapIRI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setMapIRIHandler();
+			}
+		});
+		btnSetMapIRI.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panelRelationButton.add(btnSetMapIRI);
 
 		JPanel panelRelationHolder = new JPanel();
 		panelRelationHolder.setBackground(Color.WHITE);
@@ -189,69 +236,48 @@ public class PanelMapSource2TargetNew extends JPanel {
 		treeSource = new JTree();
 		treeSource.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) treeSource
-						.getLastSelectedPathComponent();
+				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) treeSource.getLastSelectedPathComponent();
 				String selectedResource = "";
 
 				if (selectedNode != null) {
-					selectedResource = selectedNode.toString();
-					String type = sourceExtraction.getResourceType(selectedResource);
+				    selectedResource = selectedNode.toString();
+				    String type = sourceExtraction.getResourceType(selectedResource);
 
-					if (type.contains("DimensionProperty") || type.contains("LevelProperty") || type.contains("DataSet")
-							|| type.contains("Class")) {
-						textFieldSourceMapper.setText(selectedResource);
-						textFieldSourceConcept.setText(selectedResource);
-						setSourceConstruct(selectedResource);
-					} else if (type.contains("LevelAttribute") || type.contains("ObjectProperty")
-							|| type.contains("DatatypeProperty") || type.contains("FunctionalProperty") || type.contains("RollupProperty")) {
-						setSourceConstruct(selectedResource);
-						textFieldKey.setText(selectedResource);
-						textFieldValue.setText(selectedResource);
-						textAreaKeyAttribute.setText(textAreaKeyAttribute.getText().toString() + selectedResource);
-					} else if (type.contains("MeasureProperty")) {
-						setSourceConstruct(selectedResource);
-					} else {
-						System.out.println(type);
-					}
+				    setSourceConstruct(selectedResource); // Common operation for all types
+
+				    switch (type) {
+				        case Variables.DIMENSION_PROPERTY:
+				        case Variables.LEVEL_PROPERTY:
+				        case Variables.DATA_SET:
+				        case Variables.CLASS:
+				            textFieldSourceMapper.setText(selectedResource);
+				            textFieldSourceConcept.setText(selectedResource);
+				            break;
+
+				        case Variables.LEVEL_ATTRIBUTE:
+				        case Variables.OBJECT_PROPERTY:
+				        case Variables.DATATYPE_PROPERTY:
+				        case Variables.FUNCTIONAL_PROPERTY:
+				        case Variables.ROLLUP_PROPERTY:
+				            textFieldKey.setText(selectedResource);
+				            textFieldValue.setText(selectedResource);
+				            textAreaKeyAttribute.append(selectedResource);
+				            break;
+
+				        case Variables.MEASURE_PROPERTY:
+				            // Additional actions for MeasureProperty, if needed
+				            break;
+
+				        default:
+				            System.out.println(type);
+				            break;
+				    }
 				}
 			}
 		});
 		treeSource.setFont(new Font("Tahoma", Font.BOLD, 12));
 		setRenderer(treeSource);
 		scrollPaneSource.setViewportView(treeSource);
-
-		/*treeSource = new JTree();
-		treeSource.setBackground(Color.WHITE);
-		treeSource.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent arg0) {
-				DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) treeSource
-						.getLastSelectedPathComponent();
-				String selectedResource = "";
-
-				if (selectedNode != null) {
-					selectedResource = selectedNode.toString();
-					String type = sourceExtraction.getResourceType(selectedResource);
-
-					if (type.contains("DimensionProperty") || type.contains("LevelProperty") || type.contains("DataSet")
-							|| type.contains("Class")) {
-						textFieldSourceMapper.setText(selectedResource);
-						setSourceConstruct(selectedResource);
-					} else if (type.contains("LevelAttribute") || type.contains("ObjectProperty")
-							|| type.contains("DatatypeProperty") || type.contains("FunctionalProperty")) {
-						setSourceConstruct(selectedResource);
-						textFieldKey.setText(selectedResource);
-						textAreaKeyAttribute.setText(textAreaKeyAttribute.getText().toString() + selectedResource);
-					} else if (type.contains("MeasureProperty")) {
-						setSourceConstruct(selectedResource);
-					} else {
-						System.out.println(type);
-					}
-				}
-			}
-		});
-		treeSource.setFont(new Font("Tahoma", Font.BOLD, 11));
-		setRenderer(treeSource);
-		scrollPaneSource.setColumnHeaderView(treeSource);*/
 		
 		JButton btnCollapseSource = new JButton("Collapse");
 		btnCollapseSource.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -528,6 +554,24 @@ public class PanelMapSource2TargetNew extends JPanel {
 		instantiateAllTree();
 	}
 	
+	private void setMapIRIHandler() {
+		// TODO Auto-generated method stub
+		String userInput = JOptionPane.showInputDialog(this, ENTER_MAP_IRI);
+        
+        if (userInput != null) {
+            // The user clicked "OK" and entered some text
+            mapIRI = userInput;
+            if (recordExtraction == null) {
+            	createNewFileIfNotExists();
+			}
+
+            recordExtraction.getPrefixMap().put(MAP_PREFIX, mapIRI);
+            
+            recordExtraction.reloadAll();
+            refreshMappingDefinition();
+        }
+	}
+
 	private JPanel getMapExpressionPanel() {
 		// TODO Auto-generated method stub
 		JPanel panelExpression = new JPanel();
@@ -873,7 +917,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		btnCompare.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelString.add(btnCompare);
 
-		JLabel lblKeyAttribute = new JLabel("Value:");
+		JLabel lblKeyAttribute = new JLabel(VALUE);
 		lblKeyAttribute.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelExpression.add(lblKeyAttribute, "cell 0 2");
 
@@ -889,58 +933,64 @@ public class PanelMapSource2TargetNew extends JPanel {
 	}
 
 	public void setNodeExpandedState(JTree tree, DefaultMutableTreeNode node, boolean expanded) {
-	      ArrayList<DefaultMutableTreeNode> list = Collections.list(node.children());
-	      for (DefaultMutableTreeNode treeNode : list) {
-	          setNodeExpandedState(tree, treeNode, expanded);
-	      }
-	      if (!expanded && node.isRoot()) {
-	          return;
-	      }
-	      TreePath path = new TreePath(node.getPath());
-	      if (expanded) {
-	          tree.expandPath(path);
-	      } else {
-	          tree.collapsePath(path);
-	      }
-	  }
+	    Enumeration<?> enumeration = node.breadthFirstEnumeration();
+	    while (enumeration.hasMoreElements()) {
+	        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) enumeration.nextElement();
+	        if (!expanded && treeNode.isRoot()) {
+	            continue;  // Skip collapsing root if not expanded
+	        }
+	        TreePath path = new TreePath(treeNode.getPath());
+	        if (expanded) {
+	            tree.expandPath(path);
+	        } else {
+	            tree.collapsePath(path);
+	        }
+	    }
+	}
 
 	public void openSourceFileHandler() {
-		sourceMethods.chooseFile();
-		String filePath = sourceMethods.getFilePath();
-		lblSourcePath.setText(filePath);
+	    sourceMethods.chooseFile();
+	    String filePath = sourceMethods.getFilePath();
 
-		if (filePath != null) {
-			sourceExtraction = new TBoxExtraction(filePath);
-			// fetch all from source file
-			initializeDefinition(sourceMethods, sourceDefinition, sourceExtraction, treeSource, "Source");
+	    if (filePath == null) {
+	        JOptionPane.showMessageDialog(null, "No selection");
+	        return;
+	    }
 
-			String[] parts = sourceMethods.getFileName().split("\\.");
-			if (parts.length == 2) {
-				textFieldSource.setText("onto:" + parts[0]);
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "No selection");
-		}
+	    lblSourcePath.setText(filePath);
+	    sourceExtraction = new TBoxExtraction(filePath);
+	    
+	    // Fetch all from the source file
+	    initializeDefinition(sourceMethods, sourceDefinition, sourceExtraction, treeSource, Variables.SOURCE);
+
+	    String[] parts = sourceMethods.getFileName().split("\\.");
+	    if (parts.length == 2) {
+	        textFieldSource.setText(SOURCE_FILE_PREFIX + parts[0]);
+	    }
 	}
+
 
 	public void openTargetFileHandler() {
-		targetMethods.chooseFile();
-		String filePath = targetMethods.getFilePath();
-		lblTargetPath.setText(filePath);
+	    targetMethods.chooseFile();
+	    String filePath = targetMethods.getFilePath();
 
-		if (filePath != null) {
-			targetExtraction = new TBoxExtraction(filePath);
-			// fetch all from source file
-			initializeDefinition(targetMethods, targetDefinition, targetExtraction, treeTarget, "Target");
+	    if (filePath == null) {
+	        JOptionPane.showMessageDialog(null, "No selection");
+	        return;
+	    }
 
-			String[] parts = targetMethods.getFileName().split("\\.");
-			if (parts.length == 2) {
-				textFieldTarget.setText("onto:" + parts[0]);
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "No selection");
-		}
+	    lblTargetPath.setText(filePath);
+	    targetExtraction = new TBoxExtraction(filePath);
+
+	    // Fetch all from the target file
+	    initializeDefinition(targetMethods, targetDefinition, targetExtraction, treeTarget, Variables.TARGET);
+
+	    String[] parts = targetMethods.getFileName().split("\\.");
+	    if (parts.length == 2) {
+	        textFieldTarget.setText(TARGET_FILE_PREFIX + parts[0]);
+	    }
 	}
+
 
 	protected void removeResource(String name) {
 		// TODO Auto-generated method stub
@@ -1147,7 +1197,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelTargetProperty.add(textFieldSourceProperty, "cell 1 0,growx");
 		textFieldSourceProperty.setColumns(10);
 		
-		JButton btnSaveMapper = new JButton("Save");
+		JButton btnSaveMapper = new JButton(SAVE);
 		btnSaveMapper.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String conceptMapper = comboBoxConceptMapper.getSelectedItem().toString();
@@ -1190,7 +1240,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelHead.repaint();
 		panelHead.revalidate();
 		
-		JLabel lblDataset = new JLabel("Dataset:");
+		JLabel lblDataset = new JLabel(DATASET);
 		lblDataset.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelHead.add(lblDataset, "cell 0 0,alignx trailing");
 		
@@ -1200,12 +1250,12 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelHead.add(comboBoxDataset, "cell 1 0,growx");
 		
 		JPanel panelConceptMapping = new JPanel();
-		panelConceptMapping.setBorder(new TitledBorder(null, "Concept Mapping", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
+		panelConceptMapping.setBorder(new TitledBorder(null, CONCEPT_MAPPING, TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
 		panelConceptMapping.setBackground(Color.WHITE);
 		panelHead.add(panelConceptMapping, "cell 0 1 2 1,grow");
 		panelConceptMapping.setLayout(new MigLayout("", "[][grow][]", "[][][][][]"));
 		
-		JLabel lblSourceConcept = new JLabel("Source Concept:");
+		JLabel lblSourceConcept = new JLabel(SOURCE_CONCEPT);
 		lblSourceConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblSourceConcept, "cell 0 1,alignx trailing");
 		
@@ -1214,7 +1264,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.add(textFieldSourceConcept, "cell 1 1 2 1,growx");
 		textFieldSourceConcept.setColumns(10);
 		
-		JLabel lblTargetConcept = new JLabel("Target Concept:");
+		JLabel lblTargetConcept = new JLabel(TARGET_CONCEPT);
 		lblTargetConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblTargetConcept, "cell 0 0,alignx trailing");
 		
@@ -1223,11 +1273,11 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.add(textFieldTargetConcept, "cell 1 0 2 1,growx");
 		textFieldTargetConcept.setColumns(10);
 		
-		JLabel lblRelation = new JLabel("Relation:");
+		JLabel lblRelation = new JLabel(RELATION);
 		lblRelation.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblRelation, "cell 0 2,alignx trailing");
 		
-		JLabel lblSourceABox = new JLabel("Source ABox Location:");
+		JLabel lblSourceABox = new JLabel(SOURCE_A_BOX_LOCATION);
 		lblSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblSourceABox, "cell 0 3,alignx trailing");
 		
@@ -1236,11 +1286,11 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.add(textFieldSourceABoxPath, "cell 1 3,growx");
 		textFieldSourceABoxPath.setColumns(10);
 		
-		JButton btnSourceABox = new JButton("Open");
+		JButton btnSourceABox = new JButton(OPEN);
 		btnSourceABox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Methods methods = new Methods();
-				String sourceABoxLocationString = methods.chooseFile("Select Source ABox File");
+				String sourceABoxLocationString = methods.chooseFile(SELECT_SOURCE_A_BOX_FILE);
 				
 				if (methods.checkString(sourceABoxLocationString)) {
 					textFieldSourceABoxPath.setText(sourceABoxLocationString);
@@ -1250,7 +1300,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		btnSourceABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(btnSourceABox, "cell 2 3");
 		
-		JLabel lblTargetABox = new JLabel("Target ABox Location:");
+		JLabel lblTargetABox = new JLabel(TARGET_A_BOX_LOCATION);
 		lblTargetABox.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelConceptMapping.add(lblTargetABox, "cell 0 4,alignx trailing");
 		
@@ -1259,11 +1309,11 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.add(textFieldTargetABoxPath, "cell 1 4,growx");
 		textFieldTargetABoxPath.setColumns(10);
 		
-		JButton btnTargetABox = new JButton("Open");
+		JButton btnTargetABox = new JButton(OPEN);
 		btnTargetABox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Methods methods = new Methods();
-				String sourceABoxLocationString = methods.chooseFile("Select Source ABox File");
+				String sourceABoxLocationString = methods.chooseFile(SELECT_SOURCE_A_BOX_FILE);
 				
 				if (methods.checkString(sourceABoxLocationString)) {
 					textFieldTargetABoxPath.setText(sourceABoxLocationString);
@@ -1279,12 +1329,12 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelConceptMapping.add(comboBoxRelation, "cell 1 2 2 1,growx");
 		
 		JPanel panelInstanceMatching = new JPanel();
-		panelInstanceMatching.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Instance Mapping", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelInstanceMatching.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), INSTANCE_MAPPING, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelInstanceMatching.setBackground(Color.WHITE);
 		panelHead.add(panelInstanceMatching, "cell 0 2 2 1,grow");
 		panelInstanceMatching.setLayout(new MigLayout("", "[][grow]", "[][][]"));
 		
-		JLabel lblInstancesToBe = new JLabel("Instances to be mapped:");
+		JLabel lblInstancesToBe = new JLabel(INSTANCES_TO_BE_MAPPED);
 		lblInstancesToBe.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelInstanceMatching.add(lblInstancesToBe, "cell 0 0,alignx trailing");
 		
@@ -1294,9 +1344,9 @@ public class PanelMapSource2TargetNew extends JPanel {
 		comboBoxMapped = new JComboBox(recordDefinition.getSourceMapperType().toArray());
 		comboBoxMapped.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (comboBoxMapped.getSelectedItem().equals("All")) {
+				if (comboBoxMapped.getSelectedItem().equals(ALL)) {
 					panelMapHolder.remove(panelQuery);
-				} else if (comboBoxMapped.getSelectedItem().equals("SPARQL Query")) {
+				} else if (comboBoxMapped.getSelectedItem().equals(SPARQL_QUERY)) {
 					panelMapHolder.add(panelQuery, PANEL_QUERY);
 				}
 				
@@ -1317,7 +1367,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		// panelMapHolder.add(panelQuery, PANEL_QUERY);
 		panelQuery.setLayout(new MigLayout("", "[][grow]", "[]"));
 		
-		JLabel lblSourceQuery = new JLabel("Source Query:");
+		JLabel lblSourceQuery = new JLabel(SOURCE_QUERY);
 		lblSourceQuery.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelQuery.add(lblSourceQuery, "cell 0 0");
 		
@@ -1334,7 +1384,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		scrollPaneSparql.setViewportView(textAreaSparql);
 		
 		JPanel panelValueSelection = new JPanel();
-		panelValueSelection.setBorder(new TitledBorder(null, "Value for Creating Target Instances' IRI", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
+		panelValueSelection.setBorder(new TitledBorder(null, VALUE_FOR_CREATING_TARGET_INSTANCES_IRI, TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
 		panelValueSelection.setBackground(Color.WHITE);
 		panelInstanceMatching.add(panelValueSelection, "cell 0 2 2 1,grow");
 		panelValueSelection.setLayout(new MigLayout("", "[][grow]", "[][][]"));
@@ -1344,28 +1394,37 @@ public class PanelMapSource2TargetNew extends JPanel {
 		JPanel panelOther = new JPanel();
 		JPanel panelExpression = getConceptExpressionPanel();
 		
-		JLabel lblValueType = new JLabel("Value Type:");
+		JLabel lblValueType = new JLabel(VALUE_TYPE);
 		lblValueType.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelValueSelection.add(lblValueType, "cell 0 0,alignx trailing");
 		
-		String[] keyTypes = {"Source Attribute", "Expression", "Incremental", "Automatic", "Same As Source IRI"};
-		comboBoxValueType = new JComboBox(keyTypes);
+		comboBoxValueType = new JComboBox(Methods.getKeyTypes());
 		comboBoxValueType.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String type = comboBoxValueType.getSelectedItem().toString();
-				if (type.equals("Source Attribute")) {
-					panelValueHolder.removeAll();
-					panelValueHolder.add(panelValue, PANEL_SOURCE_ATTRIBUTE);
-				} else if (type.equals("Expression")) {
-					panelValueHolder.removeAll();
-					panelValueHolder.add(panelExpression, PANEL_CONCEPT_EXPRESSION);
-				} else {
-					panelValueHolder.removeAll();
-					panelValueHolder.add(panelOther, PANEL_CONCEPT_OTHER);
+
+				switch (type) {
+				    case Variables.SOURCE_ATTRIBUTE:
+				        setPanel(PANEL_SOURCE_ATTRIBUTE, panelValue);
+				        break;
+
+				    case Variables.EXPRESSION:
+				        setPanel(PANEL_CONCEPT_EXPRESSION, panelExpression);
+				        break;
+
+				    default:
+				        setPanel(PANEL_CONCEPT_OTHER, panelOther);
+				        break;
 				}
-				
+
 				panelValueHolder.repaint();
 				panelValueHolder.revalidate();
+
+			}
+
+			private void setPanel(String panelType, JPanel panel) {
+			    panelValueHolder.removeAll();
+			    panelValueHolder.add(panel, panelType);
 			}
 		});
 		comboBoxValueType.setBackground(Color.WHITE);
@@ -1386,7 +1445,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelValueHolder.add(panelValue, PANEL_SOURCE_ATTRIBUTE);
 		panelValue.setLayout(new MigLayout("", "[][grow]", "[]"));
 		
-		JLabel lblValue = new JLabel("Value:");
+		JLabel lblValue = new JLabel(VALUE);
 		lblValue.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelValue.add(lblValue, "cell 0 0,alignx trailing");
 		
@@ -1395,7 +1454,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelValue.add(textFieldValue, "cell 1 0,growx");
 		textFieldValue.setColumns(10);
 		
-		JLabel lblOperation = new JLabel("Operation:");
+		JLabel lblOperation = new JLabel(OPERATION);
 		lblOperation.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelValueSelection.add(lblOperation, "cell 0 2,alignx trailing");
 		
@@ -1405,12 +1464,12 @@ public class PanelMapSource2TargetNew extends JPanel {
 		textFieldOperation.setColumns(10);
 		
 		JPanel panelCommon = new JPanel();
-		panelCommon.setBorder(new TitledBorder(null, "Common Property", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
+		panelCommon.setBorder(new TitledBorder(null, COMMON_PROPERTY, TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
 		panelCommon.setBackground(Color.WHITE);
 		panelHead.add(panelCommon, "cell 0 3 2 1,grow");
 		panelCommon.setLayout(new MigLayout("", "[][grow]", "[][]"));
 		
-		JLabel lblSourceCommonProperty = new JLabel("Source Common Property:");
+		JLabel lblSourceCommonProperty = new JLabel(SOURCE_COMMON_PROPERTY);
 		lblSourceCommonProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCommon.add(lblSourceCommonProperty, "cell 0 0,alignx trailing");
 		
@@ -1421,7 +1480,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		comboBoxSourceProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCommon.add(comboBoxSourceProperty, "cell 1 0,growx");
 		
-		JLabel lblTargetCommonProperty = new JLabel("Target Common Property:");
+		JLabel lblTargetCommonProperty = new JLabel(TARGET_COMMON_PROPERTY);
 		lblTargetCommonProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCommon.add(lblTargetCommonProperty, "cell 0 2,alignx trailing");
 		
@@ -1432,7 +1491,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		comboBoxTargetProperty.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelCommon.add(comboBoxTargetProperty, "cell 1 2,growx");
 		
-		JCheckBox chckbxBothSame = new JCheckBox("Both Same");
+		JCheckBox chckbxBothSame = new JCheckBox(BOTH_SAME);
 		chckbxBothSame.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (chckbxBothSame.isSelected()) {
@@ -1443,7 +1502,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		chckbxBothSame.setBackground(Color.WHITE);
 		panelCommon.add(chckbxBothSame, "cell 1 1");
 		
-		JButton btnSaveConcept = new JButton("Save Concept");
+		JButton btnSaveConcept = new JButton(SAVE_CONCEPT);
 		btnSaveConcept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String dataset = comboBoxDataset.getSelectedItem().toString().trim();
@@ -1456,54 +1515,57 @@ public class PanelMapSource2TargetNew extends JPanel {
 				String targetCommonProperty = comboBoxTargetProperty.getSelectedItem().toString();
 				String sourceABoxPathString = textFieldSourceABoxPath.getText().toString().trim();
 				String targetABoxPathString = textFieldTargetABoxPath.getText().toString().trim();
-				
-				if (instanceToBeMapped.equals("SPARQL Query")) {
-					instanceToBeMapped = textAreaSparql.getText().toString().trim();
-				}
-				String valueType = comboBoxValueType.getSelectedItem().toString();
-				
-				String value = "";
-				if (sourceConcept.length() == 0 || targetConcept.length() == 0 || instanceToBeMapped.length() == 0 || 
-						dataset.length() == 0) {
-					JOptionPane.showMessageDialog(null, "Check all inputs", "Error Message", JOptionPane.ERROR_MESSAGE);
+
+				if (!areInputsValid(dataset, sourceConcept, targetConcept, instanceToBeMapped)) {
+				    JOptionPane.showMessageDialog(null, "Check all inputs", "Error Message", JOptionPane.ERROR_MESSAGE);
 				} else {
-					if (valueType.equals("Source Attribute")) {
-						value = textFieldValue.getText().toString().trim();
-						
-						if (value.length() == 0) {
-							JOptionPane.showMessageDialog(null, "Check all inputs", "Error Message", JOptionPane.ERROR_MESSAGE);
-							return;
-						}
-					} else if (valueType.equals("Expression")) {
-						value = textAreaKeyAttribute.getText().toString().trim();
-						
-						if (value.length() == 0) {
-							JOptionPane.showMessageDialog(null, "Check all inputs", "Error Message", JOptionPane.ERROR_MESSAGE);
-							return;
-						}						
-					}
-					
-					if (recordExtraction == null) {
-						createNewFileIfNotExists();
-					}
-					
-					recordExtraction.addNewHead(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty, sourceABoxPathString, targetABoxPathString);
-					recordExtraction.reloadAll();
-					refreshMappingDefinition();
-					
-					textFieldSourceConcept.setText("");
-					textFieldTargetConcept.setText("");
-					textFieldOperation.setText("");
-					textAreaSparql.setText("");
-					textFieldValue.setText("");
-					textAreaKeyAttribute.setText("");
-					textFieldSourceABoxPath.setText("");
-					
-					comboBoxDataset.setSelectedIndex(0);
-					comboBoxRelation.setSelectedIndex(0);
-					comboBoxMapped.setSelectedIndex(0);
-					comboBoxValueType.setSelectedIndex(0);
+				    String valueType = comboBoxValueType.getSelectedItem().toString();
+				    String value = "";
+
+				    switch (valueType) {
+				        case Variables.SOURCE_ATTRIBUTE:
+				            value = textFieldValue.getText().toString().trim();
+				            break;
+				        case Variables.EXPRESSION:
+				            value = textAreaKeyAttribute.getText().toString().trim();
+				            break;
+				    }
+
+				    if (value.length() == 0) {
+				        JOptionPane.showMessageDialog(null, "Check all inputs", "Error Message", JOptionPane.ERROR_MESSAGE);
+				    } else {
+				        if (recordExtraction == null) {
+				            createNewFileIfNotExists();
+				        }
+
+				        recordExtraction.addNewConcept(instanceToBeMapped, dataset, sourceConcept, targetConcept, relation, value, operation, valueType, sourceCommonProperty, targetCommonProperty, sourceABoxPathString, targetABoxPathString, mapIRI);
+				        recordExtraction.reloadAll();
+				        refreshMappingDefinition();
+
+				        resetFields();
+				    }
 				}
+			}
+
+			private void resetFields() {
+			    textFieldSourceConcept.setText("");
+			    textFieldTargetConcept.setText("");
+			    textFieldOperation.setText("");
+			    textAreaSparql.setText("");
+			    textFieldValue.setText("");
+			    textAreaKeyAttribute.setText("");
+			    textFieldSourceABoxPath.setText("");
+
+			    comboBoxDataset.setSelectedIndex(0);
+			    comboBoxRelation.setSelectedIndex(0);
+			    comboBoxMapped.setSelectedIndex(0);
+			    comboBoxValueType.setSelectedIndex(0);
+			}
+
+			private boolean areInputsValid(String dataset, String sourceConcept,
+					String targetConcept, String instanceToBeMapped) {
+			    return sourceConcept.length() != 0 && targetConcept.length() != 0 &&
+			    		instanceToBeMapped.length() != 0 && dataset.length() != 0;
 			}
 		});
 		btnSaveConcept.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -1576,7 +1638,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelDataset.repaint();
 		panelDataset.revalidate();
 		
-		JLabel lblDatasetName = new JLabel("Dataset Name:");
+		JLabel lblDatasetName = new JLabel(DATASET_NAME);
 		lblDatasetName.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelDataset.add(lblDatasetName, "cell 0 0,alignx trailing");
 		
@@ -1585,7 +1647,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelDataset.add(textFieldDataset, "cell 1 0,growx");
 		textFieldDataset.setColumns(10);
 		
-		JLabel lblSourceName = new JLabel("Source Name:");
+		JLabel lblSourceName = new JLabel(SOURCE_NAME);
 		lblSourceName.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelDataset.add(lblSourceName, "cell 0 1,alignx trailing");
 		
@@ -1594,7 +1656,7 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelDataset.add(textFieldSource, "cell 1 1,growx");
 		textFieldSource.setColumns(10);
 		
-		JLabel lblTargetName = new JLabel("Target Name:");
+		JLabel lblTargetName = new JLabel(TARGET_NAME);
 		lblTargetName.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelDataset.add(lblTargetName, "cell 0 2,alignx trailing");
 		
@@ -1603,78 +1665,66 @@ public class PanelMapSource2TargetNew extends JPanel {
 		panelDataset.add(textFieldTarget, "cell 1 2,growx");
 		textFieldTarget.setColumns(10);
 		
-		JButton btnSaveDataset = new JButton("Save");
+		JButton btnSaveDataset = new JButton(SAVE);
 		btnSaveDataset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String dataset = textFieldDataset.getText().toString().trim();
-				dataset = "map:" + dataset;
 				String source = textFieldSource.getText().toString().trim();
 				String target = textFieldTarget.getText().toString().trim();
 
-				if (!(dataset.equals("") || dataset.equals("map:")) && !(source.equals("") || source.equals("onto:"))
-						&& !(target.equals("") || target.equals("onto:"))) {
-					if (recordExtraction != null) {
-						recordExtraction.addNewDataset(dataset, source, target);
-						recordExtraction.reloadAll();
-						refreshMappingDefinition();
-					} else {
-						createNewFileIfNotExists();
-						recordExtraction.addNewDataset(dataset, source, target);
-						recordExtraction.reloadAll();
-						refreshMappingDefinition();
-					}
+				if (isValidInput(dataset, source, target)) {
+				    if (recordExtraction != null) {
+				        recordExtraction.addNewDataset(MAP_PREFIX + dataset, source, target, mapIRI);
+				        recordExtraction.reloadAll();
+				        refreshMappingDefinition();
+				    } else {
+				        createNewFileIfNotExists();
+				        recordExtraction.addNewDataset(MAP_PREFIX + dataset, source, target, mapIRI);
+				        recordExtraction.reloadAll();
+				        refreshMappingDefinition();
+				    }
 
-					textFieldDataset.setText("");
-					textFieldSource.setText("");
-					textFieldTarget.setText("");
+				    resetInputFields();
 				} else {
-					showMessageDialog("Check all inputs");
+				    showMessageDialog("Check all inputs");
 				}
 			}
 		});
 		btnSaveDataset.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panelDataset.add(btnSaveDataset, "cell 0 3 2 1,center");
 	}
+	
+	private boolean isValidInput(String dataset, String source, String target) {
+	    return !dataset.isEmpty() && !dataset.equals(MAP_PREFIX) &&
+	           !source.isEmpty() && !source.equals("onto:") &&
+	           !target.isEmpty() && !target.equals("onto:");
+	}
+
+	private void resetInputFields() {
+	    textFieldDataset.setText("");
+	    textFieldSource.setText("");
+	    textFieldTarget.setText("");
+	}
 
 	protected void createNewFileIfNotExists() {
-		// TODO Auto-generated method stub
-		recordMethods.createNewFile(RECORD_TEMP_FILE_TTL);
-		LinkedHashMap<String, String> allPrefixes = new LinkedHashMap<>();
-		
-		if (sourceDefinition != null) {
-			for (Map.Entry<String, String> entry : sourceDefinition.getPrefixMap().entrySet()) {
-			    String key = entry.getKey();
-			    
-			    if (!allPrefixes.containsKey(key)) {
-					allPrefixes.put(key, entry.getValue());
-				}
-			}
-		}
-		
-		if (targetDefinition != null) {
-			for (Map.Entry<String, String> entry : targetDefinition.getPrefixMap().entrySet()) {
-			    String key = entry.getKey();
-			    
-			    if (!allPrefixes.containsKey(key)) {
-					allPrefixes.put(key, entry.getValue());
-				}
-			}
-		}
-		
-		if (recordDefinition != null) {
-			for (Map.Entry<String, String> entry : recordDefinition.getAllPredefinedPrefixes().entrySet()) {
-			    String key = entry.getKey();
-			    
-			    if (!allPrefixes.containsKey(key)) {
-					allPrefixes.put(key, entry.getValue());
-				}
-			}
-		}
-		
-		String data = recordDefinition.getPrefixStrings(allPrefixes);
-		
-		recordMethods.writeText(RECORD_TEMP_FILE_TTL, data);
-		recordExtraction = new MappingExtraction(RECORD_TEMP_FILE_TTL);
+	    recordMethods.createNewFile(RECORD_TEMP_FILE_TTL);
+	    LinkedHashMap<String, String> allPrefixes = new LinkedHashMap<>();
+
+	    collectPrefixes(sourceDefinition, allPrefixes);
+	    collectPrefixes(targetDefinition, allPrefixes);
+	    allPrefixes.putAll(recordDefinition.getAllPredefinedPrefixes());
+
+	    String data = recordDefinition.getPrefixStrings(allPrefixes);
+
+	    recordMethods.writeText(RECORD_TEMP_FILE_TTL, data);
+	    recordExtraction = new MappingExtraction(RECORD_TEMP_FILE_TTL);
+	    refreshMappingDefinition();
+	}
+
+	private void collectPrefixes(TBoxDefinition tBoxDefinition, LinkedHashMap<String, String> allPrefixes) {
+	    if (tBoxDefinition != null) {
+	        allPrefixes.putAll(tBoxDefinition.getPrefixMap());
+	    }
 	}
 
 	protected void showMessageDialog(String message) {
@@ -1783,121 +1833,121 @@ public class PanelMapSource2TargetNew extends JPanel {
 
 		treeMap.setModel(new DefaultTreeModel(rootNode));
 	}
-
+	
 	private void refreshTree(TBoxDefinition tBoxDefinition, TBoxExtraction tBoxExtraction, JTree tree, String type) {
-		// TODO Auto-generated method stub
-		DefaultMutableTreeNode sourceNode = new DefaultMutableTreeNode(type);
+	    DefaultMutableTreeNode sourceNode = new DefaultMutableTreeNode(type);
 
-		if (tBoxDefinition.getClassList().size() != 0) {
-			for (String string : tBoxDefinition.getClassList()) {
-				DefaultMutableTreeNode classNode = new DefaultMutableTreeNode(string);
-				sourceNode.add(classNode);
-				
-				if (tBoxExtraction.getAllAssociatedObjectProperties(string).size() != 0) {
-					DefaultMutableTreeNode objectNode = new DefaultMutableTreeNode("Object Properties");
-					classNode.add(objectNode);
+	    buildClassNodes(sourceNode, tBoxDefinition, tBoxExtraction);
+	    buildDataStructureNodes(sourceNode, tBoxDefinition, tBoxExtraction);
 
-					for (String object : tBoxExtraction.getAllAssociatedObjectProperties(string)) {
-						DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(object);
-						objectNode.add(childNode);
-					}
-				}
-
-				if (tBoxExtraction.getAllAssociatedDataProperties(string).size() != 0) {
-					DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode("Datatype Properties");
-					classNode.add(dataNode);
-
-					for (String data : tBoxExtraction.getAllAssociatedDataProperties(string)) {
-						DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(data);
-						dataNode.add(childNode);
-					}
-				}
-			}
-		}
-
-		if (tBoxDefinition.getLevelList().size() != 0 || tBoxDefinition.getDatasetList().size() != 0) {
-			DefaultMutableTreeNode dataStructureNode = new DefaultMutableTreeNode("Data Structure");
-			sourceNode.add(dataStructureNode);
-
-			if (tBoxDefinition.getCubeList().size() != 0) {
-				DefaultMutableTreeNode cubeNode = new DefaultMutableTreeNode("Cube");
-				dataStructureNode.add(cubeNode);
-
-				for (String string : tBoxDefinition.getCubeList().keySet()) {
-					DefaultMutableTreeNode eachNode = new DefaultMutableTreeNode(string);
-					// ArrayList<String> propertyList =
-					// tBoxExtraction.getAllAssociatedDataStructureProperties(string);
-					cubeNode.add(eachNode);
-				}
-			}
-
-			if (tBoxDefinition.getCuboidList().size() != 0) {
-				DefaultMutableTreeNode cuboidNode = new DefaultMutableTreeNode("Cuboid");
-				dataStructureNode.add(cuboidNode);
-
-				for (String string : tBoxDefinition.getCuboidList().keySet()) {
-					cuboidNode.add(new DefaultMutableTreeNode(string));
-				}
-			}
-
-			if (tBoxDefinition.getDatasetList().size() != 0) {
-				DefaultMutableTreeNode datasetNode = new DefaultMutableTreeNode("Dataset");
-				dataStructureNode.add(datasetNode);
-				for (String string : tBoxDefinition.getDatasetList()) {
-					DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(string);
-					
-					ArrayList<String> levels = tBoxExtraction.extractDatasetLevels(string);
-					ArrayList<String> measures = tBoxExtraction.extractDatasetMeasures(string);
-					
-					if (levels.size() > 0) {
-						DefaultMutableTreeNode mainLevelNode = new DefaultMutableTreeNode("Dimension/Level Properties");
-						
-						for (String string2 : levels) {
-							mainLevelNode.add(new DefaultMutableTreeNode(string2));
-							rootNode.add(mainLevelNode);
-						}
-					}
-					
-					if (measures.size() > 0) {
-						DefaultMutableTreeNode mainMeasureNode = new DefaultMutableTreeNode("Measure Properties");
-						
-						for (String string2 : measures) {
-							mainMeasureNode.add(new DefaultMutableTreeNode(string2));
-							rootNode.add(mainMeasureNode);
-							rootNode.add(mainMeasureNode);
-						}
-					}
-					
-					datasetNode.add(rootNode);
-				}
-			}
-
-			if (tBoxDefinition.getDimensionList().size() != 0) {
-				DefaultMutableTreeNode dimensionNode = new DefaultMutableTreeNode("Dimension");
-				for (String string : tBoxDefinition.getDimensionList()) {
-					dimensionNode.add(new DefaultMutableTreeNode(string));
-				}
-				sourceNode.add(dimensionNode);
-			}
-
-			if (tBoxDefinition.getLevelList().size() != 0) {
-				DefaultMutableTreeNode levelNode = new DefaultMutableTreeNode("Level");
-
-				for (String string : tBoxDefinition.getLevelList()) {
-					DefaultMutableTreeNode eachNode = new DefaultMutableTreeNode(string);
-					levelNode.add(eachNode);
-					ArrayList<String> arrayList = tBoxExtraction.getAllAssociatedProperties(string);
-					for (String string2 : arrayList) {
-						eachNode.add(new DefaultMutableTreeNode(string2));
-					}
-				}
-				sourceNode.add(levelNode);
-			}
-		}
-
-		tree.setModel(new DefaultTreeModel(sourceNode));
+	    tree.setModel(new DefaultTreeModel(sourceNode));
 	}
 
+	private void buildClassNodes(DefaultMutableTreeNode sourceNode, TBoxDefinition tBoxDefinition, TBoxExtraction tBoxExtraction) {
+	    for (String className : tBoxDefinition.getClassList()) {
+	        DefaultMutableTreeNode classNode = new DefaultMutableTreeNode(className);
+	        sourceNode.add(classNode);
+
+	        buildPropertyNodes(classNode, Variables.OBJECT_PROPERTIES, tBoxExtraction.getAllAssociatedObjectProperties(className));
+	        buildPropertyNodes(classNode, Variables.DATATYPE_PROPERTIES, tBoxExtraction.getAllAssociatedDataProperties(className));
+	    }
+	}
+
+	private void buildPropertyNodes(DefaultMutableTreeNode classNode, String nodeName, ArrayList<String> properties) {
+	    if (!properties.isEmpty()) {
+	        DefaultMutableTreeNode propertyNode = new DefaultMutableTreeNode(nodeName);
+	        classNode.add(propertyNode);
+
+	        for (String property : properties) {
+	            propertyNode.add(new DefaultMutableTreeNode(property));
+	        }
+	    }
+	}
+	
+	private void buildDataStructureNodes(DefaultMutableTreeNode sourceNode, TBoxDefinition tBoxDefinition, TBoxExtraction tBoxExtraction) {
+	    DefaultMutableTreeNode dataStructureNode = new DefaultMutableTreeNode(Variables.DATA_STRUCTURE);
+	    sourceNode.add(dataStructureNode);
+
+	    buildCubeNodes(dataStructureNode, tBoxDefinition.getCubeList().keySet());
+	    buildCuboidNodes(dataStructureNode, tBoxDefinition.getCuboidList().keySet());
+	    buildDatasetNodes(dataStructureNode, tBoxDefinition.getDatasetList(), tBoxExtraction);
+	    buildDimensionNodes(sourceNode, tBoxDefinition.getDimensionList());
+	    buildLevelNodes(sourceNode, tBoxDefinition.getLevelList(), tBoxExtraction, Variables.LEVEL);
+	}
+	
+	private void buildDimensionNodes(DefaultMutableTreeNode sourceNode, ArrayList<String> dimensionList) {
+	    if (!dimensionList.isEmpty()) {
+	        DefaultMutableTreeNode dimensionNode = new DefaultMutableTreeNode(Variables.DIMENSION);
+
+	        for (String dimension : dimensionList) {
+	            dimensionNode.add(new DefaultMutableTreeNode(dimension));
+	        }
+
+	        sourceNode.add(dimensionNode);
+	    }
+	}
+
+	
+	private void buildDatasetNodes(DefaultMutableTreeNode dataStructureNode, ArrayList<String> datasetList, TBoxExtraction tBoxExtraction) {
+	    DefaultMutableTreeNode datasetNode = new DefaultMutableTreeNode(Variables.DATASET);
+	    dataStructureNode.add(datasetNode);
+
+	    for (String dataset : datasetList) {
+	        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(dataset);
+
+	        ArrayList<String> levels = tBoxExtraction.extractDatasetLevels(dataset);
+	        ArrayList<String> measures = tBoxExtraction.extractDatasetMeasures(dataset);
+
+	        buildLevelNodes(rootNode, levels, tBoxExtraction, Variables.DIM_OR_LEVEL_PROPERTIES);
+	        buildMeasureNodes(rootNode, measures, tBoxExtraction);
+
+	        datasetNode.add(rootNode);
+	    }
+	}
+
+	private void buildLevelNodes(DefaultMutableTreeNode parentNode, ArrayList<String> levels, TBoxExtraction tBoxExtraction, String nodeName) {
+	    if (!levels.isEmpty()) {
+	        DefaultMutableTreeNode levelNode = new DefaultMutableTreeNode(nodeName);
+
+	        for (String level : levels) {
+	            levelNode.add(new DefaultMutableTreeNode(level));
+	        }
+
+	        parentNode.add(levelNode);
+	    }
+	}
+
+	private void buildMeasureNodes(DefaultMutableTreeNode parentNode, ArrayList<String> measures, TBoxExtraction tBoxExtraction) {
+	    if (!measures.isEmpty()) {
+	        DefaultMutableTreeNode measureNode = new DefaultMutableTreeNode(Variables.MEASURE_PROPERTIES);
+
+	        for (String measure : measures) {
+	            measureNode.add(new DefaultMutableTreeNode(measure));
+	        }
+
+	        parentNode.add(measureNode);
+	    }
+	}
+
+
+	private void buildCubeNodes(DefaultMutableTreeNode dataStructureNode, Set<String> cubeList) {
+	    DefaultMutableTreeNode cubeNode = new DefaultMutableTreeNode(Variables.CUBE);
+	    dataStructureNode.add(cubeNode);
+
+	    for (String cube : cubeList) {
+	        cubeNode.add(new DefaultMutableTreeNode(cube));
+	    }
+	}
+	
+	private void buildCuboidNodes(DefaultMutableTreeNode dataStructureNode, Set<String> cuboidList) {
+	    DefaultMutableTreeNode cuboidNode = new DefaultMutableTreeNode(Variables.CUBOID);
+	    dataStructureNode.add(cuboidNode);
+
+	    for (String cuboid : cuboidList) {
+	        cuboidNode.add(new DefaultMutableTreeNode(cuboid));
+	    }
+	}
+	
 	private void initializeAll() {
 		// TODO Auto-generated method stub
 		sourceDefinition = new TBoxDefinition();

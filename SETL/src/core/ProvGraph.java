@@ -282,7 +282,7 @@ public class ProvGraph {
 					
 					if (key.contains(":")) {
 						fileMethods.extractAllPrefixes(sourceAboxFile);
-						predicate = fileMethods.assignPrefix(predicate);
+						predicate = Methods.assignIRI(fileMethods.getPrefixMap(), predicate);
 					}
 					
 					if (subject.equals(source)) {

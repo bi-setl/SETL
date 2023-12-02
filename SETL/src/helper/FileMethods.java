@@ -72,18 +72,19 @@ public class FileMethods {
 	}
 
 	public void chooseFile() {
-		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(null);
-		chooser.setDialogTitle("Choose File");
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setAcceptAllFileFilterUsed(true);
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setCurrentDirectory(null);
+	    chooser.setDialogTitle("Choose File");
+	    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	    chooser.setAcceptAllFileFilterUsed(true);
 
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			setFilePath(chooser.getSelectedFile().getAbsolutePath());
-			setFileName(chooser.getSelectedFile().getName());
-		} else {
-			System.out.println("No Selection ");
-		}
+	    int result = chooser.showOpenDialog(null);
+	    if (result == JFileChooser.APPROVE_OPTION) {
+	        setFilePath(chooser.getSelectedFile().getAbsolutePath());
+	        setFileName(chooser.getSelectedFile().getName());
+	    } else {
+	        System.out.println("No Selection");
+	    }
 	}
 
 	public void chooseDirectory() {

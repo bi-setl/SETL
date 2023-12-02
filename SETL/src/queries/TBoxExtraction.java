@@ -36,10 +36,9 @@ import org.apache.jena.vocabulary.RDF;
 import controller.TBoxDefinition;
 import helper.FileMethods;
 import helper.Methods;
+import helper.Variables;
 
 public class TBoxExtraction {
-	public static final String TEMP_TBOX_MODEL_TTL = "TEMP_TBOX_MODEL.ttl";
-	private static final String TEMPHIER_IRI = "https://www.temphier.com/";
 	private ArrayList<String> classList;
 	private ArrayList<String> objectList;
 	private ArrayList<String> dataList;
@@ -113,12 +112,12 @@ public class TBoxExtraction {
 		if (file.exists() && !file.isDirectory()) {
 			setModel(readFileFromPath(filePath));
 
-			setPrefixMap(extractAllPrefixes(filePath));
+			setPrefixMap(Methods.extractPrefixes(filePath));
 
 			if (getPrefixMap().size() == 0) {
 				setPrefixMap(new TBoxDefinition().getAllPredefinedPrefixes());
 			}
-
+			// setting the
 			setClassList(extractAllConceptClasses());
 			setObjectList(extractAllObjectProperties());
 			setDataList(extractAllDataProperties());
@@ -140,32 +139,26 @@ public class TBoxExtraction {
 	}
 
 	private ArrayList<String> extractAllOntologies() {
-		// TODO Auto-generated method stub
-		ArrayList<String> strings = new ArrayList<>();
-		// String value = "RollupProperty";
+	    ArrayList<String> ontologies = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a owl:Ontology; ?p ?o.}";
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a owl:Ontology; ?p ?o.}";
 
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				strings.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            RDFNode node = querySolution.get("s");
+	            ontologies.add(Methods.assignPrefix(getPrefixMap(), node.toString()));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-		return strings;
+	    return ontologies;
 	}
 
 	private void generateDataStructure() {
@@ -215,21 +208,22 @@ public class TBoxExtraction {
 			}
 
 			if (status) {
-				cuboids.add(assignPrefix(name));
+				cuboids.add(Methods.assignPrefix(getPrefixMap(), name));
 			} else {
-				cubes.add(assignPrefix(name));
+				cubes.add(Methods.assignPrefix(getPrefixMap(), name));
 			}
 		}
 
 		for (String string : cubes) {
-			string = assignIRI(string);
+			string = Methods.assignIRI(getPrefixMap(), string);
 			String nodePrefix = "_:cn";
 			ArrayList<String> blankNodes = new ArrayList<>();
 
 			String sparql2 = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
 					+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
 					+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-					+ "SELECT * WHERE { ?s a qb:DataStructureDefinition." + "?s qb:component ?o. " + "?o ?x ?y."
+					+ "SELECT * WHERE { ?s a qb:DataStructureDefinition."
+					+ "?s qb:component ?o. " + "?o ?x ?y."
 					+ "FILTER regex(str(?s), '" + string + "').}";
 			Query query2 = QueryFactory.create(sparql2);
 			QueryExecution execution2 = QueryExecutionFactory.create(query2, model);
@@ -262,7 +256,7 @@ public class TBoxExtraction {
 
 						blankNodes.add(hierName);
 
-						String resourceIRI = TEMPHIER_IRI + hierName;
+						String resourceIRI = Variables.TEMP_HIER_IRI + hierName;
 						cubeNodeList.put(hierName, resourceIRI);
 
 						Resource resource = tempModel.createResource(resourceIRI);
@@ -277,7 +271,7 @@ public class TBoxExtraction {
 				}
 			}
 
-			cubeList.put(assignPrefix(string), blankNodes);
+			cubeList.put(Methods.assignPrefix(getPrefixMap(), string), blankNodes);
 		}
 
 		/*
@@ -288,14 +282,15 @@ public class TBoxExtraction {
 		 */
 
 		for (String string : cuboids) {
-			string = assignIRI(string);
+			string = Methods.assignIRI(getPrefixMap(), string);
 			String nodePrefix = "_:cn";
 			ArrayList<String> blankNodes = new ArrayList<>();
 
 			String sparql2 = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
 					+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
 					+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-					+ "SELECT * WHERE { ?s a qb:DataStructureDefinition." + "?s qb:component ?o. " + "?o ?x ?y."
+					+ "SELECT * WHERE { ?s a qb:DataStructureDefinition."
+					+ "?s qb:component ?o. " + "?o ?x ?y."
 					+ "FILTER regex(str(?s), '" + string + "').}";
 			Query query2 = QueryFactory.create(sparql2);
 			QueryExecution execution2 = QueryExecutionFactory.create(query2, model);
@@ -330,7 +325,7 @@ public class TBoxExtraction {
 
 						blankNodes.add(hierName);
 
-						String resourceIRI = TEMPHIER_IRI + hierName;
+						String resourceIRI = Variables.TEMP_HIER_IRI + hierName;
 						cuboidNodeList.put(hierName, resourceIRI);
 
 						Resource resource = tempModel.createResource(resourceIRI);
@@ -345,7 +340,7 @@ public class TBoxExtraction {
 				}
 			}
 
-			cuboidList.put(assignPrefix(string), blankNodes);
+			cuboidList.put(Methods.assignPrefix(getPrefixMap(), string), blankNodes);
 		}
 
 		setCubeList(cubeList);
@@ -472,256 +467,265 @@ public class TBoxExtraction {
 	}
 
 	public ArrayList<String> extractAllDataProperties() {
-		// TODO Auto-generated method stub
-		ArrayList<String> arrayList = new ArrayList<>();
+	    ArrayList<String> propertyList = new ArrayList<>();
 
-		Model model = getModel();
+	    try {
+	        Model model = getModel();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a owl:DatatypeProperty.}";
+	        String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\n"
+	                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+	                + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\n"
+	                + "SELECT DISTINCT ?s WHERE { ?s a owl:DatatypeProperty.}";
 
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet set = ResultSetFactory.copyResults(execution.execSelect());
+	        try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	            ResultSet resultSet = execution.execSelect();
 
-		while (set.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) set.next();
-			String className = String.valueOf(querySolution.get("s"));
-			arrayList.add(assignPrefix(className));
-		}
-		return arrayList;
+	            while (resultSet.hasNext()) {
+	                QuerySolution querySolution = resultSet.next();
+	                RDFNode propertyNode = querySolution.get("s");
+
+	                if (propertyNode != null) {
+	                    String propertyName = propertyNode.toString();
+	                    propertyList.add(Methods.assignPrefix(getPrefixMap(), propertyName));
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Handle the exception in a more appropriate way
+	    }
+
+	    return propertyList;
 	}
 
 	private ArrayList<String> extractAllObjectProperties() {
-		// TODO Auto-generated method stub
-		ArrayList<String> arrayList = new ArrayList<>();
+	    ArrayList<String> propertyList = new ArrayList<>();
 
-		Model model = getModel();
+	    try {
+	        Model model = getModel();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a owl:ObjectProperty.}";
+	        String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\n"
+	                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+	                + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\n"
+	                + "SELECT DISTINCT ?s WHERE { ?s a owl:ObjectProperty.}";
 
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet set = ResultSetFactory.copyResults(execution.execSelect());
+	        try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	            ResultSet resultSet = execution.execSelect();
 
-		while (set.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) set.next();
-			String className = String.valueOf(querySolution.get("s"));
-			arrayList.add(assignPrefix(className));
-		}
-		return arrayList;
+	            while (resultSet.hasNext()) {
+	                QuerySolution querySolution = resultSet.next();
+	                RDFNode propertyNode = querySolution.get("s");
+
+	                if (propertyNode != null) {
+	                    String propertyName = propertyNode.toString();
+	                    propertyList.add(Methods.assignPrefix(getPrefixMap(), propertyName));
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Handle the exception in a more appropriate way
+	    }
+
+	    return propertyList;
 	}
 
 	private ArrayList<String> extractAllConceptClasses() {
-		// TODO Auto-generated method stub
-		ArrayList<String> arrayList = new ArrayList<>();
-		Model model = getModel();
+	    ArrayList<String> classList = new ArrayList<>();
 
-		String sparql = "PREFIX rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a owl:Class. }";
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet set = ResultSetFactory.copyResults(execution.execSelect());
+	    try {
+	        Model model = getModel();
 
-		while (set.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) set.next();
-			String className = String.valueOf(querySolution.get("s"));
-			arrayList.add(assignPrefix(className));
-		}
-		return arrayList;
+	        String sparql = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
+	                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+	                + "SELECT DISTINCT ?s WHERE { ?s a owl:Class. }";
+
+	        try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	            ResultSet resultSet = execution.execSelect();
+
+	            while (resultSet.hasNext()) {
+	                QuerySolution querySolution = resultSet.next();
+	                RDFNode classNode = querySolution.get("s");
+
+	                if (classNode != null) {
+	                    String className = classNode.toString();
+	                    classList.add(Methods.assignPrefix(getPrefixMap(), className));
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Handle the exception in a more appropriate way
+	    }
+
+	    return classList;
 	}
 
 	private ArrayList<String> extractAllDatasets() {
-		// TODO Auto-generated method stub
-		ArrayList<String> datasets = new ArrayList<>();
+	    ArrayList<String> datasets = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb:DataSet; ?p ?o.}";
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb:DataSet; ?p ?o.}";
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = String.valueOf(querySolution.get("s"));
-			datasets.add(assignPrefix(name));
-		}
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		return datasets;
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            RDFNode node = querySolution.get("s");
+	            datasets.add(Methods.assignPrefix(getPrefixMap(), node.toString()));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return datasets;
 	}
 
 	private ArrayList<String> extractAllRollUps() {
-		// TODO Auto-generated method stub
-		ArrayList<String> strings = new ArrayList<>();
-		// String value = "RollupProperty";
+	    ArrayList<String> rollUps = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb4o:RollupProperty; ?p ?o.}";
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb4o:RollupProperty; ?p ?o.}";
 
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				strings.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            RDFNode node = querySolution.get("s");
+	            rollUps.add(Methods.assignPrefix(getPrefixMap(), node.toString()));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-		return strings;
+	    return rollUps;
 	}
 
 	private ArrayList<String> extractAllAttributes() {
-		// TODO Auto-generated method stub
-		ArrayList<String> attributes = new ArrayList<>();
+	    ArrayList<String> attributes = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb4o:LevelAttribute; ?p ?o.}";
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb4o:LevelAttribute; ?p ?o.}";
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				attributes.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		return attributes;
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            RDFNode node = querySolution.get("s");
+	            attributes.add(Methods.assignPrefix(getPrefixMap(), node.toString()));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return attributes;
 	}
 
 	private ArrayList<String> extractAllHierarchies() {
-		// TODO Auto-generated method stub
-		ArrayList<String> hierarchies = new ArrayList<>();
+	    ArrayList<String> hierarchies = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb4o:Hierarchy; ?p ?o.}";
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb4o:Hierarchy; ?p ?o.}";
 
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				hierarchies.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            RDFNode node = querySolution.get("s");
+	            hierarchies.add(Methods.assignPrefix(getPrefixMap(), node.toString()));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-		return hierarchies;
+	    return hierarchies;
 	}
+
 
 	private ArrayList<String> extractAllDimensions() {
-		// TODO Auto-generated method stub
-		ArrayList<String> dimensions = new ArrayList<>();
+	    ArrayList<String> dimensions = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb:DimensionProperty; ?p ?o.}";
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb:DimensionProperty; ?p ?o.}";
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				dimensions.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		return dimensions;
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            RDFNode node = querySolution.get("s");
+	            dimensions.add(Methods.assignPrefix(getPrefixMap(), node.toString()));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return dimensions;
 	}
+
 
 	private ArrayList<String> extractAllMeasures() {
-		// TODO Auto-generated method stub
-		ArrayList<String> measures = new ArrayList<>();
+	    ArrayList<String> measures = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb:MeasureProperty; ?p ?o.}";
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    String sparql = "PREFIX qb:    <http://purl.org/linked-data/cube#>\r\n"
+	            + "PREFIX owl:   <http://www.w3.org/2002/07/owl#>\r\n"
+	            + "PREFIX qb4o:  <http://purl.org/qb4olap/cubes#>\r\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb:MeasureProperty; ?p ?o.}";
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				measures.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	    try (QueryExecution execution = QueryExecutionFactory.create(QueryFactory.create(sparql), model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		return measures;
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            Resource measureResource = querySolution.getResource("s");
+	            
+	            // Ensure that the resource is not null
+	            if (measureResource != null) {
+	                measures.add(Methods.assignPrefix(getPrefixMap(), measureResource.toString()));
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Handle the exception appropriately
+	    }
+
+	    return measures;
 	}
+
 
 	private ArrayList<String> extractAllLevels() {
-		// TODO Auto-generated method stub
-		ArrayList<String> levels = new ArrayList<>();
+	    ArrayList<String> levels = new ArrayList<>();
 
-		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ "SELECT DISTINCT ?s WHERE { ?s a qb4o:LevelProperty; ?p ?o.}";
-		Query query = QueryFactory.create(sparql);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
+	    String sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\n"
+	            + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
+	            + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\n"
+	            + "SELECT DISTINCT ?s WHERE { ?s a qb4o:LevelProperty; ?p ?o.}";
 
-		while (resultSet.hasNext()) {
-			QuerySolution querySolution = (QuerySolution) resultSet.next();
-			String name = null;
-			try {
-				name = String.valueOf(querySolution.get("s"));
-				levels.add(assignPrefix(name));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	    try (QueryExecution execution = QueryExecutionFactory.create(sparql, model)) {
+	        ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
 
-		return levels;
+	        while (resultSet.hasNext()) {
+	            QuerySolution querySolution = resultSet.next();
+	            String name = querySolution.get("s").toString();
+	            levels.add(Methods.assignPrefix(getPrefixMap(), name));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Handle the exception in a more appropriate way
+	    }
+
+	    return levels;
 	}
+
 
 	private LinkedHashMap<String, String> extractAllHierarchySteps() {
 		// TODO Auto-generated method stub
@@ -760,7 +764,7 @@ public class TBoxExtraction {
 			} else {
 				String hierName = hierPrefix + (nodeHier.size() + 1);
 				nodeHier.put(subject, hierName);
-				String resourceIRI = TEMPHIER_IRI + hierName;
+				String resourceIRI = Variables.TEMP_HIER_IRI + hierName;
 				hierSub.put(hierName, resourceIRI);
 
 				Resource resource = tempModel.createResource(resourceIRI);
@@ -781,57 +785,26 @@ public class TBoxExtraction {
 		return hierSub;
 	}
 
-	private LinkedHashMap<String, String> extractAllPrefixes(String filepath) {
-		LinkedHashMap<String, String> hashedMap = new LinkedHashMap<>();
-		File file = new File(filepath);
-		BufferedReader bufferedReader = null;
-
-		try {
-			bufferedReader = new BufferedReader(new FileReader(file));
-
-			String string = "", s;
-			while ((s = bufferedReader.readLine()) != null) {
-				string = string + s;
-			}
-
-			String regEx = "(@prefix\\s+)([^\\:.]*:\\s+)(<)([^>]*)(>)";
-			Pattern pattern = Pattern.compile(regEx);
-			Matcher matcher = pattern.matcher(string);
-
-			while (matcher.find()) {
-				String prefix = matcher.group(2).trim();
-				String iri = matcher.group(4).trim();
-
-				hashedMap.put(prefix, iri);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(e);
-		}
-		return hashedMap;
-	}
-
 	public String getModelText(String type) {
-		// TODO Auto-generated method stub
 		if (type.equals("Turtle")) {
-			return printAllComponents();
-		} else {
-			String text = printAllComponents();
-			new FileMethods().writeText(TEMP_TBOX_MODEL_TTL, text);
+	        return printAllComponents();
+	    } else {
+	        String text = printAllComponents();
+	        new FileMethods().writeText(Variables.TEMP_TBOX_MODEL_TTL, text);
 
-			Model model = readFileFromPath(TEMP_TBOX_MODEL_TTL);
+	        Model model = readFileFromPath(Variables.TEMP_TBOX_MODEL_TTL);
 
-			StringWriter out = new StringWriter();
-			model.write(out, type);
-			String result = out.toString();
-			return result;
-		}
+	        StringWriter out = new StringWriter();
+	        model.write(out, type);
+	        return out.toString();
+	    }
 	}
+
 
 	public void generateMaps(String selectedResource, boolean isStep) {
 		// TODO Auto-generated method stub
 		Model model = tempModel;
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 
 		TBoxDefinition boxDefinition = new TBoxDefinition();
 		LinkedHashMap<String, ArrayList<String>> annMap = boxDefinition.getAllAnnotationProperties();
@@ -851,8 +824,8 @@ public class TBoxExtraction {
 				String property = String.valueOf(querySolution.get("p"));
 				String object = String.valueOf(querySolution.get("o"));
 
-				property = assignPrefix(property);
-				object = assignPrefix(object);
+				property = Methods.assignPrefix(getPrefixMap(), property);
+				object = Methods.assignPrefix(getPrefixMap(), object);
 
 				if (property.equals("rdf:type")) {
 					switch (object) {
@@ -939,7 +912,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 
 		TBoxDefinition boxDefinition = new TBoxDefinition();
 		LinkedHashMap<String, ArrayList<String>> annMap = boxDefinition.getAllAnnotationProperties();
@@ -959,8 +932,8 @@ public class TBoxExtraction {
 				String property = String.valueOf(querySolution.get("p"));
 				String object = String.valueOf(querySolution.get("o"));
 
-				property = assignPrefix(property);
-				object = assignPrefix(object);
+				property = Methods.assignPrefix(getPrefixMap(), property);
+				object = Methods.assignPrefix(getPrefixMap(), object);
 
 				if (property.equals("rdf:type")) {
 					switch (object) {
@@ -1047,8 +1020,8 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		previousResource = assignIRI(previousResource);
-		currentResource = assignIRI(currentResource);
+		previousResource = Methods.assignIRI(getPrefixMap(), previousResource);
+		currentResource = Methods.assignIRI(getPrefixMap(), currentResource);
 
 		Resource resource = model.getResource(previousResource);
 		ResourceUtils.renameResource(resource, currentResource);
@@ -1058,7 +1031,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#Class");
 		Resource resource = ResourceFactory.createResource(name);
@@ -1075,7 +1048,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#ObjectProperty");
 		Resource resource = ResourceFactory.createResource(name);
@@ -1092,7 +1065,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#DatatypeProperty");
 		Resource resource = ResourceFactory.createResource(name);
@@ -1109,7 +1082,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
 		Resource resource = ResourceFactory.createResource(name);
 
@@ -1121,14 +1094,14 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			resource.addProperty(property, model.createResource(value));
 		} else {
 			resource.addLiteral(property, value);
@@ -1139,15 +1112,15 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		RDFNode node = null;
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			node = ResourceFactory.createResource(value);
 		} else {
 			node = ResourceFactory.createStringLiteral(value);
@@ -1160,22 +1133,22 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		RDFNode node = null, rdfNode = null;
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			node = ResourceFactory.createResource(value);
 		} else {
 			node = ResourceFactory.createStringLiteral(value);
 		}
 
 		if (previousValue.contains("http://") || previousValue.contains(":")) {
-			previousValue = assignIRI(previousValue);
+			previousValue = Methods.assignIRI(getPrefixMap(), previousValue);
 			rdfNode = ResourceFactory.createResource(previousValue);
 		} else {
 			rdfNode = ResourceFactory.createStringLiteral(previousValue);
@@ -1185,67 +1158,12 @@ public class TBoxExtraction {
 		model.add(resource, property, node);
 	}
 
-	public String assignPrefix(String iri) {
-		if (iri.contains("#")) {
-			String[] segments = iri.split("#");
-			if (segments.length == 2) {
-				String firstSegment = segments[0].trim() + "#";
-
-				for (Map.Entry<String, String> map : getPrefixMap().entrySet()) {
-					String key = map.getKey();
-					String value = map.getValue();
-
-					if (firstSegment.equals(value.trim())) {
-						return key + segments[1];
-					}
-				}
-
-				return iri;
-			} else {
-				return iri;
-			}
-		} else {
-			String[] segments = iri.split("/");
-			String lastSegment = segments[segments.length - 1];
-
-			String firstSegment = "";
-			if (iri.endsWith(lastSegment)) {
-				firstSegment = iri.replace(lastSegment, "");
-			}
-
-			for (Map.Entry<String, String> map : getPrefixMap().entrySet()) {
-				String key = map.getKey();
-				String value = map.getValue();
-
-				if (firstSegment.equals(value.trim())) {
-					return key + lastSegment;
-				}
-			}
-
-			return iri;
-		}
-	}
-
-	public String assignIRI(String prefix) {
-		if (prefix.contains("http") || prefix.contains("www")) {
-			return prefix;
-		} else {
-			String[] segments = prefix.split(":");
-			if (segments.length == 2) {
-				String firstSegment = segments[0] + ":";
-				return getPrefixMap().get(firstSegment) + segments[1];
-			} else {
-				return prefix;
-			}
-		}
-	}
-
 	public void removeProperty(String name, String key) {
 		// TODO Auto-generated method stub
-		key = assignIRI(key);
+		key = Methods.assignIRI(getPrefixMap(), key);
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
@@ -1313,7 +1231,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 
 		String sparql = "SELECT ?s ?x WHERE {?s ?p ?o. ?s a ?x. FILTER regex(str(?s), '" + selectedResource + "').}";
 		Query query = QueryFactory.create(sparql);
@@ -1351,8 +1269,8 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Resource classResource = ResourceFactory.createResource(key);
@@ -1363,9 +1281,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb:DataSet"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb:DataSet"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1380,9 +1298,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb4o:LevelProperty"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb4o:LevelProperty"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1397,9 +1315,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb:DataStructureDefinition"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb:DataStructureDefinition"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1414,9 +1332,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb:MeasureProperty"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb:MeasureProperty"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1431,9 +1349,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb4o:Hierarchy"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb4o:Hierarchy"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1448,9 +1366,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb:DimensionProperty"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb:DimensionProperty"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1465,9 +1383,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb4o:RollupProperty"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb4o:RollupProperty"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1482,9 +1400,9 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
-		Resource classResource = ResourceFactory.createResource(assignIRI("qb4o:LevelAttribute"));
+		Resource classResource = ResourceFactory.createResource(Methods.assignIRI(getPrefixMap(), "qb4o:LevelAttribute"));
 		Resource resource = ResourceFactory.createResource(name);
 		if (model.containsResource(resource)) {
 			return false;
@@ -1499,7 +1417,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		ArrayList<String> objects = new ArrayList<>();
 
-		string = assignIRI(string);
+		string = Methods.assignIRI(getPrefixMap(), string);
 
 		String sparql = "PREFIX rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
 				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
@@ -1518,13 +1436,13 @@ public class TBoxExtraction {
 				String domain = String.valueOf(querySolution.get("o"));
 
 				if (string.contains(":")) {
-					string = assignIRI(string);
+					string = Methods.assignIRI(getPrefixMap(), string);
 				}
 
 				// System.out.println(domain + " - " + string);
 
 				if (domain.equals(string)) {
-					objects.add(assignPrefix(name));
+					objects.add(Methods.assignPrefix(getPrefixMap(), name));
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -1539,7 +1457,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		ArrayList<String> owlDatatypeProperties = new ArrayList<>();
 
-		string = assignIRI(string);
+		string = Methods.assignIRI(getPrefixMap(), string);
 
 		String sparql = "PREFIX rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
 				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
@@ -1556,13 +1474,13 @@ public class TBoxExtraction {
 			String subject = String.valueOf(querySolution.get("o"));
 
 			if (string.contains(":")) {
-				string = assignIRI(string);
+				string = Methods.assignIRI(getPrefixMap(), string);
 			}
 
 			// System.out.println(subject + " - " + string);
 
 			if (string.matches(subject)) {
-				owlDatatypeProperties.add(assignPrefix(datatypeProperty));
+				owlDatatypeProperties.add(Methods.assignPrefix(getPrefixMap(), datatypeProperty));
 			}
 		}
 
@@ -1573,7 +1491,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		ArrayList<String> properties = new ArrayList<>();
 
-		string = assignIRI(string);
+		string = Methods.assignIRI(getPrefixMap(), string);
 
 		String sparql = "PREFIX rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
 				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
@@ -1589,7 +1507,7 @@ public class TBoxExtraction {
 			QuerySolution querySolution = (QuerySolution) set.next();
 			String datatypeProperty = String.valueOf(querySolution.get("o"));
 
-			properties.add(assignPrefix(datatypeProperty));
+			properties.add(Methods.assignPrefix(getPrefixMap(), datatypeProperty));
 		}
 
 		return properties;
@@ -1599,7 +1517,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		ArrayList<String> properties = new ArrayList<>();
 
-		string = assignIRI(string);
+		string = Methods.assignIRI(getPrefixMap(), string);
 
 		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
 				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
@@ -1617,7 +1535,7 @@ public class TBoxExtraction {
 			QuerySolution querySolution = (QuerySolution) set.next();
 			String datatypeProperty = String.valueOf(querySolution.get("o"));
 
-			properties.add(assignPrefix(datatypeProperty));
+			properties.add(Methods.assignPrefix(getPrefixMap(), datatypeProperty));
 		}
 
 		return properties;
@@ -1654,7 +1572,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 
 		String sparql = "SELECT ?s ?x WHERE {?s ?p ?o. ?s a ?x. FILTER regex(str(?s), '" + selectedResource + "').}";
 		Query query = QueryFactory.create(sparql);
@@ -1715,7 +1633,7 @@ public class TBoxExtraction {
 
 	public ArrayList<String> extractHierarchyLevels(String value) {
 		// TODO Auto-generated method stub
-		value = assignIRI(value);
+		value = Methods.assignIRI(getPrefixMap(), value);
 		ArrayList<String> levelList = new ArrayList<>();
 		String sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
 				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
@@ -1758,7 +1676,7 @@ public class TBoxExtraction {
 			String object = querySolution.get("z").toString();
 
 			if (getProvValue(subject).equals(getProvValue(datasetName))) {
-				object = assignPrefix(object);
+				object = Methods.assignPrefix(getPrefixMap(), object);
 				levels.add(object);
 			}
 		}
@@ -1778,7 +1696,7 @@ public class TBoxExtraction {
 			String object = querySolution.get("z").toString();
 
 			if (getProvValue(subject).equals(getProvValue(datasetName))) {
-				object = assignPrefix(object);
+				object = Methods.assignPrefix(getPrefixMap(), object);
 				levels.add(object);
 			}
 		}
@@ -1805,7 +1723,7 @@ public class TBoxExtraction {
 			String object = querySolution.get("z").toString();
 
 			if (getProvValue(subject).equals(getProvValue(datasetName))) {
-				object = assignPrefix(object);
+				object = Methods.assignPrefix(getPrefixMap(), object);
 				levels.add(object);
 			}
 		}
@@ -1880,13 +1798,13 @@ public class TBoxExtraction {
 			Property hierarchyProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#hasHierarchy");
 
 			for (String string : hierarchies) {
-				resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(string)));
+				resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), string)));
 			}
 		}
 
 		if (range.trim().length() > 0) {
 			Property hierarchyProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#range");
-			resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(range)));
+			resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), range)));
 		}
 	}
 
@@ -1910,13 +1828,13 @@ public class TBoxExtraction {
 			Property hierarchyProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#hasAttribute");
 
 			for (String string : selectedAttributes) {
-				resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(string)));
+				resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), string)));
 			}
 		}
 
 		if (datatype.trim().length() > 0) {
 			Property hierarchyProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#range");
-			resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(datatype)));
+			resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), datatype)));
 		}
 	}
 
@@ -1947,7 +1865,7 @@ public class TBoxExtraction {
 		resource.addProperty(labelProperty, labelLiteral);
 
 		Property hierarchyProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#range");
-		resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(range)));
+		resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), range)));
 	}
 
 	public void addLevelAttribute(String leveliri, String levelName, String levelLabel, String lang, String range) {
@@ -1966,7 +1884,7 @@ public class TBoxExtraction {
 		resource.addProperty(labelProperty, labelLiteral);
 
 		Property hierarchyProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#range");
-		resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(range)));
+		resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), range)));
 	}
 
 	public void addDatasetProperty(String datasetIRI, String datasetName, String datasetcube) {
@@ -1980,7 +1898,7 @@ public class TBoxExtraction {
 		resource.addProperty(RDF.type, classResource);
 
 		Property hierarchyProperty = getModel().createProperty("http://purl.org/linked-data/cube#structure");
-		resource.addProperty(hierarchyProperty, getModel().createResource(assignIRI(datasetcube)));
+		resource.addProperty(hierarchyProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), datasetcube)));
 	}
 
 	public void addCube(String nameIRI, String name, String notation,
@@ -2013,11 +1931,11 @@ public class TBoxExtraction {
 				ArrayList<String> value = entry.getValue();
 
 				Property property = getModel().createProperty("http://purl.org/linked-data/cube#measure");
-				measureResource.addProperty(property, assignIRI(key));
+				measureResource.addProperty(property, Methods.assignIRI(getPrefixMap(), key));
 
 				Property property2 = getModel().createProperty("http://purl.org/qb4olap/cubes#aggregateFunction");
 				for (String string : value) {
-					measureResource.addProperty(property2, assignIRI(string));
+					measureResource.addProperty(property2, Methods.assignIRI(getPrefixMap(), string));
 				}
 			}
 		}
@@ -2030,10 +1948,10 @@ public class TBoxExtraction {
 				String value = entry.getValue();
 
 				Property property = getModel().createProperty("http://purl.org/qb4olap/cubes#dimension");
-				dimResource.addProperty(property, assignIRI(key));
+				dimResource.addProperty(property, Methods.assignIRI(getPrefixMap(), key));
 
 				Property property2 = getModel().createProperty("http://purl.org/qb4olap/cubes#cardinality");
-				dimResource.addProperty(property2, assignIRI(value));
+				dimResource.addProperty(property2, Methods.assignIRI(getPrefixMap(), value));
 
 				resource.addProperty(componentProperty, dimResource);
 			}
@@ -2054,7 +1972,7 @@ public class TBoxExtraction {
 		resource.addProperty(conformsToProperty, getModel().createResource("http://purl.org/qb4olap/cubes"));
 
 		Property cubeProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#isCuboidOf");
-		resource.addProperty(cubeProperty, getModel().createResource(assignIRI(cube)));
+		resource.addProperty(cubeProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), cube)));
 
 		Property labelProperty = getModel().createProperty("http://www.w3.org/2004/02/skos/core#notation");
 		Literal labelLiteral = getModel().createLiteral(notation);
@@ -2073,11 +1991,11 @@ public class TBoxExtraction {
 				ArrayList<String> value = entry.getValue();
 
 				Property property = getModel().createProperty("http://purl.org/linked-data/cube#measure");
-				measureResource.addProperty(property, assignIRI(key));
+				measureResource.addProperty(property, Methods.assignIRI(getPrefixMap(), key));
 
 				Property property2 = getModel().createProperty("http://purl.org/qb4olap/cubes#aggregateFunction");
 				for (String string : value) {
-					measureResource.addProperty(property2, assignIRI(string));
+					measureResource.addProperty(property2, Methods.assignIRI(getPrefixMap(), string));
 				}
 			}
 		}
@@ -2090,10 +2008,10 @@ public class TBoxExtraction {
 				String value = entry.getValue();
 
 				Property property = getModel().createProperty("http://purl.org/qb4olap/cubes#level");
-				dimResource.addProperty(property, assignIRI(key));
+				dimResource.addProperty(property, Methods.assignIRI(getPrefixMap(), key));
 
 				Property property2 = getModel().createProperty("http://purl.org/qb4olap/cubes#cardinality");
-				dimResource.addProperty(property2, assignIRI(value));
+				dimResource.addProperty(property2, Methods.assignIRI(getPrefixMap(), value));
 
 				resource.addProperty(componentProperty, dimResource);
 			}
@@ -2112,22 +2030,22 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = tempModel;
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		RDFNode node = null, rdfNode = null;
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			node = ResourceFactory.createResource(value);
 		} else {
 			node = ResourceFactory.createStringLiteral(value);
 		}
 
 		if (previousValue.contains("http://") || previousValue.contains(":")) {
-			previousValue = assignIRI(previousValue);
+			previousValue = Methods.assignIRI(getPrefixMap(), previousValue);
 			rdfNode = ResourceFactory.createResource(previousValue);
 		} else {
 			rdfNode = ResourceFactory.createStringLiteral(previousValue);
@@ -2141,14 +2059,14 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = tempModel;
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			resource.addProperty(property, model.createResource(value));
 		} else {
 			resource.addLiteral(property, value);
@@ -2159,15 +2077,15 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		Model model = tempModel;
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		RDFNode node = null;
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			node = ResourceFactory.createResource(value);
 		} else {
 			node = ResourceFactory.createStringLiteral(value);
@@ -2181,18 +2099,18 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 
 		Resource resource = getModel().createResource();
-		Property hierProperty = getModel().createProperty(assignIRI("qb4o:inHierarchy"));
-		Property childProperty = getModel().createProperty(assignIRI("qb4o:childLevel"));
-		Property parentProperty = getModel().createProperty(assignIRI("qb4o:parentLevel"));
-		Property cardinalityProperty = getModel().createProperty(assignIRI("qb4o:pcCardinality"));
-		Property rollupProperty = getModel().createProperty(assignIRI("qb4o:rollup"));
+		Property hierProperty = getModel().createProperty(Methods.assignIRI(getPrefixMap(), "qb4o:inHierarchy"));
+		Property childProperty = getModel().createProperty(Methods.assignIRI(getPrefixMap(), "qb4o:childLevel"));
+		Property parentProperty = getModel().createProperty(Methods.assignIRI(getPrefixMap(), "qb4o:parentLevel"));
+		Property cardinalityProperty = getModel().createProperty(Methods.assignIRI(getPrefixMap(), "qb4o:pcCardinality"));
+		Property rollupProperty = getModel().createProperty(Methods.assignIRI(getPrefixMap(), "qb4o:rollup"));
 
-		resource.addProperty(hierProperty, getModel().createResource(assignIRI(stepHierName)));
-		resource.addProperty(childProperty, getModel().createResource(assignIRI(childLevelName)));
-		resource.addProperty(parentProperty, getModel().createResource(assignIRI(parentLevelName)));
-		resource.addProperty(cardinalityProperty, getModel().createResource(assignIRI(cardinality)));
-		resource.addProperty(rollupProperty, getModel().createResource(assignIRI(rollUpProperty)));
-		resource.addProperty(RDF.type, getModel().createResource(assignIRI("qb4o:HierarchyStep")));
+		resource.addProperty(hierProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), stepHierName)));
+		resource.addProperty(childProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), childLevelName)));
+		resource.addProperty(parentProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), parentLevelName)));
+		resource.addProperty(cardinalityProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), cardinality)));
+		resource.addProperty(rollupProperty, getModel().createResource(Methods.assignIRI(getPrefixMap(), rollUpProperty)));
+		resource.addProperty(RDF.type, getModel().createResource(Methods.assignIRI(getPrefixMap(), "qb4o:HierarchyStep")));
 	}
 
 	public LinkedHashMap<String, ArrayList<String>> getCubeList() {
@@ -2300,7 +2218,7 @@ public class TBoxExtraction {
 	private String getSubjectProperties(String cubeName, ArrayList<String> blankNodes,
 			LinkedHashMap<String, String> cubeNodeList) {
 		// TODO Auto-generated method stub
-		cubeName = assignIRI(cubeName);
+		cubeName = Methods.assignIRI(getPrefixMap(), cubeName);
 
 		String sparql = "SELECT ?s ?p ?o WHERE {?s ?p ?o. FILTER regex(str(?s), '" + cubeName + "').}";
 		Query query = QueryFactory.create(sparql);
@@ -2318,17 +2236,17 @@ public class TBoxExtraction {
 			String object = querySolution.get("o").toString();
 
 			if (subject.equals(cubeName)) {
-				if (predicate.equals(assignIRI("qb:component"))) {
+				if (predicate.equals(Methods.assignIRI(getPrefixMap(), "qb:component"))) {
 					continue;
 				} else if (predicate.equals(RDF.type.toString())) {
 					if (typeString.trim().length() == 0) {
-						typeString += assignPrefix(object);
+						typeString += Methods.assignPrefix(getPrefixMap(), object);
 					} else {
-						typeString += ", " + assignPrefix(object);
+						typeString += ", " + Methods.assignPrefix(getPrefixMap(), object);
 					}
 				} else {
-					object = assignPrefix(object).trim();
-					predicate = assignPrefix(predicate).trim();
+					object = Methods.assignPrefix(getPrefixMap(), object).trim();
+					predicate = Methods.assignPrefix(getPrefixMap(), predicate).trim();
 					if (linkedHashMap.containsKey(predicate)) {
 						object = linkedHashMap.get(predicate) + ", " + object;
 					}
@@ -2338,7 +2256,7 @@ public class TBoxExtraction {
 			}
 		}
 
-		text += assignPrefix(cubeName) + " a " + typeString;
+		text += Methods.assignPrefix(getPrefixMap(), cubeName) + " a " + typeString;
 
 		for (Map.Entry<String, String> map : linkedHashMap.entrySet()) {
 			String key = map.getKey();
@@ -2376,7 +2294,7 @@ public class TBoxExtraction {
 
 	private String getBlankNodesSubject(String resource) {
 		// TODO Auto-generated method stub
-		resource = assignIRI(resource);
+		resource = Methods.assignIRI(getPrefixMap(), resource);
 
 		String sparql = "SELECT ?s ?p ?o WHERE {?s ?p ?o. FILTER regex(str(?s), '" + resource + "').}";
 		Query query = QueryFactory.create(sparql);
@@ -2393,8 +2311,8 @@ public class TBoxExtraction {
 			String object = querySolution.get("o").toString();
 
 			if (subject.equals(resource)) {
-				predicate = assignPrefix(predicate).trim();
-				object = assignPrefix(object).trim();
+				predicate = Methods.assignPrefix(getPrefixMap(), predicate).trim();
+				object = Methods.assignPrefix(getPrefixMap(), object).trim();
 
 				if (linkedHashMap.containsKey(predicate)) {
 					object = linkedHashMap.get(predicate) + ", " + object;
@@ -2455,7 +2373,7 @@ public class TBoxExtraction {
 
 	private String getSubjectProperties(String mainResource, String selectedResource) {
 		// TODO Auto-generated method stub
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 
 		String sparql = "SELECT ?s ?p ?o WHERE {?s ?p ?o. FILTER regex(str(?s), '" + selectedResource + "').}";
 		Query query = QueryFactory.create(sparql);
@@ -2479,13 +2397,13 @@ public class TBoxExtraction {
 			if (subject.equals(selectedResource)) {
 				if (predicate.equals(RDF.type.toString())) {
 					if (typeString.trim().length() == 0) {
-						typeString += assignPrefix(object);
+						typeString += Methods.assignPrefix(getPrefixMap(), object);
 					} else {
-						typeString += ", " + assignPrefix(object);
+						typeString += ", " + Methods.assignPrefix(getPrefixMap(), object);
 					}
 				} else {
-					object = assignPrefix(object).trim();
-					predicate = assignPrefix(predicate).trim();
+					object = Methods.assignPrefix(getPrefixMap(), object).trim();
+					predicate = Methods.assignPrefix(getPrefixMap(), predicate).trim();
 					if (linkedHashMap.containsKey(predicate)) {
 						object = linkedHashMap.get(predicate) + ", " + object;
 					}
@@ -2527,7 +2445,7 @@ public class TBoxExtraction {
 
 	private String getSubjectProperties(String selectedResource) {
 		// TODO Auto-generated method stub
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 
 		String sparql = "SELECT ?s ?p ?o WHERE {?s ?p ?o. FILTER regex(str(?s), '" + selectedResource + "').}";
 		Query query = QueryFactory.create(sparql);
@@ -2549,14 +2467,14 @@ public class TBoxExtraction {
 			if (subject.equals(selectedResource)) {
 				if (predicate.equals(RDF.type.toString())) {
 					if (typeString.trim().length() == 0) {
-						typeString += assignPrefix(object);
+						typeString += Methods.assignPrefix(getPrefixMap(), object);
 					} else {
-						typeString += ", " + assignPrefix(object);
+						typeString += ", " + Methods.assignPrefix(getPrefixMap(), object);
 					}
 
 				} else {
-					object = assignPrefix(object).trim();
-					predicate = assignPrefix(predicate).trim();
+					object = Methods.assignPrefix(getPrefixMap(), object).trim();
+					predicate = Methods.assignPrefix(getPrefixMap(), predicate).trim();
 					if (linkedHashMap.containsKey(predicate)) {
 						object = linkedHashMap.get(predicate) + ", " + object;
 					}
@@ -2566,7 +2484,7 @@ public class TBoxExtraction {
 			}
 		}
 		
-		String subjectPrefix = assignPrefix(selectedResource);
+		String subjectPrefix = Methods.assignPrefix(getPrefixMap(), selectedResource);
 		if (Methods.containsWWW(subjectPrefix)) {
 			text += "<" + subjectPrefix + ">" + " a " + typeString;
 		} else {
@@ -2619,7 +2537,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 
 		name = iri + name;
-		Resource resource = getModel().createResource(assignIRI(name));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), name));
 		Resource classResource = getModel().createResource("http://www.w3.org/2002/07/owl#Ontology");
 		resource.addProperty(RDF.type, classResource);
 
@@ -2642,7 +2560,7 @@ public class TBoxExtraction {
 			Property property = model.createProperty(propertyString);
 
 			if (value.contains("http://") || value.contains(":")) {
-				value = assignIRI(value);
+				value = Methods.assignIRI(getPrefixMap(), value);
 				resource.addProperty(property, model.createResource(value));
 			} else {
 				resource.addLiteral(property, value);
@@ -2652,7 +2570,7 @@ public class TBoxExtraction {
 
 	public void addQbComponent(String resourceString, String measureString, ArrayList<String> functions) {
 		// TODO Auto-generated method stub
-		Resource resource = getModel().createResource(assignIRI(resourceString));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), resourceString));
 
 		Property property = getModel().createProperty("http://purl.org/linked-data/cube#component");
 
@@ -2661,10 +2579,10 @@ public class TBoxExtraction {
 		Property dimProperty = getModel().createProperty("http://purl.org/linked-data/cube#measure");
 		Property carProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#aggregateFunction");
 
-		resourceSecond.addProperty(dimProperty, model.createResource(assignIRI(measureString)));
+		resourceSecond.addProperty(dimProperty, model.createResource(Methods.assignIRI(getPrefixMap(), measureString)));
 
 		for (String string : functions) {
-			resourceSecond.addProperty(carProperty, model.createResource(assignIRI(string)));
+			resourceSecond.addProperty(carProperty, model.createResource(Methods.assignIRI(getPrefixMap(), string)));
 		}
 
 		resource.addProperty(property, resourceSecond);
@@ -2672,7 +2590,7 @@ public class TBoxExtraction {
 
 	public void addQbComponent(String resourceString, String dimensionString, String dimCar, String type) {
 		// TODO Auto-generated method stub
-		Resource resource = getModel().createResource(assignIRI(resourceString));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), resourceString));
 
 		Property property = getModel().createProperty("http://purl.org/linked-data/cube#component");
 
@@ -2682,14 +2600,14 @@ public class TBoxExtraction {
 			Property dimProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#dimension");
 			Property carProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#cardinality");
 
-			resourceSecond.addProperty(dimProperty, model.createResource(assignIRI(dimensionString)));
-			resourceSecond.addProperty(carProperty, model.createResource(assignPrefix(dimCar)));
+			resourceSecond.addProperty(dimProperty, model.createResource(Methods.assignIRI(getPrefixMap(), dimensionString)));
+			resourceSecond.addProperty(carProperty, model.createResource(Methods.assignPrefix(getPrefixMap(), dimCar)));
 		} else {
 			Property dimProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#level");
 			Property carProperty = getModel().createProperty("http://purl.org/qb4olap/cubes#cardinality");
 
-			resourceSecond.addProperty(dimProperty, model.createResource(assignIRI(dimensionString)));
-			resourceSecond.addProperty(carProperty, model.createResource(assignPrefix(dimCar)));
+			resourceSecond.addProperty(dimProperty, model.createResource(Methods.assignIRI(getPrefixMap(), dimensionString)));
+			resourceSecond.addProperty(carProperty, model.createResource(Methods.assignPrefix(getPrefixMap(), dimCar)));
 		}
 
 		resource.addProperty(property, resourceSecond);
@@ -2700,7 +2618,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 
 		hierName = iriString + hierName;
-		Resource resource = getModel().createResource(assignIRI(hierName));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), hierName));
 		Resource classResource = getModel().createResource("http://purl.org/qb4olap/cubes#Hierarchy");
 		resource.addProperty(RDF.type, classResource);
 		
@@ -2721,7 +2639,7 @@ public class TBoxExtraction {
 		// TODO Auto-generated method stub
 		
 		levelName = leveliri + levelName;
-		Resource resource = getModel().createResource(assignIRI(levelName));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), levelName));
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#Class");
 		resource.addProperty(RDF.type, classResource);
 		
@@ -2733,17 +2651,17 @@ public class TBoxExtraction {
 	public void addObjectPropertyResource(String iri, String name, List<String> domains, String range) {
 		// TODO Auto-generated method stub
 		name = iri + name;
-		Resource resource = getModel().createResource(assignIRI(name));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), name));
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#ObjectProperty");
 		resource.addProperty(RDF.type, classResource);
 		
 		Property rangeProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#range");
-		Resource rangeResource = getModel().createResource(assignIRI(range));
+		Resource rangeResource = getModel().createResource(Methods.assignIRI(getPrefixMap(), range));
 		resource.addProperty(rangeProperty, rangeResource);
 		
 		Property domainProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#domain");
 		for (String domain : domains) {
-			Resource domainResource = getModel().createResource(assignIRI(domain));
+			Resource domainResource = getModel().createResource(Methods.assignIRI(getPrefixMap(), domain));
 			resource.addProperty(domainProperty, domainResource);
 		}
 	}
@@ -2751,17 +2669,17 @@ public class TBoxExtraction {
 	public void addODatatypePropertyResource(String iri, String name, List<String> domains, String range) {
 		// TODO Auto-generated method stub
 		name = iri + name;
-		Resource resource = getModel().createResource(assignIRI(name));
+		Resource resource = getModel().createResource(Methods.assignIRI(getPrefixMap(), name));
 		Resource classResource = ResourceFactory.createResource("http://www.w3.org/2002/07/owl#DatatypeProperty");
 		resource.addProperty(RDF.type, classResource);
 		
 		Property rangeProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#range");
-		Resource rangeResource = getModel().createResource(assignIRI(range));
+		Resource rangeResource = getModel().createResource(Methods.assignIRI(getPrefixMap(), range));
 		resource.addProperty(rangeProperty, rangeResource);
 		
 		Property domainProperty = getModel().createProperty("http://www.w3.org/2000/01/rdf-schema#domain");
 		for (String domain : domains) {
-			Resource domainResource = getModel().createResource(assignIRI(domain));
+			Resource domainResource = getModel().createResource(Methods.assignIRI(getPrefixMap(), domain));
 			resource.addProperty(domainProperty, domainResource);
 		}
 	}

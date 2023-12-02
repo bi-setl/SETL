@@ -34,8 +34,26 @@ import org.apache.jena.vocabulary.RDF;
 import controller.MappingDefinition;
 import helper.FileMethods;
 import helper.Methods;
+import helper.Variables;
 
 public class MappingExtraction {
+	private static final String MAP_OPERATION = "map:operation";
+	private static final String CONCEPT_MAPPER = "ConceptMapper";
+	private static final String MAP_TARGET_A_BOX_LOCATION = "map:targetABoxLocation";
+	private static final String MAP_SOURCE_A_BOX_LOCATION = "map:sourceABoxLocation";
+	private static final String MAP_TARGET_COMMON_PROPERTY = "map:targetCommonProperty";
+	private static final String MAP_SOURCE_COMMON_PROPERTY = "map:sourceCommonProperty";
+	private static final String MAP_RELATION = "map:relation";
+	private static final String MAP_IRI_VALUE_TYPE = "map:iriValueType";
+	private static final String MAP_IRI_VALUE = "map:iriValue";
+	private static final String MAP_TARGET_CONCEPT = "map:targetConcept";
+	private static final String MAP_MATCHED_INSTANCES = "map:matchedInstances";
+	private static final String MAP_SOURCE_CONCEPT = "map:sourceConcept";
+	private static final String MAP_DATASET = "map:dataset";
+	private static final String MAP_PREFIX = "map:";
+	private static final String DATASET = "Dataset";
+	private static final String MAP_TARGET = "map:target";
+	private static final String MAP_SOURCE = "map:source";
 	private ArrayList<String> datasetList;
 	private ArrayList<String> mapperList;
 	private ArrayList<String> recordList;
@@ -74,7 +92,7 @@ public class MappingExtraction {
 			System.out.println("Check file path");
 		}
 	}
-	
+
 	public void reloadAll() {
 		setDatasetList(extractAllDatasets());
 		setMapperList(extractAllMappers());
@@ -261,7 +279,7 @@ public class MappingExtraction {
 		}
 		return model;
 	}
-	
+
 	public String assignPrefix(String iri) {
 		if (iri.contains("#")) {
 			String[] segments = iri.split("#");
@@ -300,20 +318,6 @@ public class MappingExtraction {
 			}
 
 			return iri;
-		}
-	}
-
-	public String assignIRI(String prefix) {
-		if (prefix.contains("http") || prefix.contains("www")) {
-			return prefix;
-		} else {
-			String[] segments = prefix.split(":");
-			if (segments.length == 2) {
-				String firstSegment = segments[0] + ":";
-				return getPrefixMap().get(firstSegment) + segments[1];
-			} else {
-				return prefix;
-			}
 		}
 	}
 
@@ -357,122 +361,96 @@ public class MappingExtraction {
 		this.model = model;
 	}
 
-	public void addNewDataset(String dataset, String source, String target) {
+	public void addNewDataset(String dataset, String source, String target, String mapIRI) {
 		// TODO Auto-generated method stub
-		dataset = assignIRI(dataset);
-		source = assignIRI(source);
-		target = assignIRI(target);
-		
+		dataset = Methods.assignIRI(getPrefixMap(), dataset);
+		source = Methods.assignIRI(getPrefixMap(), source);
+		target = Methods.assignIRI(getPrefixMap(), target);
+
 		Model model = getModel();
 
-		Resource classResource = ResourceFactory.createResource("http://www.map.org/example#Dataset");
+		Resource classResource = ResourceFactory.createResource(mapIRI + DATASET);
 		Resource newResource = model.createResource(dataset);
 		newResource.addProperty(RDF.type, classResource);
-		Property sourceProperty = model.createProperty(assignIRI("map:source"));
-		Property targetProperty = model.createProperty(assignIRI("map:target"));
-		
+		Property sourceProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_SOURCE));
+		Property targetProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_TARGET));
+
 		newResource.addProperty(sourceProperty, model.createResource(source));
 		newResource.addProperty(targetProperty, model.createResource(target));
 	}
 
-	public void addNewHead(String sourceType, String dataset, String source, String target, String relation,
-			String key, String operation, String keyType, String sourceComProperty, String targetComProperty, String filePath, String targetABoxPathString) {
-		// TODO Auto-generated method stub
-		dataset = assignIRI(dataset);
-		source = assignIRI(source);
-		target = assignIRI(target);
-		relation = assignIRI(relation);
-		sourceComProperty = assignIRI(sourceComProperty);
-		targetComProperty = assignIRI(targetComProperty);
-		// sourceType = assignIRI("map:" + sourceType);
-		keyType = assignIRI("map:" + keyType.replace(" ", ""));
-		
+	public void addNewConcept(String sourceType, String dataset, String source, String target, String relation,
+			String key, String operation, String keyType, String sourceComProperty,
+			String targetComProperty, String filePath, String targetABoxPathString, String mapIRI) {
+
+		dataset = Methods.assignIRI(getPrefixMap(), dataset);
+		source = Methods.assignIRI(getPrefixMap(), source);
+		target = Methods.assignIRI(getPrefixMap(), target);
+		relation = Methods.assignIRI(getPrefixMap(), relation);
+		sourceComProperty = Methods.assignIRI(getPrefixMap(), sourceComProperty);
+		targetComProperty = Methods.assignIRI(getPrefixMap(), targetComProperty);
+		keyType = Methods.assignIRI(getPrefixMap(), MAP_PREFIX + keyType.replace(" ", ""));
+
 		Model model = getModel();
 
 		String recordName = "";
-		/*int totalSize = getMapperList().size();
-		
-		if (totalSize < 9) {
-			recordName = "map:ConceptMapper_0" + ( totalSize + 1 ); 
-		} else {
-			recordName = "map:ConceptMapper_" + ( totalSize + 1 );
-		}*/
-		
+
 		String sourceSegment = getProvValue(source);
 		String targetSegment = getProvValue(target);
-		recordName = "map:" + sourceSegment + "_" + targetSegment;
-		
-		Resource classResource = ResourceFactory.createResource("http://www.map.org/example#ConceptMapper");
-		Resource newResource = model.createResource(assignIRI(recordName));
+		recordName = MAP_PREFIX + sourceSegment + "_" + targetSegment;
+
+		Resource classResource = model.createResource(mapIRI + CONCEPT_MAPPER);
+		Resource newResource = model.createResource(Methods.assignIRI(getPrefixMap(), recordName));
 		newResource.addProperty(RDF.type, classResource);
-		
-		Property datasetProperty = model.createProperty(assignIRI("map:dataset"));
-		Property sourceProperty = model.createProperty(assignIRI("map:sourceConcept"));
-		Property sourceTypeProperty = model.createProperty(assignIRI("map:matchedInstances"));
-		Property targetProperty = model.createProperty(assignIRI("map:targetConcept"));
-		Property keyProperty = model.createProperty(assignIRI("map:iriValue"));
-		Property keyPropertyType = model.createProperty(assignIRI("map:iriValueType"));
-		Property relationProperty = model.createProperty(assignIRI("map:relation"));
-		Property sourceCommonProperty = model.createProperty(assignIRI("map:sourceCommonProperty"));
-		Property targetCommonProperty = model.createProperty(assignIRI("map:targetCommonProperty"));
-		Property sourceABoxPath = model.createProperty(assignIRI("map:sourceABoxLocation"));
-		Property targetABoxPath = model.createProperty(assignIRI("map:targetABoxLocation"));
-		
+
+		Property datasetProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_DATASET));
+		Property sourceProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_SOURCE_CONCEPT));
+		Property sourceTypeProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_MATCHED_INSTANCES));
+		Property targetProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_TARGET_CONCEPT));
+		Property keyProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_IRI_VALUE));
+		Property keyPropertyType = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_IRI_VALUE_TYPE));
+		Property relationProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_RELATION));
+		Property sourceCommonProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_SOURCE_COMMON_PROPERTY));
+		Property targetCommonProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_TARGET_COMMON_PROPERTY));
+		Property sourceABoxPath = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_SOURCE_A_BOX_LOCATION));
+		Property targetABoxPath = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_TARGET_A_BOX_LOCATION));
+
 		newResource.addProperty(sourceTypeProperty, model.createLiteral(sourceType));
-		
 		newResource.addProperty(datasetProperty, model.createResource(dataset));
 		newResource.addProperty(sourceProperty, model.createResource(source));
 		newResource.addProperty(targetProperty, model.createResource(target));
 		newResource.addProperty(relationProperty, model.createResource(relation));
 		newResource.addProperty(keyPropertyType, model.createResource(keyType));
-		
-		if (new Methods().checkString(filePath)) {
+
+		Methods methods = new Methods();
+		if (methods.checkString(filePath)) {
 			newResource.addProperty(sourceABoxPath, model.createTypedLiteral(filePath));
-		}
-		
-		if (new Methods().checkString(filePath)) {
 			newResource.addProperty(targetABoxPath, model.createTypedLiteral(targetABoxPathString));
 		}
-		
-		Methods methods = new Methods();
+
 		if (methods.checkString(sourceComProperty) && methods.checkString(targetComProperty)) {
 			newResource.addProperty(sourceCommonProperty, model.createResource(sourceComProperty));
 			newResource.addProperty(targetCommonProperty, model.createResource(targetComProperty));
 		}
-		
-		/*if (keyType.contains("Direct") || keyType.contains("Expression")) {
-			if (key.contains("http") || key.contains("www") || key.contains(":")) {
-				if (key.contains("\"") || key.contains(",")  || key.contains("+")  || key.contains("-")
-						|| key.contains("*")  || key.contains("/") || key.contains("}")  || key.contains("(")) {
-					newResource.addProperty(keyProperty, model.createLiteral(key));
-				} else {
-					key = assignIRI(key);
-					newResource.addProperty(keyProperty, model.createResource(key));
-				}
-			} else {
-				newResource.addProperty(keyProperty, model.createLiteral(key));
-			}
-		}*/
-		
+
 		if (key.trim().length() > 0) {
-			if (keyType.contains("Expression")) {
+			if (keyType.contains(Variables.EXPRESSION)) {
 				key = key.replaceAll("\"", "");
 				newResource.addProperty(keyProperty, model.createLiteral(key));
 			} else {
-				key = assignIRI(key);
+				key = Methods.assignIRI(getPrefixMap(), key);
 				newResource.addProperty(keyProperty, model.createResource(key));
 			}
 		}
-		
+
 		if (operation.trim().length() != 0) {
-			Property operationProperty = model.createProperty(assignIRI("map:operation"));
-			
+			Property operationProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), MAP_OPERATION));
+
 			if (operation.contains("http") || operation.contains("www") || operation.contains(":")) {
-				if (operation.contains("\"") || operation.contains(",")  || operation.contains("+")  || operation.contains("-")
-						|| operation.contains("*")  || operation.contains("/") || operation.contains("}")  || operation.contains("(")) {
+				if (operation.matches(".*[\"+,\\-*/\\)}(].*")) {
 					newResource.addProperty(operationProperty, model.createLiteral(operation));
 				} else {
-					operation = assignIRI(operation);
+					operation = Methods.assignIRI(getPrefixMap(), operation);
 					newResource.addProperty(operationProperty, model.createResource(operation));
 				}
 			} else {
@@ -483,47 +461,47 @@ public class MappingExtraction {
 
 	public void addNewRecord(String mapper, String target, String source, String sourceType) {
 		// TODO Auto-generated method stub
-		target = assignIRI(target);
-		mapper = assignIRI(mapper);
-		sourceType = assignIRI("map:" + sourceType.replaceAll(" ", ""));
-		
+		target = Methods.assignIRI(getPrefixMap(), target);
+		mapper = Methods.assignIRI(getPrefixMap(), mapper);
+		sourceType = Methods.assignIRI(getPrefixMap(), MAP_PREFIX + sourceType.replaceAll(" ", ""));
+
 		Model model = getModel();
 
 		Resource classResource = ResourceFactory.createResource("http://www.map.org/example#PropertyMapper");
-		
+
 		String recordName = "";
 		int totalSize = getRecordList().size();
-		
+
 		String sourceKey = Methods.extractKeyWordFromIRI(source);
 		String targetKey = Methods.extractKeyWordFromIRI(target);
-		
+
 		if (totalSize < 9) {
 			recordName = "map:PropertyMapper_0" + ( totalSize + 1 ); 
 		} else {
 			recordName = "map:PropertyMapper_" + ( totalSize + 1 );
 		}
-		
+
 		recordName += "_" + sourceKey + "_" + targetKey;
-		
-		Resource newResource = model.createResource(assignIRI(recordName));
+
+		Resource newResource = model.createResource(Methods.assignIRI(getPrefixMap(), recordName));
 		newResource.addProperty(RDF.type, classResource);
-		
-		Property mapProperty = model.createProperty(assignIRI("map:ConceptMapper"));
-		Property sourceProperty = model.createProperty(assignIRI("map:sourceProperty"));
-		Property targetProperty = model.createProperty(assignIRI("map:targetProperty"));
-		Property sourceTypeProperty = model.createProperty(assignIRI("map:sourcePropertyType"));
-		
+
+		Property mapProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), "map:ConceptMapper"));
+		Property sourceProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), "map:sourceProperty"));
+		Property targetProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), "map:targetProperty"));
+		Property sourceTypeProperty = model.createProperty(Methods.assignIRI(getPrefixMap(), "map:sourcePropertyType"));
+
 		newResource.addProperty(sourceTypeProperty, model.createResource(sourceType));
-		
+
 		newResource.addProperty(mapProperty, model.createResource(mapper));
-		
+
 		newResource.addProperty(targetProperty, model.createResource(target));
-		
+
 		if (sourceType.contains("Expression")) {
 			source = source.replaceAll("\"", "");
 			newResource.addProperty(sourceProperty, model.createLiteral(source));
 		} else {
-			source = assignIRI(source);
+			source = Methods.assignIRI(getPrefixMap(), source);
 			newResource.addProperty(sourceProperty, model.createResource(source));
 		}
 	}
@@ -532,10 +510,10 @@ public class MappingExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		selectedResource = assignIRI(selectedResource);
-		
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
+
 		LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
-		
+
 		String sparql = "SELECT ?s ?p ?o WHERE {?s ?p ?o. FILTER regex(str(?s), '" + selectedResource + "').}";
 		Query query = QueryFactory.create(sparql);
 		QueryExecution execution = QueryExecutionFactory.create(query, model);
@@ -551,44 +529,44 @@ public class MappingExtraction {
 
 				property = assignPrefix(property);
 				object = assignPrefix(object);
-				
+
 				hashMap.put(property, object);
 			}
 		}
 		return hashMap;
 	}
-	
+
 	public void updateResource(String previousResource, String currentResource) {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		previousResource = assignIRI(previousResource);
-		currentResource = assignIRI(currentResource);
+		previousResource = Methods.assignIRI(getPrefixMap(), previousResource);
+		currentResource = Methods.assignIRI(getPrefixMap(), currentResource);
 
 		Resource resource = model.getResource(previousResource);
 		ResourceUtils.renameResource(resource, currentResource);
 	}
-	
+
 	public void editProperty(String name, String key, String previousValue, String value) {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
-		key = assignIRI(key);
+		name = Methods.assignIRI(getPrefixMap(), name);
+		key = Methods.assignIRI(getPrefixMap(), key);
 
 		Resource resource = model.getResource(name);
 		Property property = model.createProperty(key);
 
 		RDFNode node = null, rdfNode = null;
 		if (value.contains("http://") || value.contains(":")) {
-			value = assignIRI(value);
+			value = Methods.assignIRI(getPrefixMap(), value);
 			node = ResourceFactory.createResource(value);
 		} else {
 			node = ResourceFactory.createStringLiteral(value);
 		}
 
 		if (previousValue.contains("http://") || previousValue.contains(":")) {
-			previousValue = assignIRI(previousValue);
+			previousValue = Methods.assignIRI(getPrefixMap(), previousValue);
 			rdfNode = ResourceFactory.createResource(previousValue);
 		} else {
 			rdfNode = ResourceFactory.createStringLiteral(previousValue);
@@ -602,7 +580,7 @@ public class MappingExtraction {
 		// TODO Auto-generated method stub
 		Model model = getModel();
 
-		name = assignIRI(name);
+		name = Methods.assignIRI(getPrefixMap(), name);
 
 		Resource resource = ResourceFactory.createResource(name);
 
@@ -612,7 +590,7 @@ public class MappingExtraction {
 
 	public ArrayList<String> extractAssociatedMapperList(String selectedResource) {
 		// TODO Auto-generated method stub
-		selectedResource = assignIRI(selectedResource);
+		selectedResource = Methods.assignIRI(getPrefixMap(), selectedResource);
 		ArrayList<String> arrayList = new ArrayList<String>();
 		String sparql = "PREFIX map:	<http://www.map.org/example#>\r\n"
 				+ "SELECT ?s ?d WHERE {?s a map:ConceptMapper. "
@@ -628,18 +606,18 @@ public class MappingExtraction {
 
 			if (datasetString.trim().equals(selectedResource.trim())) {
 				String subjectString = String.valueOf(querySolution.get("s"));
-				
+
 				arrayList.add(subjectString);
 			}
 		}
 		return arrayList;
 	}
-	
+
 	public ArrayList<String> extractAssociatedRecordList(String dataset, String mapper) {
 		// TODO Auto-generated method stub
-		dataset = assignIRI(dataset);
-		mapper = assignIRI(mapper);
-		
+		dataset = Methods.assignIRI(getPrefixMap(), dataset);
+		mapper = Methods.assignIRI(getPrefixMap(), mapper);
+
 		ArrayList<String> arrayList = new ArrayList<String>();
 		String sparql = "PREFIX map:	<http://www.map.org/example#>\r\n"
 				+ "SELECT ?s ?d ?m WHERE {?s a map:PropertyMapper. "
@@ -650,7 +628,7 @@ public class MappingExtraction {
 		Query query = QueryFactory.create(sparql);
 		QueryExecution execution = QueryExecutionFactory.create(query, model);
 		ResultSet resultSet = ResultSetFactory.copyResults(execution.execSelect());
-		
+
 		// ResultSetFormatter.out(ResultSetFactory.copyResults(resultSet));
 
 		while (resultSet.hasNext()) {
@@ -661,14 +639,14 @@ public class MappingExtraction {
 			if (datasetString.trim().equals(dataset.trim())) {
 				if (mapperString.trim().equals(mapper.trim())) {
 					String subjectString = String.valueOf(querySolution.get("s"));
-					
+
 					arrayList.add(subjectString);
 				}
 			}
 		}
 		return arrayList;
 	}
-	
+
 	private String getProvValue(String subject) {
 		// TODO Auto-generated method stub
 		// System.out.println(subject);

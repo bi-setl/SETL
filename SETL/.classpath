@@ -62,5 +62,35 @@
 	<classpathentry kind="lib" path="lib/dom4j-2.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-validator-1.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/graph/colt-1.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/graph/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/concurrent-1.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/graph/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jfreechart-1.0.19-swt.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jfreesvg-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-1.7.6.jar"/>
+	<classpathentry kind="lib" path="lib/graph/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="lib/graph/orsoncharts-1.4-eval-nofx.jar"/>
+	<classpathentry kind="lib" path="lib/graph/orsonpdf-1.6-eval.jar"/>
+	<classpathentry kind="lib" path="lib/graph/servlet.jar"/>
+	<classpathentry kind="lib" path="lib/graph/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung.jar"/>
+	<classpathentry kind="lib" path="lib/graph/collections-generic-4.01.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-3d-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-3d-demos-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-algorithms-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-api-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-graph-impl-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-jai-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-jai-samples-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-samples-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/jung-visualization-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/vecmath-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/graph/wstx-asl-3.2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

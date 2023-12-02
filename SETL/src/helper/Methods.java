@@ -576,47 +576,6 @@ public class Methods {
         }
     }
 
-    public String assignPrefix(String iri) {
-        if (iri.contains("#")) {
-            String[] segments = iri.split("#");
-            if (segments.length == 2) {
-                String firstSegment = segments[0].trim() + "#";
-
-                for (Map.Entry<String, String> map : getPrefixMap().entrySet()) {
-                    String key = map.getKey();
-                    String value = map.getValue();
-
-                    if (firstSegment.equals(value.trim())) {
-                        return key + segments[1];
-                    }
-                }
-
-                return iri;
-            } else {
-                return iri;
-            }
-        } else {
-            String[] segments = iri.split("/");
-            String lastSegment = segments[segments.length - 1];
-
-            String firstSegment = "";
-            if (iri.endsWith(lastSegment)) {
-                firstSegment = iri.replace(lastSegment, "");
-            }
-
-            for (Map.Entry<String, String> map : getPrefixMap().entrySet()) {
-                String key = map.getKey();
-                String value = map.getValue();
-
-                if (firstSegment.equals(value.trim())) {
-                    return key + lastSegment;
-                }
-            }
-
-            return iri;
-        }
-    }
-
     public String assignIRI(String prefix) {
         if (prefix.contains("http") || prefix.contains("www")) {
             return prefix;
@@ -676,48 +635,48 @@ public class Methods {
         return segments[0];
     }
 
-    public static String assignPrefix(LinkedHashMap<String, String> prefixMap, String iriValue) {
-        if (iriValue.contains("#")) {
-            String[] parts = iriValue.split("#");
-            if (parts.length == 2) {
-                String firstSegment = parts[0].trim() + "#";
-                String prefix1 = getMapValue(prefixMap, firstSegment);
-
-                if (prefix1 != null) {
-                    return prefix1 + parts[1].trim();
-                } else {
-                	String secondSegment = parts[0].trim() + "/";
-                	
-                	String prefix = getMapValue(prefixMap, secondSegment);
-
-                    if (prefix != null) {
-                        return prefix + parts[1].trim();
-                    }
-                }
-            }
-        } else {
-            String[] parts = iriValue.split("/");
-            String lastSegment = parts[parts.length - 1];
-            String firstSegment = iriValue.replace(lastSegment, "");
-
-            String prefix1 = getMapValue(prefixMap, firstSegment);
-            
-            if (prefix1 != null) {
-            	return prefix1 + lastSegment;
-            } else {
-            	String lastSegment2 = "/" + lastSegment;
-                firstSegment = iriValue.replace(lastSegment2, "");
-                firstSegment = firstSegment + "#";
-            	
-            	String prefix = getMapValue(prefixMap, firstSegment);
-
-                if (prefix != null) {
-                    return prefix + lastSegment;
-                }
-            }
-        }
-        return iriValue;
-    }
+//    public static String assignPrefix(LinkedHashMap<String, String> prefixMap, String iriValue) {
+//        if (iriValue.contains("#")) {
+//            String[] parts = iriValue.split("#");
+//            if (parts.length == 2) {
+//                String firstSegment = parts[0].trim() + "#";
+//                String prefix1 = getMapValue(prefixMap, firstSegment);
+//
+//                if (prefix1 != null) {
+//                    return prefix1 + parts[1].trim();
+//                } else {
+//                	String secondSegment = parts[0].trim() + "/";
+//                	
+//                	String prefix = getMapValue(prefixMap, secondSegment);
+//
+//                    if (prefix != null) {
+//                        return prefix + parts[1].trim();
+//                    }
+//                }
+//            }
+//        } else {
+//            String[] parts = iriValue.split("/");
+//            String lastSegment = parts[parts.length - 1];
+//            String firstSegment = iriValue.replace(lastSegment, "");
+//
+//            String prefix1 = getMapValue(prefixMap, firstSegment);
+//            
+//            if (prefix1 != null) {
+//            	return prefix1 + lastSegment;
+//            } else {
+//            	String lastSegment2 = "/" + lastSegment;
+//                firstSegment = iriValue.replace(lastSegment2, "");
+//                firstSegment = firstSegment + "#";
+//            	
+//            	String prefix = getMapValue(prefixMap, firstSegment);
+//
+//                if (prefix != null) {
+//                    return prefix + lastSegment;
+//                }
+//            }
+//        }
+//        return iriValue;
+//    }
 
     private static String getMapValue(LinkedHashMap<String, String> prefixMap, String secondValue) {
         // TODO Auto-generated method stub
@@ -766,38 +725,6 @@ public class Methods {
         stringBuilder.append("\n\n\n\n");
 
         return stringBuilder.toString();
-    }
-
-    public static LinkedHashMap<String, String> extractPrefixes(String filePath) {
-        // TODO Auto-generated method stub
-        LinkedHashMap<String, String> hashMap = new LinkedHashMap<>();
-        File file = new File(filePath);
-        BufferedReader bufferedReader = null;
-
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-
-            String textString = "", s;
-            StringBuilder stringBuilder = new StringBuilder(textString);
-            while ((s = bufferedReader.readLine()) != null) {
-                stringBuilder.append(s);
-            }
-
-            String regEx = "(@prefix\\s*)([^:]+:)(\\s+)(<)([^\\s+^>]+)";
-            Pattern pattern = Pattern.compile(regEx);
-            Matcher matcher = pattern.matcher(stringBuilder.toString());
-
-            while (matcher.find()) {
-                String prefix = matcher.group(2).trim();
-                String iri = matcher.group(5).trim();
-
-                hashMap.put(prefix, iri);
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-        return hashMap;
     }
 
     public static boolean isIRI(String keyAttribute) {
@@ -1392,4 +1319,72 @@ public class Methods {
 		
 		return "Success.\nFile Saved: " + targetABoxFile;
 	}
+	
+	public static LinkedHashMap<String, String> extractPrefixes(String filepath) {
+		// Reading only the first 500 lines for prefix extraction
+		
+        LinkedHashMap<String, String> hashedMap = new LinkedHashMap<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filepath))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            int lineCount = 0;
+
+            while ((line = bufferedReader.readLine()) != null && lineCount < 500) {
+                stringBuilder.append(line);
+                lineCount++;
+            }
+
+            String regEx = "(@prefix\\s+)([^\\:.]*:\\s+)(<)([^>]*)(>)";
+            Pattern pattern = Pattern.compile(regEx);
+            Matcher matcher = pattern.matcher(stringBuilder.toString());
+
+            while (matcher.find()) {
+                String prefix = matcher.group(2).trim();
+                String iri = matcher.group(4).trim();
+                hashedMap.put(prefix, iri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // handle the exception in a more appropriate way
+        }
+
+        return hashedMap;
+    }
+	
+	public static String assignPrefix(LinkedHashMap<String, String> prefixMap, String iri) {
+	    if (iri.contains("#")) {
+	        String[] segments = iri.split("#");
+	        if (segments.length == 2) {
+	            String firstSegment = segments[0].trim() + "#";
+	            return applyPrefix(prefixMap, firstSegment, segments[1], iri);
+	        }
+	    } else {
+	        String[] segments = iri.split("/");
+	        String lastSegment = segments[segments.length - 1];
+
+	        String firstSegment = iri.substring(0, iri.length() - lastSegment.length());
+	        return applyPrefix(prefixMap, firstSegment, lastSegment, iri);
+	    }
+
+	    return iri; // Return the original iri when no matching prefix is found
+	}
+
+	private static String applyPrefix(LinkedHashMap<String, String> prefixMap, String firstSegment, String lastSegment, String iri) {
+	    for (Map.Entry<String, String> map : prefixMap.entrySet()) {
+	        String key = map.getKey();
+	        String value = map.getValue().trim();
+
+	        if (firstSegment.equals(value)) {
+	            return key + lastSegment;
+	        }
+	    }
+
+	    return iri; // Return the original iri when no matching prefix is found
+	}
+	
+	public static String[] getKeyTypes() {
+        return new String[]{Variables.SOURCE_ATTRIBUTE, Variables.EXPRESSION,
+        		Variables.INCREMENTAL, Variables.AUTOMATIC, Variables.SAME_AS_SOURCE_IRI};
+    }
+
 }

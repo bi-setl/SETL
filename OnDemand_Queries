@@ -1,0 +1,390 @@
+Query 1:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_admUnitThree (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#PopulationByAdm5ResPopType> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+}
+GROUP BY ?admGeographyDim_admUnitThree
+ORDER BY ?admGeographyDim_admUnitThree
+
+
+Query 2:
+
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_admUnitOne ?residenceDim_residence ?householdTypeDim_householdType (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#householdByAdm5ResidenceHouseholdType> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .
+?o <http://linked-statistics-bd.org/2011/mdProperty#householdType> ?householdTypeDim_householdType .
+}
+GROUP BY ?admGeographyDim_admUnitOne ?residenceDim_residence ?householdTypeDim_householdType
+ORDER BY ?admGeographyDim_admUnitOne ?residenceDim_residence ?householdTypeDim_householdType
+
+
+Query 3:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?sexDim_sexName ?residenceDim_residenceName ?admGeographyDim_administrativeUnitName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceSex> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#sex> ?sexDim_sex .
+?sexDim_sex qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#sex> .
+?sexDim_sex <http://linked-statistics-bd.org/2011/mdAttribute#sexName> ?sexDim_sexName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .
+?residenceDim_residence qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#residence> .
+?residenceDim_residence <http://linked-statistics-bd.org/2011/mdAttribute#residenceName> ?residenceDim_residenceName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+}
+GROUP BY ?sexDim_sexName ?residenceDim_residenceName ?admGeographyDim_administrativeUnitName
+ORDER BY ?sexDim_sexName ?residenceDim_residenceName ?admGeographyDim_administrativeUnitName
+
+
+Query 4:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?householdSizeDim_householdSizeName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_count) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#HouseholdByAdm5ResidenceHouseholdSize> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admUnitOne_administrativeUnitName .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#householdSize> ?householdSizeDim_householdSize .
+?householdSizeDim_householdSize qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
+?householdSizeDim_householdSize <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName> ?householdSizeDim_householdSizeName .
+FILTER (REGEX (?admUnitOne_administrativeUnitName, "CHITTAGONG DIVISION", "i"))}
+GROUP BY ?admGeographyDim_administrativeUnitName ?householdSizeDim_householdSizeName
+ORDER BY ?admGeographyDim_administrativeUnitName ?householdSizeDim_householdSizeName
+
+
+Query 5:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceAgeGroup> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?AdmUnitTwo_administrativeUnitName .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+FILTER (REGEX (?AdmUnitTwo_administrativeUnitName, "BARGUNA", "i") || REGEX (?AdmUnitTwo_administrativeUnitName, "CHITTAGONG", "i"))}
+GROUP BY ?admGeographyDim_administrativeUnitName
+ORDER BY ?admGeographyDim_administrativeUnitName
+
+
+Query 6:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?maritalStatusDim_maritalStatusName ?sexDim_sexName (MAX(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceSexMaritalStatus> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#maritalStatus> ?maritalStatusDim_maritalStatus .
+?maritalStatusDim_maritalStatus qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#maritalStatus> .
+?maritalStatusDim_maritalStatus <http://linked-statistics-bd.org/2011/mdAttribute#maritalStatusName> ?maritalStatusDim_maritalStatusName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#sex> ?sexDim_sex .
+?sexDim_sex qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#sex> .
+?sexDim_sex <http://linked-statistics-bd.org/2011/mdAttribute#sexName> ?sexDim_sexName .
+}
+GROUP BY ?maritalStatusDim_maritalStatusName ?sexDim_sexName
+ORDER BY ?maritalStatusDim_maritalStatusName ?sexDim_sexName
+
+
+Query 7:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?sexDim_sexName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) 
+(SUM(<http://www.w3.org/2001/XMLSchema#long>(?m2)) as ?literatePopulation_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceSexLiterate> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#literatePopulation> ?m2 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#sex> ?sexDim_sex .
+?sexDim_sex qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#sex> .
+?sexDim_sex <http://linked-statistics-bd.org/2011/mdAttribute#sexName> ?sexDim_sexName .
+}
+GROUP BY ?admGeographyDim_administrativeUnitName ?sexDim_sexName ?numberOfPopulation_sum
+ORDER BY ?admGeographyDim_administrativeUnitName ?sexDim_sexName ?numberOfPopulation_sum
+
+
+Query 8:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?residenceDim_residenceName ?sexDim_sexName ?fieldOfActivityDim_fieldOfActivityName (AVG(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_avg) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#populationByAdm5ResidenceSexFieldActivity> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .
+?residenceDim_residence qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#residence> .
+?residenceDim_residence <http://linked-statistics-bd.org/2011/mdAttribute#residenceName> ?residenceDim_residenceName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#sex> ?sexDim_sex .
+?sexDim_sex qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#sex> .
+?sexDim_sex <http://linked-statistics-bd.org/2011/mdAttribute#sexName> ?sexDim_sexName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#fieldOfActivity> ?fieldOfActivityDim_fieldOfActivity .
+?fieldOfActivityDim_fieldOfActivity qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#fieldOfActivity> .
+?fieldOfActivityDim_fieldOfActivity <http://linked-statistics-bd.org/2011/mdAttribute#fieldOfActivityName> ?fieldOfActivityDim_fieldOfActivityName .
+}
+GROUP BY ?residenceDim_residenceName ?sexDim_sexName ?fieldOfActivityDim_fieldOfActivityName
+ORDER BY ?residenceDim_residenceName ?sexDim_sexName ?fieldOfActivityDim_fieldOfActivityName
+
+Query 9:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?religionDim_religionName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfPopulation_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#householdByAdm5ResidenceReligionStatus> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfPopulation> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#religion> ?religionDim_religion .
+?religionDim_religion qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#religion> .
+?religionDim_religion <http://linked-statistics-bd.org/2011/mdAttribute#religionName> ?religionDim_religionName .
+}
+GROUP BY ?admGeographyDim_administrativeUnitName ?religionDim_religionName
+ORDER BY ?admGeographyDim_administrativeUnitName ?religionDim_religionName
+
+
+Query 10:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?residenceDim_residenceName ?householdStructureDim_householdStructureTypeName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#householdByAdm5ResidenceHouseholdStruct> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admUnitOne_administrativeUnitName .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#residence> ?residenceDim_residence .
+?residenceDim_residence qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#residence> .
+?residenceDim_residence <http://linked-statistics-bd.org/2011/mdAttribute#residenceName> ?residenceDim_residenceName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#householdStructureType> ?householdStructureDim_householdStructureType .
+?householdStructureDim_householdStructureType qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#householdStructureType> .
+?householdStructureDim_householdStructureType <http://linked-statistics-bd.org/2011/mdAttribute#householdStructureTypeName> ?householdStructureDim_householdStructureTypeName .
+FILTER (REGEX (?admUnitOne_administrativeUnitName, "CHITTAGONG DIVISION", "i") || REGEX (?admUnitOne_administrativeUnitName, "DHAKA DIVISION", "i") || REGEX (?admUnitOne_administrativeUnitName, "SYLHET DIVISION", "i"))}
+GROUP BY ?admGeographyDim_administrativeUnitName ?residenceDim_residenceName ?householdStructureDim_householdStructureTypeName
+ORDER BY ?admGeographyDim_administrativeUnitName ?residenceDim_residenceName ?householdStructureDim_householdStructureTypeName
+
+
+
+Query 11:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?toiletTypeDim_toiletFacilityName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#householdByAdm5ResidenceToiletFacility> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admUnitOne_administrativeUnitName .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#toiletFacility> ?toiletTypeDim_toiletFacility .
+?toiletTypeDim_toiletFacility <http://linked-statistics-bd.org/2011/mdAttribute#toiletFacilityName> ?toiletFacility_toiletFacilityName .
+?toiletTypeDim_toiletFacility qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#toiletFacility> .
+?toiletTypeDim_toiletFacility <http://linked-statistics-bd.org/2011/mdAttribute#toiletFacilityName> ?toiletTypeDim_toiletFacilityName .
+FILTER ((REGEX (?admUnitOne_administrativeUnitName, "CHITTAGONG DIVISION", "i") || REGEX (?admUnitOne_administrativeUnitName, "DHAKA DIVISION", "i")) && REGEX (?toiletFacility_toiletFacilityName, "Non sanitary", "i"))}
+GROUP BY ?admGeographyDim_administrativeUnitName ?toiletTypeDim_toiletFacilityName
+ORDER BY ?admGeographyDim_administrativeUnitName ?toiletTypeDim_toiletFacilityName
+
+Query 12:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?drinkingWaterSourceDim_drinkingWaterSourceName (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_sum) (MAX(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_max) (AVG(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_avg) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#householdByAdm5DrinkingWaterSrc> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#drinkingWaterSource> ?drinkingWaterSourceDim_drinkingWaterSource .
+?drinkingWaterSourceDim_drinkingWaterSource qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#drinkingWaterSource> .
+?drinkingWaterSourceDim_drinkingWaterSource <http://linked-statistics-bd.org/2011/mdAttribute#drinkingWaterSourceName> ?drinkingWaterSourceDim_drinkingWaterSourceName .
+}
+GROUP BY ?drinkingWaterSourceDim_drinkingWaterSourceName ?numberOfHousehold_sum ?numberOfHousehold_max
+ORDER BY ?drinkingWaterSourceDim_drinkingWaterSourceName ?numberOfHousehold_sum ?numberOfHousehold_max
+
+
+Query 13:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?housingTenancyDim_housingTenancyName (AVG(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_avg) (COUNT(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_count) (MIN(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_min) (MAX(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_max) (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_sum) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#HouseholdByAdm5ResHousingTenancy> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#housingTenancy> ?housingTenancyDim_housingTenancy .
+?housingTenancyDim_housingTenancy qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#housingTenancy> .
+?housingTenancyDim_housingTenancy <http://linked-statistics-bd.org/2011/mdAttribute#housingTenancyName> ?housingTenancyDim_housingTenancyName .
+}
+GROUP BY ?admGeographyDim_administrativeUnitName ?housingTenancyDim_housingTenancyName ?numberOfHousehold_avg ?numberOfHousehold_count ?numberOfHousehold_min ?numberOfHousehold_max
+ORDER BY ?admGeographyDim_administrativeUnitName ?housingTenancyDim_housingTenancyName ?numberOfHousehold_avg ?numberOfHousehold_count ?numberOfHousehold_min ?numberOfHousehold_max
+
+
+Query 14:
+
+
+SELECT * WHERE {
+	?s a <http://linked-statistics-bd.org/2011/data#Census_C15_ElectricityFacility>.
+	?s <http://linked-statistics-bd.org/2011/data#numberOfHousehold> ?o.
+} LIMIT 100
+
+
+Query 15:
+
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX qb4o: <http://purl.org/qb4olap/cubes#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?admGeographyDim_administrativeUnitName ?householdSizeDim_householdSizeName ?abstract (SUM(<http://www.w3.org/2001/XMLSchema#long>(?m1)) as ?numberOfHousehold_count) 
+WHERE {
+?o a qb:Observation .
+?o qb:dataSet <http://linked-statistics-bd.org/2011/data#HouseholdByAdm5ResidenceHouseholdSize> .
+?o <http://linked-statistics-bd.org/2011/mdProperty#numberOfHousehold> ?m1 .
+?o <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> ?admGeographyDim_admUnitFive .
+?admGeographyDim_admUnitFive qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFive> .
+?admGeographyDim_admUnitFive <http://linked-statistics-bd.org/2011/mdAttribute#inAdmFour> ?admGeographyDim_admUnitFour .
+?admGeographyDim_admUnitFour qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitFour> .
+?admGeographyDim_admUnitFour <http://linked-statistics-bd.org/2011/mdAttribute#inAdmThree> ?admGeographyDim_admUnitThree .
+?admGeographyDim_admUnitThree qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitThree> .
+?admGeographyDim_admUnitThree <http://linked-statistics-bd.org/2011/mdAttribute#inAdmTwo> ?admGeographyDim_AdmUnitTwo .
+?admGeographyDim_AdmUnitTwo qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo> .
+?admGeographyDim_AdmUnitTwo <http://linked-statistics-bd.org/2011/mdAttribute#inAdmOne> ?admGeographyDim_admUnitOne .
+?admGeographyDim_admUnitOne qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#admUnitOne> .
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admUnitOne_administrativeUnitName .
+?admGeographyDim_admUnitOne <http://www.w3.org/2002/07/owl#sameAs> ?resource .
+?resource <http://dbpedia.org/ontology/abstract> ?abstract.
+?admGeographyDim_admUnitOne <http://linked-statistics-bd.org/2011/mdAttribute#administrativeUnitName> ?admGeographyDim_administrativeUnitName .
+?o <http://linked-statistics-bd.org/2011/mdProperty#householdSize> ?householdSizeDim_householdSize .
+?householdSizeDim_householdSize qb4o:memberOf <http://linked-statistics-bd.org/2011/mdProperty#householdSize> .
+?householdSizeDim_householdSize <http://linked-statistics-bd.org/2011/mdAttribute#householdSizeName> ?householdSizeDim_householdSizeName .
+FILTER (REGEX (?admUnitOne_administrativeUnitName, "CHITTAGONG DIVISION", "i"))}
+GROUP BY ?admGeographyDim_administrativeUnitName ?householdSizeDim_householdSizeName ?abstract
+ORDER BY ?admGeographyDim_administrativeUnitName ?householdSizeDim_householdSizeName ?abstract
+
+
